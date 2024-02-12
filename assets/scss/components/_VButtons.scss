@@ -1,0 +1,10 @@
+.v-btn-group .v-btn {
+    height: inherit !important;
+}
+.v-btn-group {
+    border-color: rgb(var(--v-theme-borderColor)) !important;
+    .v-btn{
+        border-radius: 0 !important;
+    }
+}
+
