@@ -10,7 +10,7 @@ const { mdAndUp } = useDisplay();
 
 <template>
     <template v-if="mdAndUp">
-        <div class="horizontalMenu  border-bottom">
+        <div class="horizontalMenu border-bottom">
             <div :class="customizer.boxed ? 'maxWidth' : 'px-6'">
                 <ul class="gap-1 horizontal-navbar px-0">
                     <!---Menu Loop -->

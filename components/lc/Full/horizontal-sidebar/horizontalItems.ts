@@ -43,6 +43,23 @@ export interface menu {
 
 const horizontalItems: menu[] = [
     {
+        title: 'Videolar',
+        icon: BrandAirtableIcon,
+        to: '#',
+        children: [
+            {
+                title: 'Video İzle',
+                icon: BoxModelIcon,
+                to: '/video'
+            },
+            {
+                title: 'Video Yüzdelikleri',
+                icon: ServerIcon,
+                to: '/video/viewing-rate'
+            },
+        ]
+    },
+    {
         title: 'Dashboard',
         icon: HomeIcon,
         to: '#',
@@ -152,7 +169,6 @@ const horizontalItems: menu[] = [
             }
         ]
     },
-
     {
         title: 'Pages',
         icon: ClipboardIcon,

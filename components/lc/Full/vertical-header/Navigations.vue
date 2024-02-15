@@ -41,6 +41,9 @@ import { HelpIcon,ChevronDownIcon } from 'vue-tabler-icons';
             </div>
         </v-sheet>
     </v-menu>
+        <NuxtLink to="/" class="text-decoration-none">
+        <v-btn variant="text" color="primary">Anasayfa </v-btn>
+    </NuxtLink>
     <NuxtLink to="/apps/chats" class="text-decoration-none">
         <v-btn variant="text" color="primary">Chat </v-btn>
     </NuxtLink>

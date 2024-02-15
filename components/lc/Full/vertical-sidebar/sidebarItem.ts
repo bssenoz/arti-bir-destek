@@ -24,7 +24,7 @@ import {
   ChartCandleIcon,
   ChartDonut3Icon,
   ChartRadarIcon,
-  ShoppingCartIcon,
+
   ApertureIcon,
   LayoutIcon,
   HelpIcon,
@@ -80,11 +80,7 @@ const sidebarItem: menu[] = [
     chipBgColor: "secondary",
     to: "/dashboards/modern",
   },
-  {
-    title: "eCommerce",
-    icon: ShoppingCartIcon,
-    to: "/dashboards/ecommerce",
-  },
+
   { header: "Apps" },
   {
     title: "Contact",
@@ -112,33 +108,7 @@ const sidebarItem: menu[] = [
       },
     ],
   },
-  {
-    title: "E-Commerce",
-    icon: BasketIcon,
-    to: "/ecommerce/",
-    children: [
-      {
-        title: "Shop",
-        icon: PointIcon,
-        to: "/apps/ecommerce/products",
-      },
-      {
-        title: "Detail",
-        icon: PointIcon,
-        to: "/apps/ecommerce/product/detail/1",
-      },
-      {
-        title: "List",
-        icon: PointIcon,
-        to: "/apps/ecommerce/productlist",
-      },
-      {
-        title: "Checkout",
-        icon: PointIcon,
-        to: "/apps/ecommerce/checkout",
-      },
-    ],
-  },
+
   {
     title: "Chats",
     icon: Message2Icon,

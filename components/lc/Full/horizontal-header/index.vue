@@ -35,7 +35,8 @@ const getCart = computed(() => {
             </v-locale-provider>
             <v-locale-provider  v-else>
                 <div class="hidden-md-and-down mr-3">
-                    <LcFullLogo />
+                   <!-- <LcFullLogo /> -->
+                   Artı Bir Destek
                 </div>
             </v-locale-provider>    
 
@@ -75,18 +76,7 @@ const getCart = computed(() => {
             <!-- ---------------------------------------------- -->
 
             <!-- ---------------------------------------------- -->
-            <!-- translate -->
-            <!-- ---------------------------------------------- -->
-            <LcFullVerticalHeaderLanguageDD />
-
-            <!-- ---------------------------------------------- -->
-            <!-- ShoppingCart -->
-            <!-- ---------------------------------------------- -->
-            <v-btn icon variant="text" color="primary" to="/apps/ecommerce/checkout">
-                <v-badge color="error" :content="getCart?.length">
-                    <ShoppingCartIcon stroke-width="1.5" size="22" />
-                </v-badge>
-            </v-btn>
+        
 
             <!-- ---------------------------------------------- -->
             <!-- Notification -->

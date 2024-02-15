@@ -10,7 +10,7 @@ import AddPost from '@/components/apps/user-profile/posts/AddPost.vue';
 
 const page = ref({ title: 'Social Profile' });
 definePageMeta({
-  layout: "default",
+  layout: "page",
 });
 
 </script>

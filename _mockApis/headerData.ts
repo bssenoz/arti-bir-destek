@@ -179,10 +179,7 @@ const quickLink: quickLinksType[] = [
         title: 'Blog Design',
         href: '/apps/blog/posts'
     },
-    {
-        title: 'Shopping Cart',
-        href: '/apps/ecommerce/checkout'
-    }
+ 
 ];
 
 // 
@@ -201,10 +198,7 @@ const searchSugg: searchType[] = [
         title: 'Contacts',
         href: '/apps/contacts'
     },
-    {
-        title: 'Shop',
-        href: '/apps/ecommerce/products'
-    },
+
     {
         title: 'Checkout',
         href: '/apps/ecommerce/checkout'
@@ -227,5 +221,5 @@ const searchSugg: searchType[] = [
     },
 ];
 
-export { notifications, profileDD, languageDD, appsLink, quickLink, searchSugg };
+export { notifications, profileDD, appsLink, quickLink, searchSugg };
 
