@@ -46,7 +46,16 @@ const horizontalItems: menu[] = [
         title: 'Mesaj',
         icon: BrandAirtableIcon,
         to: '/chat'
-     
+    },
+    {
+        title: 'Profil',
+        icon: BrandAirtableIcon,
+        to: '/profile'
+    },
+    {
+        title: 'Randevu',
+        icon: BrandAirtableIcon,
+        to: '/randevu'
     },
     {
         title: 'Videolar',

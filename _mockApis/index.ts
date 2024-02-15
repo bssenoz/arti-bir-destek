@@ -1,6 +1,7 @@
 import mock from './mockAdapter';
 
 import './apps/chat';
+import './apps/meet';
 import './apps/ecommerce';
 import './apps/userprofile/posts';
 import './apps/userprofile/followers';

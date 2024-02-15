@@ -519,6 +519,7 @@ const ChatData: ChatType[] = [
 ];
 
 mock.onGet('/api/data/chat/ChatData').reply(() => {
+    console.log("onget: ",ChatData)
     return [200, ChatData];
 });
 
