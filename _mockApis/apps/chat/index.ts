@@ -24,7 +24,7 @@ const chance = new Chance();
 const ChatData: ChatType[] = [
     {
         id: 1,
-        name: 'James Johnson',
+        name: 'Uzman Sevgi Köroğlu',
         status: 'online',
         thumb: user1,
         recent: false,
@@ -80,7 +80,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 2,
-        name: 'Maria Hernandez',
+        name: 'Uzman (Bursiyer Psikolog)',
         status: 'away',
         thumb: user2,
         recent: true,
@@ -129,7 +129,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 3,
-        name: 'David Smith',
+        name: 'Uzman Mete Kaldırım',
         status: 'busy',
         thumb: user3,
         recent: false,
@@ -173,7 +173,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 4,
-        name: 'Maria Rodriguez',
+        name: 'Uzman (Bursiyer Psikolog)',
         status: 'offline',
         thumb: user4,
         recent: true,
@@ -225,7 +225,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 5,
-        name: 'Robert Smith',
+        name: 'Uzman Emine Cincioğlu',
         status: 'online',
         thumb: user5,
         recent: true,
@@ -280,7 +280,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 6,
-        name: 'Joseph Sarah',
+        name: 'Uzman Fatma Yılmaz',
         status: 'busy',
         thumb: user1,
         recent: false,
@@ -325,7 +325,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 7,
-        name: 'Thomas Smith',
+        name: 'Uzman Ali Akar',
         status: 'away',
         thumb: user2,
         recent: true,
@@ -369,7 +369,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 8,
-        name: 'David Elizabeth',
+        name: 'Uzman Fatih Yörükoğlu',
         status: 'offline',
         thumb: user3,
         recent: false,
@@ -414,7 +414,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 9,
-        name: 'Charles Martha',
+        name: 'Uzman (Bursiyer Psikolog)',
         status: 'online',
         thumb: user4,
         recent: false,
@@ -466,7 +466,7 @@ const ChatData: ChatType[] = [
     },
     {
         id: 10,
-        name: 'Samuel Eliza',
+        name: 'Uzman Çiğdem Şen',
         status: 'online',
         thumb: user5,
         recent: false,

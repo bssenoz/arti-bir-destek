@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue';
 import { useCustomizerStore } from '@/stores/customizer';
-import sidebarItems from './sidebarItem';
+import sidebarItems from '../horizontal-sidebar/horizontalItems';
 const customizer = useCustomizerStore();
 const sidebarMenu = shallowRef(sidebarItems);
 </script>
@@ -19,15 +19,18 @@ const sidebarMenu = shallowRef(sidebarItems);
         expand-on-hover width="270"
     >
         <!---Logo part -->
-        <!---Logo part -->
+        
+        <!---Logo buseee part -->
         <v-locale-provider  v-if="customizer.setRTLLayout"  rtl >
         <div class="pa-5">
-            <LcFullLogoRtlLogo />
+        <!--- <LcFullLogoRtlLogo /> -->
+           Artı Bir Destek
         </div>
         </v-locale-provider>
         <v-locale-provider  v-else>
         <div class="pa-5">
-            <LcFullLogo />
+        <!---  <LcFullLogo /> -->
+           Artı Bir Destek
         </div>
         </v-locale-provider>
 

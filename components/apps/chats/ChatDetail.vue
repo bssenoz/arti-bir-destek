@@ -3,7 +3,6 @@ import { ref, computed, onMounted } from 'vue';
 import { useChatStore } from '@/stores/apps/chat';
 import { formatDistanceToNowStrict } from 'date-fns';
 import ChatSendMsg from './ChatSendMsg.vue';
-import ChatInfo from './ChatInfo.vue';
 import { useDisplay } from 'vuetify';
 
 const { lgAndUp } = useDisplay();
@@ -54,19 +53,6 @@ function toggleRpart() {
                         <small class="textPrimary"> {{ chatDetail.status }} </small>
                     </div>
                 </div>
-                <!---Topbar Icons-->
-                <div class="ml-auto d-flex">
-                    <v-btn icon variant="text" class="text-medium-emphasis">
-                        <PhoneIcon size="24" />
-                    </v-btn>
-                    <v-btn icon variant="text" class="text-medium-emphasis">
-                        <VideoPlusIcon size="24" />
-                    </v-btn>
-                    <v-btn icon variant="text" class="text-medium-emphasis" @click="toggleRpart">
-                        <DotsVerticalIcon size="24" />
-                    </v-btn>
-                </div>
-                <!---Topbar Icons-->
             </div>
             <v-divider />
             <!---Chat History-->
@@ -118,11 +104,6 @@ function toggleRpart() {
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="right-sidebar" v-if="Rpart">
-                        <v-sheet>
-                            <ChatInfo :chatDetail="chatDetail" />
-                        </v-sheet>
                     </div>
                 </div>
             </perfect-scrollbar>

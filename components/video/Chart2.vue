@@ -1,7 +1,7 @@
 <template>
   <v-card elevation="10">
     <v-card-item>
-      <v-card-title class="text-h5">Yearly Sales</v-card-title>
+      <v-card-title class="text-h5">Videoların Tam İzlenme Sayısı</v-card-title>
       <v-card-subtitle class="text-subtitle-1 textSecondary">Total Sales</v-card-subtitle>
       <apexchart type="bar" height="275" :options="chartOptions" :series="Chart.series"></apexchart>
     </v-card-item>

@@ -76,18 +76,6 @@ const DarkthemeColors = ref([
                     </v-btn>
                 </v-btn-toggle>
 
-                <!------Theme Direction------>
-                <h6 class="text-h6 mt-8 mb-5">Theme Direction</h6>
-                <v-btn-toggle v-model="customizer.setRTLLayout" color="primary" class="my-2 btn-group-custom gap-3" rounded="0" group>
-                    <v-btn :value="false" variant="text" elevation="9" class="rounded-md">
-                        <TextDirectionLtrIcon stroke-width="1.5" size="21" class="mr-2" /> LTR
-                    </v-btn>
-                    <v-btn :value="true" variant="text" elevation="9" class="rounded-md">
-                        <TextDirectionRtlIcon stroke-width="1.5" size="21" class="mr-2" /> RTL
-                    </v-btn>
-                </v-btn-toggle>
-
-
                 <h6 class="text-h6 mt-8 mb-5">Theme Color</h6>
                 <v-item-group mandatory v-model="customizer.actTheme" class="ml-n2 v-row">
                     <v-col cols="4" v-for="theme in themeColors" :key="theme.name" class="pa-2">

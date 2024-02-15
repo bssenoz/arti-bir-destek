@@ -43,6 +43,12 @@ export interface menu {
 
 const horizontalItems: menu[] = [
     {
+        title: 'Mesaj',
+        icon: BrandAirtableIcon,
+        to: '/chat'
+     
+    },
+    {
         title: 'Videolar',
         icon: BrandAirtableIcon,
         to: '#',
