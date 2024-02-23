@@ -17,7 +17,15 @@
 <script setup lang="ts">
 import Chart from '@/components/video/Chart.vue';
 import Chart2 from '@/components/video/Chart2.vue';
-
+definePageMeta({
+  layout: "default",
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
+});
 
 const videoData = [
   { title: "Video 1", description: "Description 1", watchPercentage: 60 },

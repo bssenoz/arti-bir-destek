@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { Form } from "vee-validate";
-import { useUserStore } from '@/stores/apps/user'; // Kullanıcı mağazasını içe aktarın
-import { UserType } from '@/types/apps/UserType'; // Kullanıcı türünü içe aktarın
+import { useUserStore } from '@/stores/apps/user';
+import { UserType } from '@/types/apps/UserType';
 
 import google from "/images/svgs/google-icon.svg";
 import facebook from "/images/svgs/facebook-icon.svg";
@@ -37,9 +37,16 @@ const login = async () => {
     router.push({ path: "/profile" });
   } catch (error) {
     console.error("login error: ", error);
-    errorText.value = error.message;
-    dialogError.value = true;
-
+    if (error.response && error.response.status === 401) {
+      // Eğer hata 401 ise refreshToken kullanarak oturumu yenile
+      await userStore.refreshAccessToken();
+      // Yenileme başarılıysa tekrar login işlemini yap
+      await login();
+    } else {
+      // Diğer hata durumlarında hata iletişim kutusunu göster
+      errorText.value = error.message;
+      dialogError.value = true;
+    }
   }
 };
 const closeDialog = () => {

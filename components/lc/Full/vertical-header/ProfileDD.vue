@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import { MailIcon } from "vue-tabler-icons";
 import { profileDD } from "@/_mockApis/headerData";
+import { useUserStore } from '@/stores/apps/user';
+
+const userStore = useUserStore();
+
+const logout = async () => {
+  await userStore.logout();
+}
 </script>
 
 <template>
@@ -74,7 +81,7 @@ import { profileDD } from "@/_mockApis/headerData";
       </perfect-scrollbar>
    
       <div class="pt-4 pb-6 px-8 text-center">
-        <v-btn color="primary" variant="outlined" block to="/auth/login"
+        <v-btn color="primary" variant="outlined" block to="/auth/login" @click="logout"
           >Logout</v-btn
         >
       </div>

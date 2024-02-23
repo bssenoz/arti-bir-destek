@@ -9,6 +9,12 @@ import ChatProfile from '@/components/apps/chats/ChatProfile.vue';
 
 definePageMeta({
   layout: "default",
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
 });
 
 const breadcrumbs = ref([

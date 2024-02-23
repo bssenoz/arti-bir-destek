@@ -27,6 +27,12 @@ const appointments = getMeets;
 const page = ref({ title: 'Social Profile' });
 definePageMeta({
   layout: "default",
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
 });
 
 </script>
