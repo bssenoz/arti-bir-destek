@@ -14,6 +14,8 @@ const router = useRouter();
 const checkbox = ref(false);
 const valid = ref(false);
 const show1 = ref(false);
+const show2 = ref(false);
+
 const password = ref("");
 const email = ref("");
 const passwordRules = ref([
@@ -79,15 +81,17 @@ const closeDialog = () => {
   <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Email</v-label>
   <VTextField v-model="email" :rules="emailRules" class="mb-8" required hide-details="auto"></VTextField>
   <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Şifre</v-label>
-  <VTextField v-model="password" :rules="passwordRules" required hide-details="auto" type="password" class="pwdInput">
+  <VTextField v-model="password" :rules="passwordRules" required hide-details="auto"  :type="show2 ? 'text' : 'password'"  :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                            @click:append-inner="show2 = !show2" class="pwdInput">
   </VTextField>
+  
   <div class="d-flex flex-wrap align-center my-3 ml-n2">
     <v-checkbox v-model="checkbox" :rules="[(v: any) => !!v || 'You must agree to continue!']" required hide-details
       color="primary">
       <template v-slot:label class="">Beni hatırla</template>
     </v-checkbox>
     <div class="ml-sm-auto">
-      <NuxtLink to="" class="text-primary text-decoration-none text-body-1 opacity-1 font-weight-medium">Şifremi Unuttum
+      <NuxtLink to="/auth/forgot-password" class="text-primary text-decoration-none text-body-1 opacity-1 font-weight-medium">Şifremi Unuttum
         ?</NuxtLink>
     </div>
   </div>

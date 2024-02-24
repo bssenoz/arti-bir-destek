@@ -44,13 +44,10 @@ import { HelpIcon,ChevronDownIcon } from 'vue-tabler-icons';
         <NuxtLink to="/" class="text-decoration-none">
         <v-btn variant="text" color="primary">Anasayfa </v-btn>
     </NuxtLink>
-    <NuxtLink to="/apps/chats" class="text-decoration-none">
-        <v-btn variant="text" color="primary">Chat </v-btn>
+    <NuxtLink to="/profile" class="text-decoration-none">
+        <v-btn variant="text" color="primary">Profil </v-btn>
     </NuxtLink>
-    <NuxtLink to="/apps/calendar" class="text-decoration-none">
-        <v-btn variant="text" color="primary">Calendar </v-btn>
-    </NuxtLink>
-    <NuxtLink to="/apps/notes" class="text-decoration-none">
-        <v-btn variant="text" color="primary">Notes </v-btn>
+    <NuxtLink to="/admin" class="text-decoration-none">
+        <v-btn variant="text" color="primary">Admin </v-btn>
     </NuxtLink>
 </template>

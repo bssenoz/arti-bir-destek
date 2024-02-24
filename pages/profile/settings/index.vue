@@ -16,10 +16,10 @@ import SecurityTab from '@/components/pages/account-settings/SecurityTab.vue';
 const tab = ref(null);
 
 // theme breadcrumb
-const page = ref({ title: 'Account Setting' });
+const page = ref({ title: 'Hesap Ayarları' });
 const breadcrumbs = ref([
     {
-        text: 'Dashboard',
+        text: 'Profil',
         disabled: false,
         href: '#'
     },
@@ -38,9 +38,9 @@ const breadcrumbs = ref([
         <v-col cols="12" md="12">
             <v-card elevation="10" class=" " rounded="md">
                 <v-tabs v-model="tab" bg-color="transparent" min-height="70" height="70" color="primary">
-                    <v-tab value="Account" class="text-medium-emphasis" ><UserCircleIcon class="mr-2" size="20"/> Account</v-tab>
-                    <v-tab value="Notification"  class="text-medium-emphasis"><BellIcon class="mr-2" size="20"/>Notification</v-tab>
-                    <v-tab value="Security"  class="text-medium-emphasis"><LockIcon class="mr-2" size="20"/>Security</v-tab>
+                    <v-tab value="Account" class="text-medium-emphasis" ><UserCircleIcon class="mr-2" size="20"/> Hesap</v-tab>
+                    <v-tab value="Notification"  class="text-medium-emphasis"><BellIcon class="mr-2" size="20"/>Bildirim</v-tab>
+                    <v-tab value="Security"  class="text-medium-emphasis"><LockIcon class="mr-2" size="20"/>Güvenlik</v-tab>
                 </v-tabs>
                 <v-divider></v-divider>
                 <v-card-text class="pa-sm-6 pa-3 pb-sm-6 pb-6">

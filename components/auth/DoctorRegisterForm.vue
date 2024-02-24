@@ -14,6 +14,8 @@ const email = ref("");
 const title = ref("");
 const firstName = ref("");
 const lastName = ref("");
+const show1 = ref(false);
+const show2 = ref(false);
 
 const passwordRules = ref([
   (v: string) => !!v || "Şifre gerekli!",
@@ -95,13 +97,16 @@ const closeDialog = () => {
     <v-row>
       <v-col cols="12" sm="6">
         <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre</v-label>
-        <VTextField v-model="password" :counter="10" :rules="passwordRules" required variant="outlined" type="password"
+        <VTextField v-model="password" :counter="10" :rules="passwordRules" required variant="outlined" hide-details="auto" 
+                :type="show1 ? 'text' : 'password'"  :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append-inner="show1 = !show1"
           color="primary"></VTextField>
       </v-col>
       <v-col cols="12" sm="6">
         <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre Tekrar</v-label>
-        <VTextField v-model="passwordConfirm" :counter="10" :rules="passwordRules" required variant="outlined"
-          type="password" color="primary"></VTextField>
+        <VTextField v-model="passwordConfirm" :counter="10" :rules="passwordRules" required variant="outlined" hide-details="auto" 
+                :type="show2 ? 'text' : 'password'"  :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+        @click:append-inner="show2 = !show2" color="primary"></VTextField>
       </v-col>
     </v-row>
 

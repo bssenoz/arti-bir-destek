@@ -1,7 +1,7 @@
 // project imports
 import mock from './mockAdapter';
 
-import type { notificationType, profileType, languageType, appsLinkType, quickLinksType,searchType } from '@/types/HeaderTypes'
+import type { notificationType, profileType, appsLinkType, quickLinksType,searchType } from '@/types/HeaderTypes'
 // 
 // Notification
 // 
@@ -53,14 +53,14 @@ import proUser3 from '/images/svgs/icon-tasks.svg';
 const profileDD: profileType[] = [
     {
         avatar: proUser1,
-        title: 'My Profile',
-        subtitle: 'Account settings',
-        href: '/apps/user/profile'
+        title: 'Profilim',
+        subtitle: 'Hesap Ayarları',
+        href: '/profile'
     },
     {
         avatar: proUser2,
-        title: 'My Inbox',
-        subtitle: 'Messages & Emails',
+        title: 'Gelen Kutum',
+        subtitle: 'Mesajlar',
         href: '/'
     },
     {
@@ -71,25 +71,11 @@ const profileDD: profileType[] = [
     }
 ];
 
-// 
-// Language
-// 
-import flag1 from '/images/flag/icon-flag-en.svg';
-import flag2 from '/images/flag/icon-flag-fr.svg';
-import flag3 from '/images/flag/icon-flag-ro.svg';
-import flag4 from '/images/flag/icon-flag-zh.svg';
-const languageDD: languageType[] = [
-    { title: 'English', subtext: 'UK', value: 'en', avatar: flag1 },
-    { title: 'français', subtext: 'French', value: 'fr', avatar: flag2 },
-    { title: 'عربي', subtext: 'Arbic', value: 'ro', avatar: flag3 },
-    { title: '中国人', subtext: 'Chinese', value: 'zh', avatar: flag4 }
-];
 
 // 
 // AppsLink
 // 
-import img1 from '/images/svgs/icon-dd-chat.svg';
-import img2 from '/images/svgs/icon-dd-cart.svg';
+
 import img3 from '/images/svgs/icon-dd-invoice.svg';
 import img4 from '/images/svgs/icon-dd-date.svg';
 import img5 from '/images/svgs/icon-dd-mobile.svg';
@@ -97,18 +83,6 @@ import img6 from '/images/svgs/icon-dd-lifebuoy.svg';
 import img7 from '/images/svgs/icon-dd-message-box.svg';
 import img8 from '/images/svgs/icon-dd-application.svg';
 const appsLink: appsLinkType[] = [
-    {
-        avatar: img1,
-        title: 'Chat Application',
-        subtext: 'New messages arrived',
-        href: '/apps/chats'
-    },
-    {
-        avatar: img2,
-        title: 'eCommerce App',
-        subtext: 'learn more information',
-        href: '/apps/ecommerce/products'
-    },
     {
         avatar: img3,
         title: 'User Profile App',
@@ -199,14 +173,7 @@ const searchSugg: searchType[] = [
         href: '/apps/contacts'
     },
 
-    {
-        title: 'Checkout',
-        href: '/apps/ecommerce/checkout'
-    },
-    {
-        title: 'Chats',
-        href: '/apps/chats'
-    },
+
     {
         title: 'Notes',
         href: '/apps/notes'

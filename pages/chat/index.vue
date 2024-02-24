@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 // common components
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import AppBaseCard from '@/components/shared/AppBaseCard.vue';
 import ChatListing from '@/components/apps/chats/ChatListing.vue';
 import ChatDetail from '@/components/apps/chats/ChatDetail.vue';
@@ -17,13 +16,6 @@ definePageMeta({
   ],
 });
 
-const breadcrumbs = ref([
-    {
-        text: 'Messenger',
-        disabled: true,
-        href: '#'
-    }
-]);
 </script>
 
 <template>

@@ -47,10 +47,10 @@ export const useUserStore = defineStore({
                 console.log("ref: ", this.refreshToken)
                 console.log("acc: ", this.accessToken)
 
-                // Access token süresi dolarsa refresh token kullanarak yeni bir access token al
-                setTimeout(() => {
-                    this.refreshAccessToken();
-                }, (response.data.jwtTokenDTO.accessTokenExpirationTime * 1000) - Date.now()); // Access token'ın süresi dolduktan sonra refresh token kullanarak otomatik olarak yenile
+                // // Access token süresi dolarsa refresh token kullanarak yeni bir access token al
+                // setTimeout(() => {
+                //     this.refreshAccessToken();
+                // }, (response.data.jwtTokenDTO.accessTokenExpirationTime * 1000) - Date.now()); // Access token'ın süresi dolduktan sonra refresh token kullanarak otomatik olarak yenile
 
             } catch (error) {
                 console.error("Kullanıcı giriş yaparken bir hata oluştu:", error);

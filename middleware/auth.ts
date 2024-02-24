@@ -12,6 +12,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     if (accessTokenExpiration && currentTime >= parseInt(accessTokenExpiration)) {
       // AccessToken'ın süresi dolmuş, refreshToken'ı kullanarak yeni accessToken al
       const refreshToken = localStorage.getItem('refreshToken');
+      console.log("refff: ",refreshToken)
   
       if (refreshToken) {
         console.log("AccessToken süresi doldu. Yeniden oturum açılıyor...");

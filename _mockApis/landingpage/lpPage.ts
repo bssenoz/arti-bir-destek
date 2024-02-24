@@ -63,12 +63,7 @@ const productsSlider: ProductsSliderTypes[] = [
         name: 'Calandar App',
         link: '/apps/calendar'
     },
-    {
-        type:false,
-        img: img7,
-        name: 'Chat App',
-        link: '/apps/chats'
-    },
+
     {
         type:false,
         img: img8,
@@ -99,12 +94,7 @@ const productsSlider: ProductsSliderTypes[] = [
         name: 'Blog Detail App',
         link: '/apps/blog/early-black-friday-amazon-deals-cheap-tvs-headphones'
     },
-    {
-        type:false,
-        img: img12,
-        name: 'eCommerce Shop App',
-        link: '/apps/ecommerce/products'
-    },
+ 
     {
         type:false,
         img: img16,

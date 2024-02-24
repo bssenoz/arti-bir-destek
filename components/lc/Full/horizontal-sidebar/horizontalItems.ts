@@ -53,6 +53,11 @@ const horizontalItems: menu[] = [
         to: '/profile'
     },
     {
+        title: 'Ayarlar',
+        icon: BrandAirtableIcon,
+        to: '/profile/settings'
+    },
+    {
         title: 'Randevu',
         icon: BrandAirtableIcon,
         to: '/randevu'
@@ -74,33 +79,12 @@ const horizontalItems: menu[] = [
             },
         ]
     },
-    {
-        title: 'Dashboard',
-        icon: HomeIcon,
-        to: '#',
-        children: [
-            {
-                title: 'Modern',
-                icon: CircleIcon,
-                to: '/dashboards/modern'
-            },
-            {
-                title: 'Ecommerce',
-                icon: CircleIcon,
-                to: '/dashboards/ecommerce'
-            }
-        ]
-    },
+
     {
         title: 'Apps',
         icon: AppsIcon,
         to: '#',
         children: [
-            {
-                title: 'Chats',
-                icon: CircleIcon,
-                to: '/apps/chats'
-            },
             {
                 title: 'Blog',
                 icon: CircleIcon,
@@ -115,33 +99,6 @@ const horizontalItems: menu[] = [
                         title: 'Detail',
                         icon: CircleIcon,
                         to: '/apps/blog/early-black-friday-amazon-deals-cheap-tvs-headphones'
-                    }
-                ]
-            },
-            {
-                title: 'E-Commerce',
-                icon: CircleIcon,
-                to: '/ecommerce/',
-                children: [
-                    {
-                        title: 'Shop',
-                        icon: CircleIcon,
-                        to: '/apps/ecommerce/products'
-                    },
-                    {
-                        title: 'Detail',
-                        icon: CircleIcon,
-                        to: '/apps/ecommerce/product/detail/1'
-                    },
-                    {
-                        title: 'List',
-                        icon: CircleIcon,
-                        to: '/apps/ecommerce/productlist'
-                    },
-                    {
-                        title: 'Checkout',
-                        icon: CircleIcon,
-                        to: '/apps/ecommerce/checkout'
                     }
                 ]
             },

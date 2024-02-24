@@ -110,11 +110,6 @@ const sidebarItem: menu[] = [
   },
 
   {
-    title: "Chats",
-    icon: Message2Icon,
-    to: "/apps/chats",
-  },
-  {
     title: "User Profile",
     icon: UserCircleIcon,
     to: "/",
