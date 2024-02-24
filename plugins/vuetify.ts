@@ -13,6 +13,7 @@ import VueTablerIcons from "vue-tabler-icons";
 import "../_mockApis";
 
 import VCalendar from "v-calendar";
+import 'v-calendar/style.css';
 
 import Maska from "maska";
 import "vue3-carousel/dist/carousel.css";
