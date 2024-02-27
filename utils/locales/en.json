@@ -1,6 +1,5 @@
 {
     "Modern": "Modern",
-    "eCommerce": "eCommerce",
     "Contact": "Contact",
     "Blog": "Blog",
     "Posts": "Posts",
@@ -16,7 +15,6 @@
     "Friends": "Friends",
     "Gallery": "Gallery",
     "Email": "Email",
-    "Pricing": "Pricing",
     "Account Setting": "Account Setting",
     "FAQ": "FAQ",
     "Widget": "Widget",

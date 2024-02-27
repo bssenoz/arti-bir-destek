@@ -4,8 +4,8 @@
 <template>
   <v-card elevation="10">
     <v-card-item>
-      <div class="d-sm-flex align-center justify-space-between">
-        <v-card-title class="text-h5">Yeni Görüşme Oluştur</v-card-title>
+      <div class="align-center justify-space-between">
+        <v-card-title class="text-h5">Yeni Görüşme Oluştur<v-btn class="float-right" color="primary" to="/randevu/patient">Kayıtlı Hastalar</v-btn></v-card-title>
       </div>
     </v-card-item>
     <v-divider></v-divider>

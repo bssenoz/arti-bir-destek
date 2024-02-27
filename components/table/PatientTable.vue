@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useContactStore } from '@/stores/apps/contact';
-
 import contact from '@/_mockApis/apps/contact';
 const store = useContactStore();
 
@@ -18,25 +17,21 @@ const filteredList = computed(() => {
     });
 });
 
-function deleteItem(item: any) {
-    const index = desserts.value.indexOf(item);
-    confirm('Are you sure you want to delete this item?') && desserts.value.splice(index, 1);
-}
-
 </script>
 <template>
     <v-row>
         <v-col cols="12" lg="4" md="6">
-            <v-text-field density="compact" v-model="search" label="Danışman Ara" hide-details variant="outlined"></v-text-field>
+            <v-text-field density="compact" v-model="search" label="Hasta Ara" hide-details
+                variant="outlined"></v-text-field>
         </v-col>
     </v-row>
     <v-table class="mt-5">
         <thead>
             <tr>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Id</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Danışman Bilgileri</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Ünvan</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Gebelik Başlangıç</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">İşlem</th>
             </tr>
         </thead>
@@ -61,11 +56,18 @@ function deleteItem(item: any) {
                 </td>
                 <td>
                     <div class="d-flex align-center">
-                        <v-tooltip text="Danışmanı Sil">
+                        <v-tooltip text="Görüşme Oluştur">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props"
-                                    ><TrashIcon stroke-width="1.5" size="20" class="text-error"
-                                /></v-btn>
+                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/randevu/add">
+                                    <ClockIcon stroke-width="1.5" size="20" class="text-primary" />
+                                </v-btn>
+                            </template>
+                        </v-tooltip>
+                        <v-tooltip text="Mesaj At">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/chat">
+                                    <MailIcon stroke-width="1.5" size="20" class="text-secondary" />
+                                </v-btn>
                             </template>
                         </v-tooltip>
                     </div>

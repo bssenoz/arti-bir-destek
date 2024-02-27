@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useCustomizerStore } from '@/stores/customizer';
-import { useEcomStore } from '@/stores/apps/eCommerce';
 // Icon Imports
-import { GridDotsIcon, LanguageIcon, SearchIcon, Menu2Icon, BellRingingIcon, ShoppingCartIcon } from 'vue-tabler-icons';
+import { GridDotsIcon, SearchIcon, Menu2Icon } from 'vue-tabler-icons';
 const customizer = useCustomizerStore();
 const showSearch = ref(false);
-const drawer = ref(false);
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 function searchbox() {
@@ -16,11 +14,7 @@ watch(priority, (newPriority) => {
     // yes, console.log() is a side effect
     priority.value = newPriority;
 });
-// count items
-const store = useEcomStore();
-const getCart = computed(() => {
-    return store.cart;
-});
+
 </script>
 
 <template>

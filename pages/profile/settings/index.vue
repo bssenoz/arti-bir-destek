@@ -14,25 +14,9 @@ import SecurityTab from '@/components/pages/account-settings/SecurityTab.vue';
 
 /*tab*/
 const tab = ref(null);
-
-// theme breadcrumb
-const page = ref({ title: 'Hesap Ayarları' });
-const breadcrumbs = ref([
-    {
-        text: 'Profil',
-        disabled: false,
-        href: '#'
-    },
-    {
-        text: 'Hesap Ayarları',
-        disabled: true,
-        href: '#'
-    }
-]);
 </script>
 
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row class="justify-center">
         <!--Account Settings tabs-->
         <v-col cols="12" md="12">

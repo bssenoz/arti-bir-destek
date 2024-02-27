@@ -3,11 +3,11 @@ import type { homeCard } from '@/types/components/admin/card';
 const cards: homeCard[] = [
     {
         title: "Kullanıcılar",
-        href:  "/admin/user",
+        href:  "/admin/patient",
     },
     {
-        title: "Videolar",
-        href:  "/admin/video",
+        title: "Danışmanlar",
+        href:  "/admin/danisman",
     },
     {
         title: "Videolar",

@@ -102,12 +102,6 @@ const appsLink: appsLinkType[] = [
         href: '/apps/contacts'
     },
     {
-        avatar: img6,
-        title: 'Account Setting App',
-        subtext: 'Account settings',
-        href: '/theme-pages/account-settings'
-    },
-    {
         avatar: img7,
         title: 'Email App',
         subtext: 'Get new emails',
@@ -125,10 +119,6 @@ const appsLink: appsLinkType[] = [
 // Quick Links
 // 
 const quickLink: quickLinksType[] = [
-    {
-        title: 'Pricing Page',
-        href: '/theme-pages/pricing'
-    },
     {
         title: 'Authentication Design',
         href: '/auth/login'
@@ -165,26 +155,13 @@ const searchSugg: searchType[] = [
         href: '/dashboards/modern'
     },
     {
-        title: 'eCommerce',
-        href: '/dashboards/ecommerce'
-    },
-    {
         title: 'Contacts',
         href: '/apps/contacts'
     },
 
-
     {
         title: 'Notes',
         href: '/apps/notes'
-    },
-    {
-        title: 'Pricing',
-        href: '/theme-pages/pricing'
-    },
-    {
-        title: 'Account Setting',
-        href: '/theme-pages/account-settings'
     },
 ];
 

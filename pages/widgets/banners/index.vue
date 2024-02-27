@@ -3,7 +3,6 @@ import { ref } from 'vue';
 /* Breadcrumb component */
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 /*Call Components*/
-import Banner1 from "@/pages/dashboards/dashboardComponents/ecommerce/WelcomeCard.vue";
 import Banner2 from "@/components/widgets/banners/Banner2.vue";
 import Banner3 from "@/components/widgets/banners/Banner3.vue";
 import Banner4 from "@/components/widgets/banners/Banner4.vue";
@@ -29,8 +28,6 @@ const breadcrumbs = ref([
  <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>       
     <v-row>
         <v-col cols="12" lg="8">
-            <!--Banner 1-->
-            <Banner1/>
             <!--Banner 2-->
             <Banner2/>
             <v-row>

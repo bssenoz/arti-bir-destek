@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { VideoTable } from '@/_mockApis/components/video/videoTable';
 const page = ref({ title: 'Videolar' });
 const breadcrumbs = ref([

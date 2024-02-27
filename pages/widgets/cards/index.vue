@@ -3,12 +3,6 @@ import { ref } from 'vue';
 /* Breadcrumb component */
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 
-/*Call Components*/
-import Topcards from "@/pages/dashboards/dashboardComponents/modern/TopCards.vue";
-import PaymentGateways from "@/pages/dashboards/dashboardComponents/ecommerce/PaymentGateways.vue";
-import RecentTransactions from "@/pages/dashboards/dashboardComponents/ecommerce/RecentTransactions.vue";
-import BlogCards from "@/components/widgets/cards/BlogCards.vue";
-import ProductCards from "@/components/widgets/cards/ProductCards.vue";
 import MusicCards from "@/components/widgets/cards/MusicCards.vue";
 import FollowerCards from "@/components/widgets/cards/FollowerCards.vue";
 import UserCards from "@/components/widgets/cards/UserCards.vue";
@@ -35,18 +29,6 @@ const breadcrumbs = ref([
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>        
     <v-row>
-        <!-- Top cards -->
-        <v-col cols="12">
-            <Topcards/>
-        </v-col>
-        <!-- Blog cards -->
-        <v-col cols="12">
-            <BlogCards/>
-        </v-col>
-        <!-- Product cards -->
-        <v-col cols="12">
-            <ProductCards/>
-        </v-col>
         <!-- Music cards -->
         <v-col cols="12">
             <MusicCards/>

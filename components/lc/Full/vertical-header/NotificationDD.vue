@@ -16,8 +16,8 @@ import {notifications} from '@/_mockApis/headerData';
         <v-sheet rounded="md" width="360" elevation="10">
             <div class="px-8 pb-4 pt-6">
                 <div class="d-flex align-center justify-space-between">
-                    <h6 class="text-h5">Notifications</h6>
-                    <v-chip color="primary" variant="flat" size="small" class="text-white">5 New</v-chip>
+                    <h6 class="text-h5">Bildirimler</h6>
+                    <v-chip color="primary" variant="flat" size="small" class="text-white">5 Yeni</v-chip>
                 </div>
             </div>
             <perfect-scrollbar style="height: 400px">
@@ -37,7 +37,7 @@ import {notifications} from '@/_mockApis/headerData';
                 </v-list>
             </perfect-scrollbar>
             <div class="py-4 px-6 text-center">
-                <v-btn color="primary" variant="outlined" block>See all Notifications</v-btn>
+                <v-btn color="primary" variant="outlined" block to="/profile/notification">Tüm Bildirimleri Gör</v-btn>
             </div>
         </v-sheet>
     </v-menu>

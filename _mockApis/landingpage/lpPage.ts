@@ -59,13 +59,6 @@ const productsSlider: ProductsSliderTypes[] = [
     },
     {
         type:false,
-        img: img6,
-        name: 'Calandar App',
-        link: '/apps/calendar'
-    },
-
-    {
-        type:false,
         img: img8,
         name: 'Contact App',
         link: '/apps/contacts'
@@ -94,25 +87,6 @@ const productsSlider: ProductsSliderTypes[] = [
         name: 'Blog Detail App',
         link: '/apps/blog/early-black-friday-amazon-deals-cheap-tvs-headphones'
     },
- 
-    {
-        type:false,
-        img: img16,
-        name: 'eCommerce Product Detail App',
-        link: '/apps/ecommerce/product/detail/1'
-    },
-    {
-        type:false,
-        img: img13,
-        name: 'eCommerce Product List App',
-        link: '/apps/ecommerce/productlist'
-    },
-    {
-        type:false,
-        img: img14,
-        name: 'eCommerce Checkout App',
-        link: '/apps/ecommerce/checkout'
-    }
 ];
 
 /*User Review Section*/
