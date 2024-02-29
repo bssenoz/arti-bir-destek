@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { useUserStore } from '@/stores/apps/user';
-import { PatientType } from '@/types/apps/UserType';
+import { useUserStore } from '@/stores/user';
+import { PatientType } from '@/types/UserType';
 
 const userStore = useUserStore();
 
@@ -16,7 +16,6 @@ const lastName = ref("");
 const pregnancyStartDate = ref("");
 const show2 = ref(false);
 const show1 = ref(false);
-
 
 const passwordRules = ref([
     (v: string) => !!v || "Şifre gerekli!",

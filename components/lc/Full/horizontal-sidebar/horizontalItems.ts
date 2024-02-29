@@ -45,7 +45,7 @@ const horizontalItems: menu[] = [
     {
         title: 'Mesaj',
         icon: BrandAirtableIcon,
-        to: '/chat'
+        to: '/profile/chat'
     },
     {
         title: 'Profil',
@@ -60,7 +60,7 @@ const horizontalItems: menu[] = [
     {
         title: 'Randevu',
         icon: BrandAirtableIcon,
-        to: '/randevu'
+        to: '/profile/randevu'
     },
     {
         title: 'Videolar',
@@ -70,12 +70,12 @@ const horizontalItems: menu[] = [
             {
                 title: 'Video İzle',
                 icon: BoxModelIcon,
-                to: '/video'
+                to: '/profile/video'
             },
             {
                 title: 'Video Yüzdelikleri',
                 icon: ServerIcon,
-                to: '/video/viewing-rate'
+                to: '/profile/video/viewing-rate'
             },
         ]
     },

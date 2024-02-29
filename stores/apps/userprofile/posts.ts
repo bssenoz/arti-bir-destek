@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 // project imports
 import axios from '@/utils/axios';
-import type { Reply } from '@/types/apps/PostType';
+import type { Reply } from '~/types/PostType';
 
 export const usePostsStore = defineStore({
     id: 'post',

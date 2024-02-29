@@ -1,4 +1,4 @@
-import { useUserStore } from '@/stores/apps/user';
+import { useUserStore } from '~/stores/user';
 
 const userStore = useUserStore();
 

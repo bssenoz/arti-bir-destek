@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-// common components
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import UiParentCard from '@/components/shared/UiParentCard.vue';
-
-/*import tabler icons*/
 import { UserCircleIcon,BellIcon,ArticleIcon,LockIcon } from 'vue-tabler-icons';
-
-//components
 import AccountTab from '@/components/pages/account-settings/AccountTab.vue';
 import NotificationTab from '@/components/pages/account-settings/NotificationTab.vue';
 import SecurityTab from '@/components/pages/account-settings/SecurityTab.vue';
 
-/*tab*/
 const tab = ref(null);
 </script>
 

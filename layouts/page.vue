@@ -8,7 +8,7 @@ useHead({
     meta: [{ content: title }],
     titleTemplate: (titleChunk) => {
         return titleChunk
-            ? `${titleChunk} - Nuxt3 Typescript based Admin Dashboard Template`
+            ? `${titleChunk}`
             : "Modernize - Nuxt3 Typescript based Admin Dashboard Template";
     },
 });

@@ -1,5 +1,5 @@
 import mock from '../../mockAdapter';
-// import type { ContactType } from '@/types/apps/ContactType';
+// import type { ContactType } from '@/types/ContactType';
 
 import user1 from '/images/profile/user-1.jpg';
 import user2 from '/images/profile/user-2.jpg';

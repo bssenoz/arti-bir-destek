@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useContactStore } from '@/stores/apps/contact';
+import { useContactStore } from '@/stores/contact';
 
 import contact from '@/_mockApis/apps/contact';
 const store = useContactStore();

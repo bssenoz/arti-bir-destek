@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { MailIcon } from "vue-tabler-icons";
 import { profileDD } from "@/_mockApis/headerData";
-import { useUserStore } from '@/stores/apps/user';
+import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();
 

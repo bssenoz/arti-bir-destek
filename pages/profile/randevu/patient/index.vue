@@ -1,41 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, onMounted  } from 'vue';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { useChatStore } from '@/stores/chat';
-import EditableTable from '@/components/table/EditableTable.vue';
+import PatientTable from '@/components/table/PatientTable.vue';
 
 const store = useChatStore();
 onMounted(() => {
     store.fetchChats();
 });
-const chatDetail: any = computed(() => {
-    return store.chats;
-});
-const page = ref({ title: 'Danışmanlar' });
-const breadcrumbs = ref([
-    {
-        text: 'Admin',
-        disabled: false,
-        href: '#'
-    },
-    {
-        text: 'Danışman',
-        disabled: true,
-        href: '#'
-    }
-]);
 
-const headers = ref([
-    { title: 'Danışman', align: 'start', key: 'name', sortable: false, },
-    { title: 'E-posta', align: 'start', key: 'status' },
-])
 </script>
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-card elevation="10">
         <v-card-text>
-            <EditableTable />
+            <PatientTable />
         </v-card-text>
     </v-card>
     <!-- <v-row>

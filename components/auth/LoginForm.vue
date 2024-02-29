@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { Form } from "vee-validate";
-import { useUserStore } from '@/stores/apps/user';
-import { UserType } from '@/types/apps/UserType';
+import { useUserStore } from '@/stores/user';
+import { UserType } from '@/types/UserType';
 
 import google from "/images/svgs/google-icon.svg";
 import facebook from "/images/svgs/facebook-icon.svg";
@@ -12,8 +11,6 @@ const dialogError = ref(false);
 const errorText = ref("");
 const router = useRouter();
 const checkbox = ref(false);
-const valid = ref(false);
-const show1 = ref(false);
 const show2 = ref(false);
 
 const password = ref("");

@@ -1,5 +1,5 @@
 import mock from '../../mockAdapter';
-import type { MeetType } from '@/types/apps/MeetType';
+import type { MeetType } from '@/types/MeetType';
 
 const MeetData: MeetType[] = [
     {

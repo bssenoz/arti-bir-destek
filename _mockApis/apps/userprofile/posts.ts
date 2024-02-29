@@ -3,7 +3,7 @@ import mock from '../../mockAdapter';
 import { Chance } from 'chance';
 
 // types
-import type { Post } from '@/types/apps/PostType';
+import type { Post } from '~/types/PostType';
 
 // assets
 import image1 from '/images/products/s1.jpg';

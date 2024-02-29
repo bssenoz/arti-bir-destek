@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useContactStore } from '@/stores/apps/contact';
+import { useContactStore } from '@/stores/contact';
 import contact from '@/_mockApis/apps/contact';
 const store = useContactStore();
 
@@ -58,14 +58,14 @@ const filteredList = computed(() => {
                     <div class="d-flex align-center">
                         <v-tooltip text="Görüşme Oluştur">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/randevu/add">
+                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/profile/randevu/add">
                                     <ClockIcon stroke-width="1.5" size="20" class="text-primary" />
                                 </v-btn>
                             </template>
                         </v-tooltip>
                         <v-tooltip text="Mesaj At">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/chat">
+                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/profile/chat">
                                     <MailIcon stroke-width="1.5" size="20" class="text-secondary" />
                                 </v-btn>
                             </template>
