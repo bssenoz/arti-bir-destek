@@ -3,6 +3,7 @@ export type PatientType = {
     name: string;
     surname: string;
     email: string;
+    phoneNumber: string | null;
     password: string;
     confirmPassword: string;
     pregnancyStartDate: string;
@@ -13,6 +14,7 @@ export type DoctorType = {
     name: string;
     surname: string;
     email: string;
+    phoneNumber: string | null;
     title: string;
     password: string;
     confirmPassword: string;

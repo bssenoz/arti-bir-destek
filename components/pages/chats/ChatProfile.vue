@@ -1,21 +1,23 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, defineProps } from 'vue';
 import { useChatStore } from '@/stores/chat';
-import { formatDistanceToNowStrict } from 'date-fns';
-import { last } from 'lodash';
+import { useUserStore } from '@/stores/user';
+
 import user1 from '/images/profile/user-1.jpg';
 
 const store = useChatStore();
+const userStore = useUserStore();
 
 onMounted(() => {
     store.fetchChats();
+    userStore.fetchUserDoctor();
 });
 
-const getChats = computed(() => {
-    return store.chats;
+const getDoctors = computed(() => {
+    return userStore.doctors;
 });
 
-const chatItem = getChats;
+const chatItem = getDoctors;
 
 const selectedDoctor = ref(null);
 const dialogVisible = ref(false);
@@ -25,6 +27,7 @@ const currentPage = ref(1);
 const selectDoctor = (doctor) => {
   selectedDoctor.value = doctor;
   dialogVisible.value = false;
+  userStore.fromUserChange(doctor)
 };
 
 const displayedDoctors = computed(() => {
@@ -81,4 +84,3 @@ const updateDisplayedDoctors = () => {
     </v-dialog>
   </v-sheet>
 </template>
-

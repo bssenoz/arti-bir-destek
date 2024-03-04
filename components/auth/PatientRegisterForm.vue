@@ -47,6 +47,7 @@ const register = async () => {
             name: firstName.value,
             surname: lastName.value,
             email: email.value,
+            phoneNumber: null,
             password: password.value,
             confirmPassword: passwordConfirm.value,
             pregnancyStartDate: pregnancyStartDate.value,

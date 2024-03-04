@@ -1,23 +1,30 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
+import { DoctorType, PatientType } from '@/types/UserType';
 
 interface UserType {
-    user: any;
+    currentUser: any;
+    fromUser: any;
     refreshToken: string | null;
     accessToken: string | null;
+    doctors: Array<DoctorType>
+    patients: Array<PatientType>
 }
 
 export const useUserStore = defineStore({
     id: 'user',
     state: (): UserType => ({
-        user: {},
+        currentUser: {},
+        fromUser: {},
         refreshToken: localStorage.getItem('refreshToken'),
-        accessToken: localStorage.getItem('accessToken')
+        accessToken: localStorage.getItem('accessToken'),
+        doctors: [],
+        patients: []
     }),
     actions: {
         async registerPatient(newUser: any) {
             try {
-                const response = await axios.post('http://localhost:5034/api/Authentication/RegisterForPatient', newUser);
+                const response = await axios.post('http://localhost:5261/api/Authentication/RegisterForPatient', newUser);
                 console.log("Kullanıcı başarıyla kaydedildi:", response.data);
             } catch (error) {
                 console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
@@ -26,7 +33,8 @@ export const useUserStore = defineStore({
         },
         async registerDoctor(newUser: any) {
             try {
-                const response = await axios.post('http://localhost:5034/api/Authentication/RegisterForDoctor', newUser);
+                console.log(newUser)
+                const response = await axios.post('http://localhost:5261/api/Authentication/RegisterForDoctor', newUser);
                 console.log("Kullanıcı başarıyla kaydedildi:", response.data);
             } catch (error) {
                 console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
@@ -35,17 +43,16 @@ export const useUserStore = defineStore({
         },
         async login(user: any) {
             try {
-                const response = await axios.post('http://localhost:5034/api/Authentication/Login', user);
+                const response = await axios.post('http://localhost:5261/api/Authentication/Login', user);
                 console.log("Kullanıcı giriş yaptı:", response.data);
 
-                this.user = response.data.user;
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
-                // localStorage'a tokenları kaydet
+                // // localStorage'a tokenları kaydet
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
-                localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
-                console.log("ref: ", this.refreshToken)
-                console.log("acc: ", this.accessToken)
+                // localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+                // console.log("ref: ", this.refreshToken)
+                // console.log("acc: ", this.accessToken)
 
                 // // Access token süresi dolarsa refresh token kullanarak yeni bir access token al
                 // setTimeout(() => {
@@ -61,7 +68,7 @@ export const useUserStore = defineStore({
             try {
                 console.log("refresh token")
                 const refreshToken = this.refreshToken;
-                const response = await axios.post('http://localhost:5034/api/Authentication/RefreshToken', { refreshToken });
+                const response = await axios.post('http://localhost:5261/api/Authentication/RefreshToken', { refreshToken });
                 const newAccessToken = response.data.accessToken;
                 this.accessToken = newAccessToken;
                 // localStorage'a yeni accessToken'u kaydet
@@ -74,7 +81,6 @@ export const useUserStore = defineStore({
         },
         async logout() {
             try {
-                this.user = {};
                 this.refreshToken = null;
                 this.accessToken = null;
 
@@ -84,6 +90,33 @@ export const useUserStore = defineStore({
             } catch (error) {
                 console.error('Oturum kapatma hatası:', error);
                 throw new Error('Oturum kapatılamadı.');
+            }
+        },
+        async fetchUserDoctor() {
+            const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors')
+            this.doctors = response.data
+        },
+        async fetchUserPatient() {
+            const response = await axios.get('http://localhost:5261/api/User/GetAllPatients')
+            this.patients = response.data
+        },
+        async fromUserChange(newFromUser: any) {
+            this.fromUser = newFromUser
+            console.log("this: ",this.fromUser)
+        },
+        async getCurrentUser() {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`
+                }
+            };
+        
+            try {
+                const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', config);
+                return response.data;
+            } catch (error) {
+                console.error('Error while fetching current user:', error);
+                throw new Error('Failed to fetch current user.');
             }
         }
     }

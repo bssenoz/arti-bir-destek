@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useChatStore } from '@/stores/chat';
+import { useUserStore } from '@/stores/user';
 import { formatDistanceToNowStrict } from 'date-fns';
 import ChatSendMsg from './ChatSendMsg.vue';
 import { useDisplay } from 'vuetify';
@@ -8,12 +9,22 @@ import { useDisplay } from 'vuetify';
 const { lgAndUp } = useDisplay();
 
 const store = useChatStore();
+const userStore = useUserStore();
+
 onMounted(() => {
     store.fetchChats();
 });
 
 const chatDetail: any = computed(() => {
     return store.chats[store.chatContent - 1];
+});
+
+const fromUser= computed(() => {
+    if (userStore.fromUser) {
+    return `${userStore.fromUser.name} ${userStore.fromUser.surname}`;
+  } else {
+    return '';
+  }
 });
 
 const Rpart = ref(lgAndUp ? true : false);
@@ -49,7 +60,7 @@ function toggleRpart() {
                     </v-badge>
                     <!---Name & Last seen-->
                     <div>
-                        <h5 class="text-h5 mb-n1">{{ chatDetail.name }}</h5>
+                        <h5 class="text-h5 mb-n1">{{ fromUser }}</h5>
                         <small class="textPrimary"> {{ chatDetail.status }} </small>
                     </div>
                 </div>

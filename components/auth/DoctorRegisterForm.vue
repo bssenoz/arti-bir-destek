@@ -48,8 +48,10 @@ const register = async () => {
       surname: lastName.value,
       email: email.value,
       title: title.value,
+      phoneNumber: '12131323',
       password: password.value,
       confirmPassword: passwordConfirm.value,
+      id: null
     };
 
     await userStore.registerDoctor(newUser);

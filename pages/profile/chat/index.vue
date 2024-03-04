@@ -22,11 +22,11 @@ definePageMeta({
     <v-card elevation="10">
         <AppBaseCard>
             <template v-slot:leftpart>
-                <ChatProfile />
+                <ChatProfile/>
                 <ChatListing />
             </template>
             <template v-slot:rightpart>
-                <ChatDetail />
+                <ChatDetail/>
             </template>
 
             <template v-slot:mobileLeftContent>
