@@ -5,15 +5,16 @@
   <v-card elevation="10">
     <v-card-item>
       <div class="align-center justify-space-between">
-        <v-card-title class="text-h5">Yeni Görüşme Oluştur<v-btn class="float-right" color="primary" to="/profile/randevu/patient">Kayıtlı Hastalar</v-btn></v-card-title>
+        <v-card-title class="text-h5">
+          <v-btn class="float-right" color="primary" to="/profile/randevu/patient">Kayıtlı Hastalar</v-btn></v-card-title>
       </div>
     </v-card-item>
     <v-divider></v-divider>
     <v-card-text class="pb-1">
-      <h6 class="text-h6">Görüşme Bilgileri</h6>
+      <h6 class="text-h6 text-center">Görüşme Bilgileri</h6>
       <div class="mt-6">
         <v-row class="align-center mb-3">
-          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-right">
+          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-sm-right">
             <v-label class=" font-weight-medium">Hasta Ad Soyad</v-label>
           </v-col>
           <v-col cols="12" sm="9">
@@ -21,7 +22,7 @@
           </v-col>
         </v-row>
         <v-row class="align-center mb-3">
-          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-right">
+          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-sm-right">
             <v-label class=" font-weight-medium">Online Görüşme Linki</v-label>
           </v-col>
           <v-col cols="12" sm="9">
@@ -29,7 +30,7 @@
           </v-col>
         </v-row>
         <v-row class="align-center mb-3">
-          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-right">
+          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-sm-right">
             <v-label class=" font-weight-medium">Tarih</v-label>
           </v-col>
           <v-col cols="12" sm="9">
@@ -37,7 +38,7 @@
           </v-col>
         </v-row>
         <v-row class="align-center mb-3">
-          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-right">
+          <v-col cols="12" sm="3" class="pb-sm-3 pb-0 text-sm-right">
             <v-label class=" font-weight-medium">Saat</v-label>
           </v-col>
           <v-col cols="12" sm="9">

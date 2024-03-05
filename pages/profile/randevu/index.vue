@@ -53,7 +53,34 @@ definePageMeta({
 <template>
     <v-container>
         <v-row>
-            <v-col cols="10">
+            <v-col>
+                <v-btn color="primary" to="/profile/randevu/add" class="mb-2 float-left">Yeni Görüşme</v-btn>
+            </v-col>
+            <v-col>
+                <v-dialog max-width="500">
+                    <template v-slot:activator="{ props: activatorProps }">
+                        <v-btn v-bind="activatorProps" color="surface-variant float-right d-lg-none"
+                            text="Takvimi Görüntüle" variant="flat"></v-btn>
+                    </template>
+
+                    <template v-slot:default="{ isActive }">
+                        <v-card title="Takvim">
+                            <v-card-text class="text-center mt-4">
+                                <VCalendar :attributes="attributes" :rows="3" :step="1" locale="tr" />
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+
+                                <v-btn text="Close" @click="isActive.value = false"></v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </template>
+                </v-dialog>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" lg="10">
                 <v-row>
                     <v-col v-for="(appointment, index) in appointments" :key="index" cols="12">
                         <UiParentCard :title="appointment.name">
@@ -65,8 +92,7 @@ definePageMeta({
                     </v-col>
                 </v-row>
             </v-col>
-            <v-col cols="2">
-                <v-btn color="primary" to="/profile/randevu/add" class="mb-2">Yeni Görüşme</v-btn>
+            <v-col cols="12" lg="2" class="d-none d-lg-flex">
                 <VCalendar :attributes="attributes" :rows="3" :step="1" locale="tr" />
             </v-col>
         </v-row>
