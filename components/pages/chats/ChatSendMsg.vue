@@ -11,13 +11,20 @@ const message = ref('');
 const messages = ref<string[]>([]);
 const connectionStatusAlert = ref({ visible: false, message: '', color: '' });
 
-const userId = ref('')
 const fromId = ref('')
 
 onMounted(() => {
     userStore.fetchUserDoctor()
     userStore.getCurrentUser()
     connectToHub();
+});
+
+const currentUserId= computed(() => {
+    if (userStore.currentUser) {
+    return userStore.currentUser.id;
+  } else {
+    return '';
+  }
 });
 
 
@@ -43,12 +50,10 @@ const connectToHub = () => {
 
 
 function sendMessage(item: string) {
-    userId.value = userStore.currentUser.id
-    console.log("user: ", userStore.currentUser)
     fromId.value = userStore.fromUser.id
-    console.log("from: ", fromId.value)
+    
     if (connection.value && connection.value.state === signalR.HubConnectionState.Connected && item.trim() !== '') {
-        connection.value.invoke('SendMessageToUser', userId.value, fromId.value, item.trim())
+        connection.value.invoke('SendMessageToUser', currentUserId.value, fromId.value, item.trim())
             .then(() => {
                 console.log('Message sent successfully.');
                 message.value = '';

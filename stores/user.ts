@@ -113,7 +113,7 @@ export const useUserStore = defineStore({
         
             try {
                 const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', config);
-                return response.data;
+                this.currentUser = response.data
             } catch (error) {
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');
