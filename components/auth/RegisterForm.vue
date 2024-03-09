@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+
 import PatientRegisterForm from "./PatientRegisterForm.vue";
 import DoctorRegisterForm from "./DoctorRegisterForm.vue";
 

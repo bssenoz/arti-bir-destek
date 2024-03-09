@@ -15,7 +15,7 @@ definePageMeta({
                     </div>
                 </div>
                 <div class="">
-                    <img src="/images/backgrounds/login-bg.svg" class="position-relative d-none d-lg-flex"
+                    <img src="/images/backgrounds/welcome-bg2.png" class="position-relative d-none d-lg-flex"
                         alt="login-background" />
                 </div>
             </v-col>

@@ -3,14 +3,19 @@ import { ref, computed, onMounted  } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { useChatStore } from '@/stores/chat';
-import EditableTable from '@/components/table/EditableTable.vue';
+import { useUserStore } from '@/stores/user';
+import DoctorTable from '@/components/table/DoctorTable.vue';
 
+const userStore = useUserStore();
 const store = useChatStore();
+
 onMounted(() => {
+    userStore.fetchUserDoctor()
     store.fetchChats();
 });
-const chatDetail: any = computed(() => {
-    return store.chats;
+
+const doctors: any = computed(() => {
+    return userStore.doctors;
 });
 const page = ref({ title: 'Danışmanlar' });
 const breadcrumbs = ref([
@@ -35,7 +40,7 @@ const headers = ref([
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-card elevation="10">
         <v-card-text>
-            <EditableTable />
+            <DoctorTable />
         </v-card-text>
     </v-card>
     <!-- <v-row>

@@ -11,6 +11,7 @@ const errorText = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
 const email = ref("");
+const phoneNumber = ref("");
 const firstName = ref("");
 const lastName = ref("");
 const pregnancyStartDate = ref("");
@@ -47,7 +48,7 @@ const register = async () => {
             name: firstName.value,
             surname: lastName.value,
             email: email.value,
-            phoneNumber: null,
+            phoneNumber: phoneNumber.value,
             password: password.value,
             confirmPassword: passwordConfirm.value,
             pregnancyStartDate: pregnancyStartDate.value,
@@ -73,7 +74,7 @@ const closeDialog = () => {
 
 </script>
 <template>
-    <v-form class="mt-2 mx-5">
+    <v-form class="mt-2">
         <v-row>
             <v-col cols="12" sm="6">
                 <v-label class="text-subtitle-1 font-weight-medium pb-2">Ad</v-label>
@@ -92,8 +93,14 @@ const closeDialog = () => {
         </v-row>
         <v-row>
             <v-col>
+                <v-label class="text-subtitle-1 font-weight-medium pb-2">Telefon Numarası</v-label>
+                <VTextField v-model="phoneNumber"></VTextField>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col>
                 <v-label class="text-subtitle-1 font-weight-medium pb-2">Gebelik Başlama Tarihi</v-label>
-                <VTextField v-model="pregnancyStartDate" :rules="dateRules" required></VTextField>
+                <VTextField v-model="pregnancyStartDate" type="date" :rules="dateRules" required></VTextField>
             </v-col>
         </v-row>
         <v-row>

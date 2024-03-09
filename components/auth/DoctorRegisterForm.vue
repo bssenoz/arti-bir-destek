@@ -11,6 +11,7 @@ const errorText = ref("");
 const password = ref("");
 const passwordConfirm = ref("");
 const email = ref("");
+const phoneNumber = ref("");
 const title = ref("");
 const firstName = ref("");
 const lastName = ref("");
@@ -48,7 +49,7 @@ const register = async () => {
       surname: lastName.value,
       email: email.value,
       title: title.value,
-      phoneNumber: '12131323',
+      phoneNumber: phoneNumber.value,
       password: password.value,
       confirmPassword: passwordConfirm.value,
       id: null
@@ -87,6 +88,12 @@ const closeDialog = () => {
       <v-col cols="12">
         <v-label class="text-subtitle-1 font-weight-medium pb-2">Email</v-label>
         <VTextField v-model="email" :rules="emailRules" required></VTextField>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-label class="text-subtitle-1 font-weight-medium pb-2">Telefon Numarası</v-label>
+        <VTextField v-model="phoneNumber"></VTextField>
       </v-col>
     </v-row>
     <v-row>

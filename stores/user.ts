@@ -102,7 +102,7 @@ export const useUserStore = defineStore({
         },
         async fromUserChange(newFromUser: any) {
             this.fromUser = newFromUser
-            console.log("this: ",this.fromUser)
+            console.log("this: ", this.fromUser)
         },
         async getCurrentUser() {
             const config = {
@@ -110,7 +110,7 @@ export const useUserStore = defineStore({
                     Authorization: `Bearer ${this.accessToken}`
                 }
             };
-        
+
             try {
                 const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', config);
                 this.currentUser = response.data
@@ -118,6 +118,32 @@ export const useUserStore = defineStore({
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');
             }
-        }
+        },
+        async deleteUser(userId?: any) {
+            try {
+                await axios.delete('http://localhost:5261/api/User/DeleteUser', {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(userId)
+                });
+                  
+            } catch (error) {
+                console.error('Delete request failed:', error);
+            }
+        },
+        async deleteCurrentUser() {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    }
+                };
+                await axios.delete('http://localhost:5261/api/User/DeleteCurrentUser', config);
+                  
+            } catch (error) {
+                console.error('Delete request failed:', error);
+            }
+        },
     }
 });
