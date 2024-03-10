@@ -2,10 +2,12 @@
 import { ref, onMounted, computed } from 'vue';
 import * as signalR from '@microsoft/signalr';
 import { useUserStore } from '@/stores/user';
+import { useChatStore } from '~/stores/chat';
 
 const msg = ref('');
 
 const userStore = useUserStore();
+const chatStore = useChatStore();
 const connection = ref<signalR.HubConnection | null>(null);
 const message = ref('');
 const messages = ref<string[]>([]);
@@ -19,14 +21,13 @@ onMounted(() => {
     connectToHub();
 });
 
-const currentUserId= computed(() => {
+const currentUserId = computed(() => {
     if (userStore.currentUser) {
-    return userStore.currentUser.id;
-  } else {
-    return '';
-  }
+        return userStore.currentUser.id;
+    } else {
+        return '';
+    }
 });
-
 
 const connectToHub = () => {
     const accessToken = localStorage.getItem('accessToken') || '';
@@ -50,8 +51,8 @@ const connectToHub = () => {
 
 
 function sendMessage(item: string) {
-    fromId.value = userStore.fromUser.id
-    
+    fromId.value = chatStore.fromUser.id
+
     if (connection.value && connection.value.state === signalR.HubConnectionState.Connected && item.trim() !== '') {
         connection.value.invoke('SendMessageToUser', currentUserId.value, fromId.value, item.trim())
             .then(() => {

@@ -5,26 +5,32 @@ import { useUserStore } from '@/stores/user';
 import { formatDistanceToNowStrict } from 'date-fns';
 import ChatSendMsg from './ChatSendMsg.vue';
 import { useDisplay } from 'vuetify';
+import { ChatUsersType } from '@/types/ChatType';
 
 const { lgAndUp } = useDisplay();
 
-const store = useChatStore();
+const chatStore = useChatStore();
 const userStore = useUserStore();
 
 onMounted(() => {
-    store.fetchChats();
+    chatStore.fetchChats();
+    userStore.getCurrentUser();
 });
 
 const chatDetail: any = computed(() => {
-    return store.chats[store.chatContent - 1];
+    return chatStore.chats[chatStore.chatContent - 1];
 });
 
-const fromUser= computed(() => {
-    if (userStore.fromUser) {
-    return `${userStore.fromUser.name} ${userStore.fromUser.surname}`;
-  } else {
-    return '';
-  }
+const messages = computed(() => {
+    return chatStore.messages;
+})
+
+const currentUser = computed(() => {
+    return userStore.currentUser;
+})
+
+const fromUser = computed(() => {
+    return chatStore.fromUser;
 });
 
 const Rpart = ref(lgAndUp ? true : false);
@@ -34,34 +40,18 @@ function toggleRpart() {
 }
 </script>
 <template>
-    <div v-if="chatDetail" class="customHeight">
+    <div v-if="messages" class="customHeight">
         <div>
             <div class="d-flex align-center gap-3 pa-4">
                 <!---Topbar Row-->
                 <div class="d-flex gap-2 align-center">
                     <!---User Avatar-->
                     <v-avatar>
-                        <img :src="chatDetail.thumb" alt="pro" width="50" />
+                        <img :src="fromUser.profileImageUrl" alt="pro" width="50" />
                     </v-avatar>
 
-                    <v-badge
-                        class="badg-dotDetail"
-                        dot
-                        :color="
-                            chatDetail.status === 'away'
-                                ? 'warning'
-                                : chatDetail.status === 'busy'
-                                ? 'error'
-                                : chatDetail.status === 'online'
-                                ? 'success'
-                                : 'containerBg'
-                        "
-                    >
-                    </v-badge>
-                    <!---Name & Last seen-->
                     <div>
-                        <h5 class="text-h5 mb-n1">{{ fromUser }}</h5>
-                        <small class="textPrimary"> {{ chatDetail.status }} </small>
+                        <h5 class="text-h5 mb-n1">{{ fromUser.title }} {{ fromUser.name }} {{ fromUser.surname }}</h5>
                     </div>
                 </div>
             </div>
@@ -70,48 +60,42 @@ function toggleRpart() {
             <perfect-scrollbar class="rightpartHeight">
                 <div class="d-flex">
                     <div class="w-100">
-                        <div v-for="chat in chatDetail.chatHistory" :key="chat.id" class="pa-5">
-                            <div v-if="chatDetail.id === chat.senderId" class="justify-end d-flex text-end mb-1">
+                        <div v-for="msg in messages" :key="msg.sendedTime" class="pa-5">
+                            <div v-if="currentUser.id !== msg.senderId" class="justify-end d-flex text-end mb-1">
                                 <div>
-                                    <small class="text-medium-emphasis text-subtitle-2" v-if="chat.createdAt">
+                                    <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
-                                            formatDistanceToNowStrict(new Date(chat.createdAt), {
-                                                addSuffix: false
-                                            })
-                                        }}
-                                        ago</small
-                                    >
+        formatDistanceToNowStrict(new Date(msg.sendedTime), {
+            addSuffix: false
+        })
+    }}
+                                        ago</small>
 
-                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" v-if="chat.type == 'text'">
-                                        <p class="text-body-1">{{ chat.msg }}</p>
+                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" >
+                                        <p class="text-body-1">{{ msg.text }}</p>
                                     </v-sheet>
-                                    <v-sheet v-if="chat.type == 'img'" class="mb-1">
-                                        <img :src="chat.msg" class="rounded-md" alt="pro" width="250" />
-                                    </v-sheet>
+                                
                                 </div>
                             </div>
                             <div v-else class="d-flex align-items-start gap-3 mb-1">
                                 <!---User Avatar-->
                                 <v-avatar>
-                                    <img :src="chatDetail.thumb" alt="pro" width="40" />
+                                    <img :src="fromUser.profileImageUrl" alt="pro" width="40" />
                                 </v-avatar>
                                 <div>
-                                    <small class="text-medium-emphasis text-subtitle-2" v-if="chat.createdAt">
-                                        {{ chatDetail.name }},
+                                    <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
-                                            formatDistanceToNowStrict(new Date(chat.createdAt), {
-                                                addSuffix: false
-                                            })
+        formatDistanceToNowStrict(new Date(msg.sendedTime), {
+            addSuffix: false
+                                        })
                                         }}
                                         ago
                                     </small>
 
-                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" v-if="chat.type == 'text'">
-                                        <p class="text-body-1">{{ chat.msg }}</p>
+                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" >
+                                        <p class="text-body-1">{{ msg.text }}</p>
                                     </v-sheet>
-                                    <v-sheet v-if="chat.type == 'img'" class="mb-1">
-                                        <img :src="chat.msg" class="rounded-md" alt="pro" width="250" />
-                                    </v-sheet>
+                                 
                                 </div>
                             </div>
                         </div>
@@ -128,6 +112,7 @@ function toggleRpart() {
 .rightpartHeight {
     height: 530px;
 }
+
 .badg-dotDetail {
     left: -9px;
     position: relative;
@@ -139,6 +124,7 @@ function toggleRpart() {
     right: 15px;
     top: 15px;
 }
+
 .right-sidebar {
     width: 320px;
     border-left: 1px solid rgb(var(--v-theme-borderColor));
@@ -154,12 +140,14 @@ function toggleRpart() {
     .right-sidebar {
         position: absolute;
         right: -320px;
+
         &.showLeftPart {
             right: 0;
             z-index: 2;
             box-shadow: 2px 1px 20px rgba(0, 0, 0, 0.1);
         }
     }
+
     .boxoverlay {
         position: absolute;
         height: 100%;

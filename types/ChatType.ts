@@ -21,3 +21,8 @@ export type ChatType = {
     recent: boolean;
     chatHistory: chatHistoryType[];
 };
+
+export type ChatUsersType = {
+    fromUser: string;
+    toUser: string;
+}

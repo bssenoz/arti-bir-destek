@@ -7,13 +7,19 @@ import { sub } from 'date-fns';
 interface chatType {
     chats: any;
     chatContent: any;
+    messages: [];
+    allMessageInfo: [];
+    fromUser: any;
 }
 
 export const useChatStore = defineStore({
     id: 'chat',
     state: (): chatType => ({
         chats: [],
-        chatContent: 1
+        chatContent: 1,
+        messages: [],
+        allMessageInfo: [],
+        fromUser: {},
     }),
     getters: {
         // Get Chats from Getters
@@ -32,6 +38,25 @@ export const useChatStore = defineStore({
                 console.log(error);
             }
         },
+        async fetchMessages(chatUsers: any) {
+           console.log("chatusers: ",chatUsers)
+            const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers);
+            console.log(response.data);
+            this.messages = response.data
+        },
+        async fromUserChange(newFromUser: any) {
+            this.fromUser = newFromUser
+            console.log("this: ", this.fromUser)
+        },
+        async fetchMessageInfo(userId: any) {
+            const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`);
+            console.log(response.data);
+            this.allMessageInfo = response.data
+        },
+        async updateStatus(chatUsers: any) {
+            const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers);
+        },
+        
         //select chat
         SelectChat(itemID: number) {
             this.chatContent = itemID;
@@ -54,6 +79,7 @@ export const useChatStore = defineStore({
                       }
                     : chat;
             });
-        }
+        },
+        
     }
 });

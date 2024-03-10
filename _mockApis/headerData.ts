@@ -61,14 +61,15 @@ const profileDD: profileType[] = [
         avatar: proUser2,
         title: 'Gelen Kutum',
         subtitle: 'Mesajlar',
-        href: '/'
+        href: '/profile/chat'
     },
-    {
-        avatar: proUser3,
-        title: 'My Tasks',
-        subtitle: 'To-do and Daily tasks',
-        href: '/'
-    }
+    // {
+    //     avatar: proUser3,
+    //     title: 'My Tasks',
+    //     subtitle: 'To-do and Daily tasks',
+    //     href: '/'
+    // },
+    
 ];
 
 

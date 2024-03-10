@@ -42,5 +42,6 @@ const selectUserType = (type: string) => {
 <style lang="scss" scoped>
 .selected-button {
   background-color: rgb(237 50 162);
+  color: #fff;
 }
 </style>

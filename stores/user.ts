@@ -4,7 +4,6 @@ import { DoctorType, PatientType } from '@/types/UserType';
 
 interface UserType {
     currentUser: any;
-    fromUser: any;
     refreshToken: string | null;
     accessToken: string | null;
     doctors: Array<DoctorType>
@@ -15,7 +14,6 @@ export const useUserStore = defineStore({
     id: 'user',
     state: (): UserType => ({
         currentUser: {},
-        fromUser: {},
         refreshToken: localStorage.getItem('refreshToken'),
         accessToken: localStorage.getItem('accessToken'),
         doctors: [],
@@ -100,10 +98,7 @@ export const useUserStore = defineStore({
             const response = await axios.get('http://localhost:5261/api/User/GetAllPatients')
             this.patients = response.data
         },
-        async fromUserChange(newFromUser: any) {
-            this.fromUser = newFromUser
-            console.log("this: ", this.fromUser)
-        },
+   
         async getCurrentUser() {
             const config = {
                 headers: {

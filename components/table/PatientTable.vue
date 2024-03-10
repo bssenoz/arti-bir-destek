@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useContactStore } from '@/stores/contact';
-import contact from '@/_mockApis/apps/contact';
-const store = useContactStore();
+import { useUserStore } from '@/stores/user';
+import { Vue } from 'nuxt-property-decorator';
+
+const userStore = useUserStore();
 
 onMounted(() => {
-    store.fetchContacts();
+    userStore.fetchUserPatient();
+});
+
+const patients: any = computed(() => {
+    return userStore.patients;
 });
 
 const search = ref('');
-const desserts = ref(contact);
+const desserts = ref(patients);
 
 const filteredList = computed(() => {
     return desserts.value.filter((user: any) => {
-        return user.userinfo.toLowerCase().includes(search.value.toLowerCase());
+        return user.name.toLowerCase().includes(search.value.toLowerCase());
     });
 });
+const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    return formattedDate;
+};
 
 </script>
 <template>
@@ -28,7 +38,7 @@ const filteredList = computed(() => {
     <v-table class="mt-5">
         <thead>
             <tr>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Id</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">#</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Gebelik Başlangıç</th>
@@ -36,36 +46,39 @@ const filteredList = computed(() => {
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in filteredList" :key="item.id">
-                <td class="text-subtitle-1">{{ item.id }}</td>
+            <tr v-for="(item, index) in filteredList" :key="item.id">
+                <td class="text-subtitle-1">{{ index + 1 }}</td>
                 <td>
                     <div class="d-flex align-center py-4">
-                        <div>
-                            <v-img :src="item.avatar" width="45px" class="rounded-circle img-fluid"></v-img>
+                        <div v-if="item.profileImageUrl">
+                            <v-img :src="item.profileImageUrl" width="45px" class="rounded-circle img-fluid"></v-img>
+                        </div>
+                        <div v-else>
+                            <div class="rounded-circle" style="width: 45px; height: 45px; background-color: #ccc;"></div>
                         </div>
 
                         <div class="ml-5">
-                            <h4 class="text-h6 font-weight-semibold">{{ item.userinfo }}</h4>
-                            <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ item.usermail }}</span>
+                            <h4 class="text-h6 font-weight-semibold">{{ item.name }} {{ item.surname }}</h4>
+                            <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ item.email }}</span>
                         </div>
                     </div>
                 </td>
-                <td class="text-subtitle-1 text-no-wrap">{{ item.phone }}</td>
+                <td class="text-subtitle-1 text-no-wrap">{{ item.phoneNumber }}</td>
                 <td>
-                    <v-chip :color="item.rolestatus" size="small" label>{{ item.role }}</v-chip>
+                    <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ formatDate(item.pregnancyStartDate) }}</span>
                 </td>
                 <td>
                     <div class="d-flex align-center">
                         <v-tooltip text="Görüşme Oluştur">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/profile/randevu/add">
+                                <v-btn icon flat v-bind="props" to="/profile/randevu/add">
                                     <ClockIcon stroke-width="1.5" size="20" class="text-primary" />
                                 </v-btn>
                             </template>
                         </v-tooltip>
                         <v-tooltip text="Mesaj At">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" to="/profile/chat">
+                                <v-btn icon flat v-bind="props" to="/profile/chat">
                                     <MailIcon stroke-width="1.5" size="20" class="text-secondary" />
                                 </v-btn>
                             </template>
