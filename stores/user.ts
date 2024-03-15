@@ -4,6 +4,7 @@ import { DoctorType, PatientType } from '@/types/UserType';
 
 interface UserType {
     currentUser: any;
+    user:any;
     refreshToken: string | null;
     accessToken: string | null;
     doctors: Array<DoctorType>
@@ -13,6 +14,7 @@ interface UserType {
 export const useUserStore = defineStore({
     id: 'user',
     state: (): UserType => ({
+        user: {},
         currentUser: {},
         refreshToken: localStorage.getItem('refreshToken'),
         accessToken: localStorage.getItem('accessToken'),
@@ -109,6 +111,15 @@ export const useUserStore = defineStore({
             try {
                 const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', config);
                 this.currentUser = response.data
+            } catch (error) {
+                console.error('Error while fetching current user:', error);
+                throw new Error('Failed to fetch current user.');
+            }
+        },
+        async getUserId(id: string) {
+            try {
+                const response = await axios.get(`http://localhost:5261/api/User/GetUserById?userID=${id}`);
+                this.user = response.data
             } catch (error) {
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');

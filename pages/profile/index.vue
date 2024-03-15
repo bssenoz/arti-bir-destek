@@ -17,7 +17,8 @@ definePageMeta({
 
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
-    <ProfileBanner />
+    <p>Profile Page</p>
+    <!-- <ProfileBanner />
     <v-row class="mt-4">
         <v-col cols="12" lg="4" md="4">
             <IntroCard />
@@ -27,5 +28,5 @@ definePageMeta({
             <AddPost />
             <PostListing />
         </v-col>
-    </v-row>
+    </v-row> -->
 </template>

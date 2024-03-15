@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 // common components
 import AppBaseCard from '@/components/shared/AppBaseCard.vue';
-import ChatListing from '@/components/pages/chats/ChatListing.vue';
 import ChatDetail from '@/components/pages/chats/ChatDetail.vue';
-import ChatProfile from '@/components/pages/chats/ChatProfile.vue';
+import ChatList from '@/components/pages/chats/ChatList.vue';
+import { useChatStore } from '@/stores/chat';
+import { useUserStore } from '~/stores/user';
+
+const chatStore = useChatStore();
+const userStore = useUserStore();
+
+const currentUser = ref(null);
 
 definePageMeta({
   layout: "default",
@@ -16,22 +22,28 @@ definePageMeta({
   ],
 });
 
+onMounted(async () => {
+    await userStore.getCurrentUser()
+    chatStore.connectToHub(currentUser.value)
+});
+watchEffect(() => {
+    currentUser.value = userStore.currentUser;
+});
+
 </script>
 
 <template>
     <v-card elevation="10">
         <AppBaseCard>
             <template v-slot:leftpart>
-                <ChatProfile/>
-                <ChatListing />
+                <ChatList/>
             </template>
             <template v-slot:rightpart>
                 <ChatDetail/>
             </template>
 
             <template v-slot:mobileLeftContent>
-                <ChatProfile />
-                <ChatListing />
+                <ChatList />
             </template>
         </AppBaseCard>
     </v-card>

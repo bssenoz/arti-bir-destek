@@ -3,13 +3,16 @@ import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
 import { uniqueId } from 'lodash';
 import { sub } from 'date-fns';
+import * as signalR from '@microsoft/signalr';
 
 interface chatType {
     chats: any;
     chatContent: any;
-    messages: [];
+    messages: any[];
     allMessageInfo: [];
-    fromUser: any;
+    fromUserId: string;
+    connection: any;
+    currentUser: any
 }
 
 export const useChatStore = defineStore({
@@ -19,34 +22,98 @@ export const useChatStore = defineStore({
         chatContent: 1,
         messages: [],
         allMessageInfo: [],
-        fromUser: {},
+        fromUserId: '',
+        connection: {},
+        currentUser: {}
     }),
     getters: {
-        // Get Chats from Getters
-        // getChats(state) {
-        //     return state.chats;
-        // }
+
     },
     actions: {
-        // Fetch Chat from action
-        async fetchChats() {
-            try {
-                const data = await axios.get('/api/data/chat/ChatData');
-                this.chats = data.data;
-            } catch (error) {
-                alert(error);
-                console.log(error);
+        async connectToHub(currentUser: any) {
+            // if(this.connection.state != "Connecting")  
+            console.log("hub")
+            const accessToken = localStorage.getItem('accessToken') || '';
+
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl('http://localhost:5261/message', { accessTokenFactory: (): Promise<string> => Promise.resolve(accessToken) })
+                .build();
+
+            connection.start()
+                .then(() => {
+                    console.log('Connection successful.');
+                })
+                .catch(error => {
+                    console.error('Connection failed:', error);
+                });
+
+            connection.onclose(() => {
+                console.warn('Connection lost!');
+            });
+
+            console.log("current: ",currentUser)
+            connection.on('messageToUserReceived', (msg: string) => {
+                console.log('Message received:', msg);
+                const newMessage = {
+                    id: uniqueId(),
+                    text: msg,
+                    type: 'text',
+                    attachments: [],
+                    createdAt: sub(new Date(), { seconds: 1 }),
+                    senderId: currentUser.id
+                  };
+        
+                  this.currentUser = currentUser;
+                  // Add the new message to the messages array
+                  this.messages.push(newMessage);
+                  console.log("new message: ",newMessage)
+            });
+
+            this.connection = connection;
+            console.log("conn: ",this.connection)
+        },
+        async sendMessage(item: string, currentUserId: any) {
+           const fromId = this.fromUserId;
+
+            if (this.connection && this.connection.state === signalR.HubConnectionState.Connected && item.trim() !== '') {
+                try {
+            
+                    await this.connection.invoke('SendMessageToUser',currentUserId, fromId, item.trim());
+                    console.log('Message sent successfully.');
+                    const newMessage = {
+                        id: uniqueId(),
+                        text: item,
+                        type: 'text',
+                        attachments: [],
+                        createdAt: sub(new Date(), { seconds: 1 }),
+                        senderId: fromId,
+                      };
+            
+            
+                      // Add the new message to the messages array
+                      this.messages.push(newMessage);
+                      console.log("new message: ",newMessage)
+                      this.fetchMessageInfo(currentUserId)
+
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    // Hata durumunu işleyin (örneğin, bir hata mesajı gösterin)
+                }
+            } else {
+                console.error('Connection is not available or not connected.');
+                // Bağlantı mevcut değil veya bağlı değilse hata durumunu işleyin (örneğin, bir hata mesajı gösterin)
             }
         },
+
         async fetchMessages(chatUsers: any) {
            console.log("chatusers: ",chatUsers)
             const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers);
             console.log(response.data);
             this.messages = response.data
         },
-        async fromUserChange(newFromUser: any) {
-            this.fromUser = newFromUser
-            console.log("this: ", this.fromUser)
+        async fromUserChange(id: string) {
+            this.fromUserId = id
+            console.log("this: ", this.fromUserId)
         },
         async fetchMessageInfo(userId: any) {
             const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`);
@@ -55,30 +122,6 @@ export const useChatStore = defineStore({
         },
         async updateStatus(chatUsers: any) {
             const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers);
-        },
-        
-        //select chat
-        SelectChat(itemID: number) {
-            this.chatContent = itemID;
-        },
-        sendMsg(itemID: number, item: string) {
-            const newMessage = {
-                id: itemID,
-                msg: item,
-                type: 'text',
-                attachments: [],
-                createdAt: sub(new Date(), { seconds: 1 }),
-                senderId: itemID
-            };
-
-            this.chats = this.chats.filter((chat: any) => {
-                return chat.id === itemID
-                    ? {
-                          ...chat,
-                          ...chat.chatHistory.push(newMessage)
-                      }
-                    : chat;
-            });
         },
         
     }

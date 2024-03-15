@@ -1,25 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUpdated, nextTick } from 'vue';
 import { useChatStore } from '@/stores/chat';
 import { useUserStore } from '@/stores/user';
 import { formatDistanceToNowStrict } from 'date-fns';
-import ChatSendMsg from './ChatSendMsg.vue';
-import { useDisplay } from 'vuetify';
-import { ChatUsersType } from '@/types/ChatType';
 
-const { lgAndUp } = useDisplay();
-
+const msg = ref('');
 const chatStore = useChatStore();
 const userStore = useUserStore();
 
-onMounted(() => {
-    chatStore.fetchChats();
+onMounted(async () => {
+    await userStore.getCurrentUser();
+    userStore.fetchUserDoctor();
     userStore.getCurrentUser();
 });
 
-const chatDetail: any = computed(() => {
-    return chatStore.chats[chatStore.chatContent - 1];
-});
+const fromUser = computed(() => {
+    return userStore.user;
+})
 
 const messages = computed(() => {
     return chatStore.messages;
@@ -29,18 +26,27 @@ const currentUser = computed(() => {
     return userStore.currentUser;
 })
 
-const fromUser = computed(() => {
-    return chatStore.fromUser;
-});
-
-const Rpart = ref(lgAndUp ? true : false);
-
-function toggleRpart() {
-    Rpart.value = !Rpart.value;
+function sendMessage(item: string) {
+    chatStore.sendMessage(item,currentUser.value.id);
+    msg.value = '';
 }
+
+const scrollToBottom = () => {
+  nextTick(() => {
+    const chatList = document.getElementById('chat-list');
+    if (chatList) {
+      chatList.scrollTop = chatList.scrollHeight;
+    }
+  });
+};
+
+onMounted(scrollToBottom);
+
+onUpdated(scrollToBottom)
 </script>
+
 <template>
-    <div v-if="messages" class="customHeight">
+    <div v-if="fromUser.id" class="customHeight">
         <div>
             <div class="d-flex align-center gap-3 pa-4">
                 <!---Topbar Row-->
@@ -57,11 +63,12 @@ function toggleRpart() {
             </div>
             <v-divider />
             <!---Chat History-->
-            <perfect-scrollbar class="rightpartHeight">
+            <perfect-scrollbar class="rightpartHeight" id="chat-list">
                 <div class="d-flex">
                     <div class="w-100">
                         <div v-for="msg in messages" :key="msg.sendedTime" class="pa-5">
                             <div v-if="currentUser.id !== msg.senderId" class="justify-end d-flex text-end mb-1">
+                   
                                 <div>
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
@@ -71,14 +78,14 @@ function toggleRpart() {
     }}
                                         ago</small>
 
-                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" >
+                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1">
                                         <p class="text-body-1">{{ msg.text }}</p>
                                     </v-sheet>
-                                
+
                                 </div>
                             </div>
-                            <div v-else class="d-flex align-items-start gap-3 mb-1">
-                                <!---User Avatar-->
+                            <div v-if="currentUser.id == msg.senderId" class="d-flex align-items-start gap-3 mb-1">
+                                                <!---User Avatar-->
                                 <v-avatar>
                                     <img :src="fromUser.profileImageUrl" alt="pro" width="40" />
                                 </v-avatar>
@@ -86,16 +93,16 @@ function toggleRpart() {
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
         formatDistanceToNowStrict(new Date(msg.sendedTime), {
-            addSuffix: false
+                                        addSuffix: false
                                         })
                                         }}
                                         ago
                                     </small>
 
-                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1" >
+                                    <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1">
                                         <p class="text-body-1">{{ msg.text }}</p>
                                     </v-sheet>
-                                 
+
                                 </div>
                             </div>
                         </div>
@@ -105,10 +112,30 @@ function toggleRpart() {
         </div>
         <v-divider />
         <!---Chat send-->
-        <ChatSendMsg />
+        <form class="d-flex align-center pa-4" @submit.prevent="sendMessage(msg)">
+        <v-btn icon variant="text" class="text-medium-emphasis">
+            <MoodSmileIcon size="24" />
+        </v-btn>
+
+        <v-text-field variant="solo" hide-details v-model="msg" color="primary" class="shadow-none" density="compact"
+            placeholder="Type a Message"></v-text-field>
+        <v-btn icon variant="text" type="submit" class="text-medium-emphasis" :disabled="!msg">
+            <SendIcon size="20" />
+        </v-btn>
+
+        <v-btn icon variant="text" class="text-medium-emphasis">
+            <PhotoIcon size="20" />
+        </v-btn>
+        <v-btn icon variant="text" class="text-medium-emphasis">
+            <PaperclipIcon size="20" />
+        </v-btn>
+    </form>
     </div>
 </template>
 <style lang="scss">
+.shadow-none .v-field--no-label {
+    --v-field-padding-top: -7px;
+}
 .rightpartHeight {
     height: 530px;
 }

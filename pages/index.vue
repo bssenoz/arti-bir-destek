@@ -26,10 +26,10 @@ definePageMeta({
     <Header />
     <!----------->
     <MainBanner />
-    <UserReview />
+    <!-- <UserReview />
     <AskQuestion />
     <FaqQuestion/>
-    <BuyNow />
+    <BuyNow /> -->
     <!----------->
     <Footer />
   </div>
