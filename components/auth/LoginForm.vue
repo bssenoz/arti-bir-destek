@@ -2,6 +2,10 @@
 import { ref } from "vue";
 import { useUserStore } from '@/stores/user';
 import { UserType } from '@/types/UserType';
+import {
+  GoogleSignInButton,
+  type CredentialResponse,
+} from "vue3-google-signin";
 
 import google from "/images/svgs/google-icon.svg";
 import facebook from "/images/svgs/facebook-icon.svg";
@@ -22,6 +26,22 @@ const emailRules = ref([
   (v: string) => !!v || "Email gerekli!",
   (v: string) => /.+@.+\..+/.test(v) || "E-mail tanımına uymuyor!",
 ]);
+
+const handleLoginSuccess = async (response: CredentialResponse) => {
+  const { credential } = response;
+
+  try {
+    await userStore.loginWithGoogle(credential)
+    router.push({ path: "/profile" });
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const handleLoginError = () => {
+  console.log("login failed");
+}
 const login = async () => {
   try {
     const user: UserType = {
@@ -57,10 +77,11 @@ const closeDialog = () => {
 <template>
   <v-row class="d-flex mb-3">
     <v-col cols="6" sm="6">
-      <v-btn variant="outlined" size="large" class="border text-subtitle-1" block>
+      <!-- <v-btn variant="outlined" size="large" class="border text-subtitle-1" block>
         <img :src="google" height="16" class="mr-2" alt="google" />
         <span class="d-sm-flex d-none mr-1">Google ile Giriş Yap</span>
-      </v-btn>
+      </v-btn> -->
+      <GoogleSignInButton @success="handleLoginSuccess" @error="handleLoginError"></GoogleSignInButton>
     </v-col>
     <v-col cols="6" sm="6">
       <v-btn variant="outlined" size="large" class="border text-subtitle-1" block>
@@ -78,22 +99,23 @@ const closeDialog = () => {
   <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Email</v-label>
   <VTextField v-model="email" :rules="emailRules" class="mb-8" required hide-details="auto"></VTextField>
   <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Şifre</v-label>
-  <VTextField v-model="password" :rules="passwordRules" required hide-details="auto"  :type="show2 ? 'text' : 'password'"  :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-                            @click:append-inner="show2 = !show2" class="pwdInput">
+  <VTextField v-model="password" :rules="passwordRules" required hide-details="auto" :type="show2 ? 'text' : 'password'"
+    :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show2 = !show2" class="pwdInput">
   </VTextField>
-  
+
   <div class="d-flex flex-wrap align-center my-3 ml-n2">
     <v-checkbox v-model="checkbox" :rules="[(v: any) => !!v || 'You must agree to continue!']" required hide-details
       color="primary">
       <template v-slot:label class="">Beni hatırla</template>
     </v-checkbox>
     <div class="ml-sm-auto">
-      <NuxtLink to="/auth/forgot-password" class="text-primary text-decoration-none text-body-1 opacity-1 font-weight-medium">Şifremi Unuttum
+      <NuxtLink to="/auth/forgot-password"
+        class="text-primary text-decoration-none text-body-1 opacity-1 font-weight-medium">Şifremi Unuttum
         ?</NuxtLink>
     </div>
   </div>
-  <v-btn size="large" :disabled="!password" block type="submit" flat style="background-color: rgb(237 50 162);color:#fff"
-    @click="login">Giriş Yap</v-btn>
+  <v-btn size="large" :disabled="!password" block type="submit" flat
+    style="background-color: rgb(237 50 162);color:#fff" @click="login">Giriş Yap</v-btn>
   <v-dialog v-model="dialogError" width="500">
     <v-card title="Hata">
       <v-card-text>

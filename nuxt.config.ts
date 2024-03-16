@@ -14,7 +14,15 @@ export default defineNuxtConfig({
     //   extractCSS: false,
     transpile: ["vuetify"],
   },
-  modules: ["@pinia/nuxt"],
+  modules: ["@pinia/nuxt","nuxt-vue3-google-signin"],
+
+  runtimeConfig: {
+    googleClientId: process.env.GOOGLE_CLIENT_ID
+  },
+  
+  googleSignIn: {
+    clientId: process.env.GOOGLE_CLIENT_ID,
+  },
   app: {
     head: {
       title:
@@ -35,4 +43,5 @@ export default defineNuxtConfig({
       );
     },
   },
+  
 });

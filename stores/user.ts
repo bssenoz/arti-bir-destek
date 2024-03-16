@@ -4,7 +4,7 @@ import { DoctorType, PatientType } from '@/types/UserType';
 
 interface UserType {
     currentUser: any;
-    user:any;
+    user: any;
     refreshToken: string | null;
     accessToken: string | null;
     doctors: Array<DoctorType>
@@ -64,6 +64,28 @@ export const useUserStore = defineStore({
                 throw new Error("Giriş yapılamadı.");
             }
         },
+        async loginWithGoogle(userToken: string) {
+            console.log("user token:: ", userToken);
+            try {
+                const response = await axios.post(
+                    'http://localhost:5261/api/Authentication/LoginViaGoogle',
+                    JSON.stringify(userToken),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                console.log("res: ", response.data);
+                this.accessToken = response.data.jwtTokenDTO.accessToken;
+                this.refreshToken = response.data.jwtTokenDTO.refreshToken;
+                // // localStorage'a tokenları kaydet
+                localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
+                localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+            } catch (error) {
+                console.error("Error occurred: ", error);
+            }
+        },        
         async refreshAccessToken() {
             try {
                 console.log("refresh token")
