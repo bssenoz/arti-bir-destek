@@ -65,7 +65,7 @@ export const useUserStore = defineStore({
             }
         },
         async loginWithGoogle(userToken: string) {
-            console.log("user token:: ", userToken);
+            console.log("token:: ", userToken);
             try {
                 const response = await axios.post(
                     'http://localhost:5261/api/Authentication/LoginViaGoogle',
@@ -79,13 +79,35 @@ export const useUserStore = defineStore({
                 console.log("res: ", response.data);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
-                // // localStorage'a tokenları kaydet
+   
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
             } catch (error) {
                 console.error("Error occurred: ", error);
             }
         },        
+        async loginWithFacebook(userToken: string) {
+            console.log("token:: ", userToken);
+            try {
+                const response = await axios.post(
+                    'http://localhost:5261/api/Authentication/LoginViaFacebook',
+                    JSON.stringify(userToken),
+                    {
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                );
+                console.log("res: ", response.data);
+                this.accessToken = response.data.jwtTokenDTO.accessToken;
+                this.refreshToken = response.data.jwtTokenDTO.refreshToken;
+  
+                localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
+                localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+            } catch (error) {
+                console.error("Error occurred: ", error);
+            }
+        },  
         async refreshAccessToken() {
             try {
                 console.log("refresh token")

@@ -3,6 +3,8 @@ import vuetify from "vite-plugin-vuetify";
 
 const { resolve } = createResolver(import.meta.url);
 
+require('dotenv').config();
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
@@ -17,7 +19,7 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt","nuxt-vue3-google-signin"],
 
   runtimeConfig: {
-    googleClientId: process.env.GOOGLE_CLIENT_ID
+    googleClientId: process.env.GOOGLE_CLIENT_ID,
   },
   
   googleSignIn: {

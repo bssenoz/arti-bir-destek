@@ -7,9 +7,7 @@ import {
   type CredentialResponse,
 } from "vue3-google-signin";
 
-import google from "/images/svgs/google-icon.svg";
-import facebook from "/images/svgs/facebook-icon.svg";
-
+import FacebookLoginButton from "./FacebookLoginButton.vue";
 const userStore = useUserStore();
 const dialogError = ref(false);
 const errorText = ref("");
@@ -31,13 +29,18 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
   const { credential } = response;
 
   try {
-    await userStore.loginWithGoogle(credential)
-    router.push({ path: "/profile" });
+    if (typeof credential === 'string') { 
+      await userStore.loginWithGoogle(credential);
+      router.push({ path: "/profile" });
+    } else {
+      throw new Error("Credential is undefined or not a string.");
+    }
 
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
+
 
 const handleLoginError = () => {
   console.log("login failed");
@@ -77,17 +80,10 @@ const closeDialog = () => {
 <template>
   <v-row class="d-flex mb-3">
     <v-col cols="6" sm="6">
-      <!-- <v-btn variant="outlined" size="large" class="border text-subtitle-1" block>
-        <img :src="google" height="16" class="mr-2" alt="google" />
-        <span class="d-sm-flex d-none mr-1">Google ile Giriş Yap</span>
-      </v-btn> -->
       <GoogleSignInButton @success="handleLoginSuccess" @error="handleLoginError"></GoogleSignInButton>
     </v-col>
     <v-col cols="6" sm="6">
-      <v-btn variant="outlined" size="large" class="border text-subtitle-1" block>
-        <img :src="facebook" width="25" height="25" class="mr-1" alt="facebook" />
-        <span class="d-sm-flex d-none mr-1">Facebook ile Giriş Yap</span>
-      </v-btn>
+      <FacebookLoginButton />
     </v-col>
   </v-row>
   <div class="d-flex align-center text-center mb-6">
@@ -128,4 +124,4 @@ const closeDialog = () => {
       </v-card-actions>
     </v-card>
   </v-dialog>
-</template>
+</template>./FacebookLoginButton.vue
