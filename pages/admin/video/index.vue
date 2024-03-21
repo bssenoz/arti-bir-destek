@@ -1,7 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, onMounted } from 'vue';
+import { useVideoStore } from '@/stores/video';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import { VideoTable } from '@/_mockApis/components/video/videoTable';
+
+const videoStore = useVideoStore();
+
+onMounted(() => {
+    videoStore.fetchVideos();
+});
+
+const videos: any = computed(() => {
+    return videoStore.videos;
+});
+
 const page = ref({ title: 'Videolar' });
 const breadcrumbs = ref([
     {
@@ -17,8 +28,9 @@ const breadcrumbs = ref([
 ]);
 
 const headers = ref([
-    { title: 'Video Adı', align: 'start', key: 'name', sortable: false, },
-    { title: 'Video Url', align: 'start', key: 'link' },
+    { title: 'Başlık', align: 'start', key: 'title', sortable: false, },
+    { title: 'Açıklama', align: 'start', key: 'description', sortable: false, },
+    { title: 'Url', align: 'start', key: 'url' },
     { title: '', align: 'start', key: 'action' },
 ])
 </script>
@@ -29,11 +41,12 @@ const headers = ref([
     </v-row>
     <v-row>
         <v-col cols="12">
-            <v-data-table :headers="headers" :items="VideoTable" item-value="name" class="border rounded-md">
+            <v-data-table :headers="headers" :items="videos" item-value="name" class="border rounded-md">
                 <template v-slot:item="{ item }">
                     <tr>
-                        <td class="text-subtitle-1">{{ item.columns.name }}</td>
-                        <td class="text-subtitle-1">{{ item.columns.link }}</td>
+                        <td class="text-subtitle-1">{{ item.columns.title }}</td>
+                        <td class="text-subtitle-1">{{ item.columns.description }}</td>
+                        <td class="text-subtitle-1">{{ item.columns.url }}</td>
                         <td class="text-subtitle-1"><v-btn color="primary">Düzenle</v-btn><v-btn class="ml-2"
                                 color="primary">Sil</v-btn></td>
                     </tr>
