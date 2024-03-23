@@ -1,8 +1,9 @@
 export type PatientType = {
-    id: number | null;
+    id: string;
     name: string;
     surname: string;
     email: string;
+    profileImageUrl: string | null;
     phoneNumber: string | null;
     password: string;
     confirmPassword: string;
@@ -10,12 +11,23 @@ export type PatientType = {
 };
 
 export type DoctorType = {
-    id: number | null;
+    id: string;
     name: string;
     surname: string;
     email: string;
+    profileImageUrl: string | null;
     phoneNumber: string | null;
     title: string;
     password: string;
     confirmPassword: string;
 };
+
+export type CurrentUserType = {
+    id: string;
+    name: string;
+    surname: string;
+    email: string;
+    phoneNumber: string | null;
+    profileImageUrl: string | null;
+    title:string | null;
+} 

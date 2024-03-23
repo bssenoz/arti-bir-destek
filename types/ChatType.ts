@@ -23,6 +23,21 @@ export type ChatType = {
 };
 
 export type ChatUsersType = {
-    fromUser: string;
-    toUser: string;
+    senderId: string;
+    receiverId: string;
+}
+
+export type ChatsUserType = {
+    user: {
+        receiverId: string;
+        receiverName: string;
+        receiverSurname: string;
+        receiverProfileImageUrl: null;
+    },
+    lastMessage: {
+        senderId: string;
+        text: string;
+        sendedTime : string;
+    },
+    unreadMessageCount: number; 
 }

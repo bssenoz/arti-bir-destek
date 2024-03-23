@@ -11,6 +11,7 @@ interface chatType {
     messages: any[];
     allMessageInfo: [];
     fromUserId: string;
+    senderID: string;
     connection: any;
     currentUser: any
 }
@@ -23,6 +24,7 @@ export const useChatStore = defineStore({
         messages: [],
         allMessageInfo: [],
         fromUserId: '',
+        senderID: '',
         connection: {},
         currentUser: {}
     }),
@@ -52,15 +54,17 @@ export const useChatStore = defineStore({
             });
 
             console.log("current: ",currentUser)
-            connection.on('messageToUserReceived', (msg: string) => {
+            connection.on('messageToUserReceived', (senderID: string,receiverID: string, msg: string) => {
                 console.log('Message received:', msg);
+              
                 const newMessage = {
                     id: uniqueId(),
                     text: msg,
                     type: 'text',
                     attachments: [],
                     createdAt: sub(new Date(), { seconds: 1 }),
-                    senderId: currentUser.id
+                    senderId: senderID,
+                    receiverId: receiverID
                   };
         
                   this.currentUser = currentUser;
@@ -77,19 +81,20 @@ export const useChatStore = defineStore({
 
             if (this.connection && this.connection.state === signalR.HubConnectionState.Connected && item.trim() !== '') {
                 try {
-            
+           
                     await this.connection.invoke('SendMessageToUser',currentUserId, fromId, item.trim());
                     console.log('Message sent successfully.');
+            
                     const newMessage = {
                         id: uniqueId(),
                         text: item,
                         type: 'text',
                         attachments: [],
                         createdAt: sub(new Date(), { seconds: 1 }),
-                        senderId: fromId,
+                        senderId: currentUserId,
+                        receiverId: fromId
                       };
-            
-            
+                        
                       // Add the new message to the messages array
                       this.messages.push(newMessage);
                       console.log("new message: ",newMessage)
@@ -121,6 +126,7 @@ export const useChatStore = defineStore({
             this.allMessageInfo = response.data
         },
         async updateStatus(chatUsers: any) {
+            console.log("chatuser: ",chatUsers)
             const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers);
         },
         

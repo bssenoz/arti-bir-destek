@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
-import { DoctorType, PatientType } from '@/types/UserType';
+import { DoctorType, PatientType, CurrentUserType } from '@/types/UserType';
 
-interface UserType {
-    currentUser: any;
+export interface UserType {
+    currentUser: CurrentUserType;
     user: any;
     refreshToken: string | null;
     accessToken: string | null;
@@ -15,7 +15,15 @@ export const useUserStore = defineStore({
     id: 'user',
     state: (): UserType => ({
         user: {},
-        currentUser: {},
+        currentUser: {
+            id: '',
+            name: '',
+            surname: '',
+            email: '',
+            phoneNumber: null,
+            profileImageUrl: null,
+            title: null
+        },
         refreshToken: localStorage.getItem('refreshToken'),
         accessToken: localStorage.getItem('accessToken'),
         doctors: [],

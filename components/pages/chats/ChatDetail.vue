@@ -26,18 +26,22 @@ const currentUser = computed(() => {
     return userStore.currentUser;
 })
 
+const senderID = computed(() => {
+    return chatStore.senderID;
+})
+
 function sendMessage(item: string) {
-    chatStore.sendMessage(item,currentUser.value.id);
+    chatStore.sendMessage(item, currentUser.value.id);
     msg.value = '';
 }
 
 const scrollToBottom = () => {
-  nextTick(() => {
-    const chatList = document.getElementById('chat-list');
-    if (chatList) {
-      chatList.scrollTop = chatList.scrollHeight;
-    }
-  });
+    nextTick(() => {
+        const chatList = document.getElementById('chat-list');
+        if (chatList) {
+            chatList.scrollTop = chatList.scrollHeight;
+        }
+    });
 };
 
 onMounted(scrollToBottom);
@@ -53,7 +57,8 @@ onUpdated(scrollToBottom)
                 <div class="d-flex gap-2 align-center">
                     <!---User Avatar-->
                     <v-avatar>
-                        <img :src="fromUser.profileImageUrl" alt="pro" width="50" />
+                        <img :src="fromUser.profileImageUrl" alt="pro" width="50" v-if="fromUser.profileImageUrl"/>
+                        <div class="rounded-circle" v-else style="width: 80px; height: 80px; background-color: #ccc;"></div>
                     </v-avatar>
 
                     <div>
@@ -67,8 +72,8 @@ onUpdated(scrollToBottom)
                 <div class="d-flex">
                     <div class="w-100">
                         <div v-for="msg in messages" :key="msg.sendedTime" class="pa-5">
-                            <div v-if="currentUser.id !== msg.senderId" class="justify-end d-flex text-end mb-1">
-                   
+                         
+                            <div v-if="currentUser.id == msg.senderId" class="justify-end d-flex text-end mb-1">
                                 <div>
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
@@ -84,11 +89,13 @@ onUpdated(scrollToBottom)
 
                                 </div>
                             </div>
-                            <div v-if="currentUser.id == msg.senderId" class="d-flex align-items-start gap-3 mb-1">
-                                                <!---User Avatar-->
+                            <div v-if="senderID == msg.senderId" class="d-flex align-items-start gap-3 mb-1">
+                                <!---User Avatar-->
                                 <v-avatar>
-                                    <img :src="fromUser.profileImageUrl" alt="pro" width="40" />
+                                    <img :src="fromUser.profileImageUrl" alt="pro" width="40" v-if="fromUser.profileImageUrl" />
+                                    <div class="rounded-circle" v-else style="width: 80px; height: 80px; background-color: #ccc;"></div>
                                 </v-avatar>
+                                
                                 <div>
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
@@ -113,29 +120,30 @@ onUpdated(scrollToBottom)
         <v-divider />
         <!---Chat send-->
         <form class="d-flex align-center pa-4" @submit.prevent="sendMessage(msg)">
-        <v-btn icon variant="text" class="text-medium-emphasis">
-            <MoodSmileIcon size="24" />
-        </v-btn>
+            <v-btn icon variant="text" class="text-medium-emphasis">
+                <MoodSmileIcon size="24" />
+            </v-btn>
 
-        <v-text-field variant="solo" hide-details v-model="msg" color="primary" class="shadow-none" density="compact"
-            placeholder="Type a Message"></v-text-field>
-        <v-btn icon variant="text" type="submit" class="text-medium-emphasis" :disabled="!msg">
-            <SendIcon size="20" />
-        </v-btn>
+            <v-text-field variant="solo" hide-details v-model="msg" color="primary" class="shadow-none"
+                density="compact" placeholder="Type a Message"></v-text-field>
+            <v-btn icon variant="text" type="submit" class="text-medium-emphasis" :disabled="!msg">
+                <SendIcon size="20" />
+            </v-btn>
 
-        <v-btn icon variant="text" class="text-medium-emphasis">
-            <PhotoIcon size="20" />
-        </v-btn>
-        <v-btn icon variant="text" class="text-medium-emphasis">
-            <PaperclipIcon size="20" />
-        </v-btn>
-    </form>
+            <v-btn icon variant="text" class="text-medium-emphasis">
+                <PhotoIcon size="20" />
+            </v-btn>
+            <v-btn icon variant="text" class="text-medium-emphasis">
+                <PaperclipIcon size="20" />
+            </v-btn>
+        </form>
     </div>
 </template>
 <style lang="scss">
 .shadow-none .v-field--no-label {
     --v-field-padding-top: -7px;
 }
+
 .rightpartHeight {
     height: 530px;
 }
