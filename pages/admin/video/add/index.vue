@@ -85,7 +85,7 @@ const submitFile = () => {
   <v-row>
     <v-col cols="12">
       <div>
-        <label> Video Başlığı </label>
+        <label> Video Başlığı <span class="text-primary">*</span></label>
         <v-text-field v-model="title"></v-text-field>
       </div>
     </v-col>

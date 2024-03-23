@@ -1,5 +1,5 @@
 <template>
-  <div class="video-container text-center align-center d-flex justify-center">
+  <div class="video-container align-center d-flex justify-center">
     <v-row>
       <v-col cols="12" lg="6" v-for="(video, index) in videos" :key="index">
         <video-player class="video-player vjs-big-play-centered" :src="video.url" :id="'player_' + index"
@@ -10,6 +10,8 @@
           @canplay="handleEvent($event)" @canplaythrough="handleEvent($event)"
           @timeupdate="handleTimeUpdate($event, index)" />
         <p class="font-weight-bold mt-2 mb-4 ml-2">{{ video.title }}</p>
+        <p class="mt-2 mb-4 ml-2">{{ video.description }}</p>
+
       </v-col>
     </v-row>
   </div>
@@ -37,32 +39,6 @@ export default defineComponent({
     const videos: any = computed(() => {
       return videoStore.videos;
     });
-    // const videos = [
-    //   {
-    //     src: "https://vjs.zencdn.net/v/oceans.mp4",
-    //     title: "Lorem ipsum sit dolor amet",
-    //     playCount: 0,
-    //     viewPercentage: 0,
-    //   },
-    //   {
-    //     src: "https://vjs.zencdn.net/v/oceans.mp4",
-    //     title: "Lorem ipsum sit dolor amet",
-    //     playCount: 0,
-    //     viewPercentage: 0,
-    //   },
-    //   {
-    //     src: "https://vjs.zencdn.net/v/oceans.mp4",
-    //     title: "Lorem ipsum sit dolor amet",
-    //     playCount: 0,
-    //     viewPercentage: 0,
-    //   },
-    //   {
-    //     src: "https://vjs.zencdn.net/v/oceans.mp4",
-    //     title: "Lorem ipsum sit dolor amet",
-    //     playCount: 0,
-    //     viewPercentage: 0,
-    //   },
-    // ];
 
     const players = ref<Record<string, videojs.Player>>({});
 

@@ -14,7 +14,16 @@ export const useVideoStore = defineStore({
         async fetchVideos() {
             const response = await axios.get('http://localhost:5261/api/Video/GetAllVideos')
             this.videos = response.data;
-            console.log("videos: ",this.videos)
+        },
+        async deleteVideo(id: number) {
+            const response = await axios.delete(`http://localhost:5261/api/Video/DeleteVideo?videoID=${id}`)
+            this.videos = response.data;
+            this.fetchVideos()
+        },
+        async editVideo(editItem: any) {
+            const response = await axios.put('http://localhost:5261/api/Video/UpdateVideo',editItem)
+            this.videos = response.data;
+            this.fetchVideos()
         },
     }
 });
