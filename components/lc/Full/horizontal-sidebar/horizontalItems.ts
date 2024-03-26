@@ -60,7 +60,7 @@ const horizontalItems: menu[] = [
     {
         title: 'Randevu',
         icon: BrandAirtableIcon,
-        to: '/profile/randevu'
+        to: '/profile/randevu/randevularim'
     },
     {
         title: 'Videolar',
