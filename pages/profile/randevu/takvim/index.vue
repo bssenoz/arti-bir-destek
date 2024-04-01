@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import {
   startOfDay,
   addDays,
@@ -19,23 +19,24 @@ interface Day {
 
 interface Appointment {
   dayId: number;
-  dayName: string;
   times: string[];
 }
 
 const days: Day[] = [
-  { id: 0, name: 'Pazartesi' },
-  { id: 1, name: 'Salı' },
-  { id: 2, name: 'Çarşamba' },
-  { id: 3, name: 'Perşembe' },
-  { id: 4, name: 'Cuma' },
-  { id: 5, name: 'Cumartesi' },
-  { id: 6, name: 'Pazar' }
+  { id: 0, name: "Pazartesi" },
+  { id: 1, name: "Salı" },
+  { id: 2, name: "Çarşamba" },
+  { id: 3, name: "Perşembe" },
+  { id: 4, name: "Cuma" },
+  { id: 5, name: "Cumartesi" },
+  { id: 6, name: "Pazar" },
 ];
 const randevular: { date: Date; time: number }[] = [];
 
 const hours = Array.from({ length: 11 }, (_, i) => `${i + 8}:00`);
-const selectedHours = ref<Array<Array<boolean>>>(Array.from({ length: 7 }, () => Array.from({ length: 11 }, () => false)));
+const selectedHours = ref<Array<Array<boolean>>>(
+  Array.from({ length: 7 }, () => Array.from({ length: 11 }, () => false))
+);
 
 const appointments = ref<Array<Appointment>>([
   { dayId: 0, times: [] },
@@ -44,84 +45,99 @@ const appointments = ref<Array<Appointment>>([
   { dayId: 3, times: [] },
   { dayId: 4, times: [] },
   { dayId: 5, times: [] },
-  { dayId: 6, times: [] }
+  { dayId: 6, times: [] },
 ]);
 
-const logSelectedTime = (dayId: number, dayName: string, time: string) => {
-  console.log(`Seçilen gün ID: ${dayId}, Gün: ${dayName}, Saat: ${time}`);
-};
-
 const saveSchedule = () => {
-  const selectedTimes = [];
+  const selectedTimes: Appointment[] = [];
   selectedHours.value.forEach((day, dayIndex) => {
-    const selectedTimesForDay = hours.filter((hour, hourIndex) => day[hourIndex]);
+    const selectedTimesForDay = hours.filter(
+      (hour, hourIndex) => day[hourIndex]
+    );
     if (selectedTimesForDay.length > 0) {
-      selectedTimes.push({ dayId: dayIndex, dayName: days[dayIndex].name, times: selectedTimesForDay });
+      selectedTimes.push({
+        dayId: dayIndex,
+        times: selectedTimesForDay,
+      });
     }
   });
 
   const today = new Date();
   console.log("bugünün tarihi: ", today);
-  const birAySonrasi = addDays(startOfDay(today), 30); // Bugünden ? gün sonrası
+  const birAySonrasi = addDays(startOfDay(today), 30);
 
   const dayDates = getDayDates(today, birAySonrasi);
-  console.log("selectedTimes: ",selectedTimes)
 
-  dayDates.Monday.forEach((date) => {
-    selectedTimes[0]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
+  selectedTimes.forEach((day) => {
+    if (day.dayId == 0) {
+      dayDates.Monday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 1) {
+      dayDates.Tuesday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 2) {
+      dayDates.Wednesday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 3) {
+      dayDates.Thursday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 4) {
+      dayDates.Friday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 5) {
+      dayDates.Saturday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
+    if (day.dayId == 6) {
+      dayDates.Sunday.forEach((date) => {
+        day.times.forEach((hour: any) => {
+          randevular.push({ date, time: hour });
+        });
+      });
+    }
   });
-  dayDates.Tuesday.forEach((date) => {
-    selectedTimes[1]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-  dayDates.Wednesday.forEach((date) => {
-    selectedTimes[2]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-  dayDates.Thursday.forEach((date) => {
-    selectedTimes[3]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-  dayDates.Friday.forEach((date) => {
-    selectedTimes[4]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-  dayDates.Saturday.forEach((date) => {
-    selectedTimes[5]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-  dayDates.Sunday.forEach((date) => {
-    selectedTimes[6]?.times.forEach((hour) => {
-      randevular.push({ date, time: hour });
-    });
-  });
-
 
   console.log("Randevular:");
   randevular.forEach((randevu) => {
-    console.log(`${randevu.date.toISOString().slice(0, 10)} ${randevu.time}:00`);
+    console.log(`${randevu.date.toISOString().slice(0, 10)} ${randevu.time}`);
   });
 };
 
 const handleCheckboxChange = (dayId: number, hourIndex: number) => {
-  selectedHours.value[dayId][hourIndex] = !selectedHours.value[dayId][hourIndex];
+  selectedHours.value[dayId][hourIndex] =
+    !selectedHours.value[dayId][hourIndex];
 };
 
 onMounted(() => {
-  appointments.value.forEach(appointment => {
-    appointment.times.forEach(time => {
+  appointments.value.forEach((appointment: Appointment) => {
+    appointment.times.forEach((time: string) => {
       selectedHours.value[appointment.dayId][hours.indexOf(time)] = true;
     });
   });
 });
-
 
 function getDayDates(baslangicTarihi: Date, bitisTarihi: Date) {
   const days: Record<string, Date[]> = {
@@ -135,7 +151,7 @@ function getDayDates(baslangicTarihi: Date, bitisTarihi: Date) {
   };
 
   let date = startOfDay(baslangicTarihi);
-debugger;
+
   while (date <= bitisTarihi) {
     if (isMonday(date)) {
       days.Monday.push(new Date(date));
@@ -161,16 +177,6 @@ debugger;
 
   return days;
 }
-
-
-
-// dayDates.Tuesday.forEach((date) => {
-//   [9, 14, 17].forEach((hour) => {
-//     randevular.push({ date, time: hour });
-//   });
-// });
-
-
 </script>
 
 <template>
@@ -186,9 +192,17 @@ debugger;
           <v-container v-for="(day, index) in days" :key="index">
             <h3>{{ day.name }}</h3>
             <v-row align="center">
-              <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="auto">
-                <v-checkbox :model-value="selectedHours[day.id][hourIndex]"
-                  @update:model-value="handleCheckboxChange(day.id, hourIndex)" :label="hour" dense></v-checkbox>
+              <v-col
+                v-for="(hour, hourIndex) in hours"
+                :key="hourIndex"
+                cols="auto"
+              >
+                <v-checkbox
+                  :model-value="selectedHours[day.id][hourIndex]"
+                  @update:model-value="handleCheckboxChange(day.id, hourIndex)"
+                  :label="hour"
+                  dense
+                ></v-checkbox>
               </v-col>
             </v-row>
           </v-container>
@@ -196,7 +210,13 @@ debugger;
       </v-row>
       <v-row>
         <v-col>
-          <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
+          <v-btn
+            color="primary"
+            size="large"
+            class="float-right"
+            @click="saveSchedule"
+            >Kaydet</v-btn
+          >
         </v-col>
       </v-row>
     </v-container>
