@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import google from "/images/svgs/google-icon.svg";
+import facebook from "/images/svgs/facebook-icon.svg";
 definePageMeta({
   layout: "blank",
 });
@@ -14,7 +16,7 @@ definePageMeta({
           background: linear-gradient(to right, #facae0 50%, transparent 50%);
         "
       >
-        <div class="d-lg-flex justify-center">
+      <div class="d-lg-flex justify-center">
           <p class="text-h1 font-mansalva" style="color: #db2777;">Artı Bir Destek</p>
           <img
             src="/images/backgrounds/welcome-bg-3.png"
@@ -23,20 +25,21 @@ definePageMeta({
           />
         </div>
       </v-col>
-      <v-col cols="12" lg="5" xl="4" class="d-flex align-center justify-center">
+      <v-col
+        cols="12"
+        lg="5"
+        class="d-lg-flex align-center justify-center"
+      >
         <div class="mt-xl-0 mt-5 mw-100">
-          <h2 class="text-h3 font-mansalva font-weight-bold mb-2" >Artı Bir Destek Sistemine</h2>
-          <h2 class="text-h3 font-mansalva font-weight-bold mb-6" >Hoşgeldiniz!</h2>
-
-          <AuthLoginForm />
-          <h6 class="text-h6 d-flex align-center mt-6 font-weight-medium">
-            Hesabın yok mu?
+          <h2 class="text-h3 font-weight-bold mb-4">Artı Bir Destek Sistemi</h2>
+          <AuthRegisterStepForm />
+          <h6 class="text-h6 text-medium-emphasis mt-4 ml-5">
+            Zaten hesabın var mı?
             <v-btn
-              class="pl-0 text-primary text-body-1 opacity-1 pl-2 font-weight-medium"
-              height="auto"
-              to="/auth/register2"
               variant="plain"
-              >Hesap oluştur</v-btn
+              to="/auth/login"
+              class="text-primary text-body-1 opacity-1 pl-2"
+              >Giriş Yap</v-btn
             >
           </h6>
         </div>

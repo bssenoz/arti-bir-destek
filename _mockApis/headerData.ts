@@ -121,30 +121,13 @@ const appsLink: appsLinkType[] = [
 // 
 const quickLink: quickLinksType[] = [
     {
-        title: 'Authentication Design',
-        href: '/auth/login'
+        title: 'Randevu Al',
+        href: '/profile/randevu/randevu-al'
     },
     {
-        title: 'Register Now',
-        href: '/auth/register'
+        title: 'Randevularım',
+        href: '/profile/randevu/randevularim'
     },
-    {
-        title: '404 Error Page',
-        href: '/auth/404'
-    },
-    {
-        title: 'Notes App',
-        href: '/apps/notes'
-    },
-    {
-        title: 'User Application',
-        href: '/apps/user/profile'
-    },
-    {
-        title: 'Blog Design',
-        href: '/apps/blog/posts'
-    },
- 
 ];
 
 // 

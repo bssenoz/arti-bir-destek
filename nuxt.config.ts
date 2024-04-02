@@ -11,7 +11,9 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
-
+  css: [
+    '@/assets/mansalva.scss'
+  ],
   build: {
     //   extractCSS: false,
     transpile: ["vuetify"],
