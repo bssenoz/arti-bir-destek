@@ -1,15 +1,16 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
-import { useUserStore } from '@/stores/user';
+import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
-import { DoctorType } from '@/types/UserType';
+import { DoctorType } from "@/types/UserType";
 
 export default defineComponent({
   name: "StepperComponent",
   data() {
     return {
       step: 1,
-      userType: 'patient',
+      stepItem: 4,
+      userType: "patient",
       selectedComponent: "",
       errorText: "",
       password: "",
@@ -21,38 +22,33 @@ export default defineComponent({
       lastName: "",
       show1: false,
       show2: false,
-      passwordRules: [
-        (v: string) => !!v || "Şifre gerekli!",
-      ],
+      passwordRules: [(v: string) => !!v || "Şifre gerekli!"],
       emailRules: [
         (v: string) => !!v || "E-posta gerekli!",
         (v: string) => /.+@.+\..+/.test(v) || "E-posta geçerli olmalıdır!",
       ],
-      titleRules: [
-        (v: string) => !!v || "Ünvan gerekli!"
-      ],
-      nameRules: [
-        (v: string) => !!v || "Ad gerekli!",
-      ],
-      surnameRules: [
-        (v: string) => !!v || "Soyad gerekli!",
-      ],
+      titleRules: [(v: string) => !!v || "Ünvan gerekli!"],
+      nameRules: [(v: string) => !!v || "Ad gerekli!"],
+      surnameRules: [(v: string) => !!v || "Soyad gerekli!"],
       dialogVisible: false,
-      dialogError: false
+      dialogError: false,
     };
   },
   methods: {
     selectUserType(type: string) {
+      if(type == 'patient') this.stepItem = 4
+      if(type == 'doctor') this.stepItem = 5
       this.userType = type;
-      this.selectedComponent = (type === "patient") ? "PatientRegisterForm" : "DoctorRegisterForm";
+      this.selectedComponent =
+        type === "patient" ? "PatientRegisterForm" : "DoctorRegisterForm";
       console.log("user:", this.userType, "component:", this.selectedComponent);
-    }
+    },
   },
   computed: {
     stepperProgress() {
-      return `${(100 / 3) * (this.step - 1)}%`;
-    }
-  }
+      return `${(100 / (this.stepItem - 1)) * (this.step - 1)}%`;
+    },
+  },
 });
 </script>
 
@@ -69,7 +65,7 @@ export default defineComponent({
       <div
         class="stepper-item"
         :class="{ current: step == item, success: step > item }"
-        v-for="item in 4"
+        v-for="item in stepItem"
         :key="item"
       >
         <div class="stepper-item-counter">
@@ -84,10 +80,9 @@ export default defineComponent({
       </div>
     </div>
 
-    <!-- <div class="stepper-content" v-for="item in 4" :key="item"> -->
     <div class="stepper-pane" v-if="step == 1">
       <v-row class="d-flex my-2 mx-2">
-        <v-col cols="6">
+        <v-col cols="12" sm="6">
           <v-btn
             :class="{ 'selected-button': userType === 'patient' }"
             variant="outlined"
@@ -96,10 +91,10 @@ export default defineComponent({
             block
             @click="selectUserType('patient')"
           >
-            <span class="d-sm-flex d-none mr-1">Hasta Kaydı</span>
+            <span class="d-sm-flex mr-1">Hasta Kaydı</span>
           </v-btn>
         </v-col>
-        <v-col cols="6">
+        <v-col cols="12" sm="6">
           <v-btn
             :class="{ 'selected-button': userType === 'doctor' }"
             variant="outlined"
@@ -108,64 +103,115 @@ export default defineComponent({
             block
             @click="selectUserType('doctor')"
           >
-            <span class="d-sm-flex d-none mr-1">Danışman Kaydı</span>
+            <span class="d-sm-flex mr-1">Danışman Kaydı</span>
           </v-btn>
         </v-col>
       </v-row>
     </div>
-    <div class="stepper-pane" v-if="step == 2">
+    <!-- <div class="stepper-pane" v-if="step == 2"> -->
+      <div class="stepper-pane" v-if="userType === 'doctor' && step === 3 || userType === 'patient' && step === 2">
       <v-row>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Ad</v-label>
-        <VTextField v-model="firstName" :rules="nameRules" required></VTextField>
-      </v-col>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Soyad</v-label>
-        <VTextField v-model="lastName" :rules="surnameRules" required></VTextField>
-      </v-col>
-    </v-row>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Ad</v-label>
+          <VTextField
+            v-model="firstName"
+            :rules="nameRules"
+            required
+          ></VTextField>
+        </v-col>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Soyad</v-label
+          >
+          <VTextField
+            v-model="lastName"
+            :rules="surnameRules"
+            required
+          ></VTextField>
+        </v-col>
+      </v-row>
     </div>
-    <div class="stepper-pane" v-if="step == 3">
+    <div class="stepper-pane" v-if="userType === 'doctor' && step === 4 || userType === 'patient' && step === 3">
       <v-row>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Email</v-label>
-        <VTextField v-model="email" :rules="emailRules" required></VTextField>
-      </v-col>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Telefon Numarası</v-label>
-        <VTextField v-model="phoneNumber"></VTextField>
-      </v-col>
-    </v-row>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Email</v-label
+          >
+          <VTextField v-model="email" :rules="emailRules" required></VTextField>
+        </v-col>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Telefon Numarası</v-label
+          >
+          <VTextField v-model="phoneNumber"></VTextField>
+        </v-col>
+      </v-row>
     </div>
-    <div class="stepper-pane" v-if="step == 4">
+    <div class="stepper-pane" v-if="userType === 'doctor' && step === 5 || userType === 'patient' && step === 4">
       <v-row>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre</v-label>
-        <VTextField v-model="password" :counter="10" :rules="passwordRules" required variant="outlined" hide-details="auto" 
-                :type="show1 ? 'text' : 'password'"  :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append-inner="show1 = !show1"
-          color="primary"></VTextField>
-      </v-col>
-      <v-col cols="12" sm="6">
-        <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre Tekrar</v-label>
-        <VTextField v-model="passwordConfirm" :counter="10" :rules="passwordRules" required variant="outlined" hide-details="auto" 
-                :type="show2 ? 'text' : 'password'"  :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-        @click:append-inner="show2 = !show2" color="primary"></VTextField>
-      </v-col>
-    </v-row>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Şifre</v-label
+          >
+          <VTextField
+            v-model="password"
+            :counter="10"
+            :rules="passwordRules"
+            required
+            variant="outlined"
+            hide-details="auto"
+            :type="show1 ? 'text' : 'password'"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="show1 = !show1"
+            color="primary"
+          ></VTextField>
+        </v-col>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Şifre Tekrar</v-label
+          >
+          <VTextField
+            v-model="passwordConfirm"
+            :counter="10"
+            :rules="passwordRules"
+            required
+            variant="outlined"
+            hide-details="auto"
+            :type="show2 ? 'text' : 'password'"
+            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append-inner="show2 = !show2"
+            color="primary"
+          ></VTextField>
+        </v-col>
+      </v-row>
+    </div>
+    <div class="stepper-pane" v-if="userType === 'doctor' && step === 2">
+      <v-row>
+        <v-col cols="12">
+          <v-label class="text-subtitle-1 font-weight-medium pb-2"
+            >Ünvan</v-label
+          >
+          <VTextField
+            v-model="title"
+            :rules="titleRules"
+            required
+          ></VTextField>
+        </v-col>
+      </v-row>
     </div>
     <!-- </div> -->
 
     <div class="controls">
       <button class="btn" @click="step--" :disabled="step == 1">Geri</button>
-      <button class="btn btn--pink-1" @click="step++" :disabled="step == 4">
+      <button class="btn btn--pink-1" @click="step++" :disabled="step == stepItem" v-if="step != stepItem">
         İleri
+      </button>
+      <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem">
+        KAYDOL
       </button>
     </div>
   </div>
 </template>
-
-
 
 <style scoped lang="scss">
 $default: #c5c5c5;
@@ -179,7 +225,6 @@ $transiton: all 500ms ease;
 
 .wrapper-stepper {
   background-color: #fff;
-  padding: 60px;
   border-radius: 32px;
   box-shadow: rgba($color: #000000, $alpha: 0.09);
 }
@@ -188,10 +233,17 @@ $transiton: all 500ms ease;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 660px;
+
   position: relative;
   z-index: 0;
   margin-bottom: 24px;
+  width: 320px;
+  @media screen and (min-width: 450px) {
+    width: 400px;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 500px;
+  }
 
   &-progress {
     position: absolute;
@@ -289,9 +341,21 @@ $transiton: all 500ms ease;
 
 .stepper-pane {
   color: #333;
-  padding: 60px 60px;
+  padding: 20px 20px;
   box-shadow: 0 8px 12px rgba($color: #000000, $alpha: 0.09);
   margin: 40px 0;
+  height: 300px;
+  align-items: center;
+  display: flex;
+  width: 320px;
+  @media screen and (min-width: 450px) {
+    width: 400px;
+    padding: 40px 40px;
+  }
+  @media screen and (min-width: 1200px) {
+    width: 500px;
+    padding: 60px 60px;
+  }
 }
 
 .controls {

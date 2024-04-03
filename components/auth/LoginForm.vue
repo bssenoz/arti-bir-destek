@@ -79,10 +79,10 @@ const closeDialog = () => {
 
 <template>
   <v-row class="d-flex mb-3">
-    <v-col cols="6" sm="6">
+    <v-col cols="12" sm="6">
       <GoogleSignInButton @success="handleLoginSuccess" @error="handleLoginError"></GoogleSignInButton>
     </v-col>
-    <v-col cols="6" sm="6">
+    <v-col cols="12" sm="6">
       <FacebookLoginButton />
     </v-col>
   </v-row>
@@ -124,4 +124,5 @@ const closeDialog = () => {
       </v-card-actions>
     </v-card>
   </v-dialog>
-</template>./FacebookLoginButton.vue
+</template>
+
