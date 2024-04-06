@@ -47,7 +47,7 @@ definePageMeta({
             <v-btn
               class="pl-0 text-primary text-body-1 opacity-1 pl-2 font-weight-medium"
               height="auto"
-              to="/auth/register2"
+              to="/auth/register"
               variant="plain"
               >Hesap oluştur</v-btn
             >

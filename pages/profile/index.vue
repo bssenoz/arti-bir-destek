@@ -18,6 +18,15 @@ definePageMeta({
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <p>Profile Page</p>
+    <v-col>
+                <v-btn color="primary" to="/profile/randevu/add" class="mb-2 float-left">Yeni Görüşme</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="primary" to="/profile/randevu/takvim" class="mb-2">Randevu Saatleri</v-btn>
+            </v-col>
+            <v-col>
+                <v-btn color="primary" to="/profile/randevu/randevu-al" class="mb-2">Randevu Al</v-btn>
+            </v-col>
     <!-- <ProfileBanner />
     <v-row class="mt-4">
         <v-col cols="12" lg="4" md="4">

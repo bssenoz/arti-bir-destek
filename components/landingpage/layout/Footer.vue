@@ -3,7 +3,7 @@
         <v-row class="justify-center">
             <v-col cols="12" md="4" sm="5"  class="text-center" >
                 <div class="mt-8 mb-4">
-                    <p class="text-subtitle-1 mt-2 text-13">
+                    <p class="text-subtitle-1 mt-2 text-13 font-mansalva font-mansalva color-pink-1">
                         Artı Bir Destek
                     </p>
                 </div>

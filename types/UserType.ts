@@ -7,7 +7,6 @@ export type PatientType = {
     phoneNumber: string | null;
     password: string;
     confirmPassword: string;
-    pregnancyStartDate: string;
 };
 
 export type DoctorType = {

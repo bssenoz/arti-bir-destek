@@ -114,7 +114,7 @@ const sidebarItem: menu[] = [
       {
         title: "Boxed Register",
         icon: PointIcon,
-        to: "/auth/register2",
+        to: "/auth/register",
       },
     ],
   },

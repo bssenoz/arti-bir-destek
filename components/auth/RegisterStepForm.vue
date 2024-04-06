@@ -1,79 +1,114 @@
-<script lang="ts">
-import { defineComponent, ref, computed } from "vue";
-import { useUserStore } from "@/stores/user";
-import { useRouter } from "vue-router";
-import { DoctorType } from "@/types/UserType";
+<script setup lang="ts">
+import { ref, computed } from "vue";
+import { useUserStore } from '@/stores/user';
+import { DoctorType, PatientType } from '@/types/UserType';
 
-export default defineComponent({
-  name: "StepperComponent",
-  data() {
-    return {
-      step: 1,
-      stepItem: 4,
-      userType: "patient",
-      selectedComponent: "",
-      errorText: "",
-      password: "",
-      passwordConfirm: "",
-      email: "",
-      phoneNumber: "",
-      title: "",
-      firstName: "",
-      lastName: "",
-      show1: false,
-      show2: false,
-      passwordRules: [(v: string) => !!v || "Şifre gerekli!"],
-      emailRules: [
-        (v: string) => !!v || "E-posta gerekli!",
-        (v: string) => /.+@.+\..+/.test(v) || "E-posta geçerli olmalıdır!",
-      ],
-      titleRules: [(v: string) => !!v || "Ünvan gerekli!"],
-      nameRules: [(v: string) => !!v || "Ad gerekli!"],
-      surnameRules: [(v: string) => !!v || "Soyad gerekli!"],
-      dialogVisible: false,
-      dialogError: false,
-    };
-  },
-  methods: {
-    selectUserType(type: string) {
-      if(type == 'patient') this.stepItem = 4
-      if(type == 'doctor') this.stepItem = 5
-      this.userType = type;
-      this.selectedComponent =
-        type === "patient" ? "PatientRegisterForm" : "DoctorRegisterForm";
-      console.log("user:", this.userType, "component:", this.selectedComponent);
-    },
-  },
-  computed: {
-    stepperProgress() {
-      return `${(100 / (this.stepItem - 1)) * (this.step - 1)}%`;
-    },
-  },
+const userStore = useUserStore();
+
+const router = useRouter();
+const step = ref(1);
+const stepItem = ref(4);
+const userType = ref("patient");
+const errorText = ref("");
+const password = ref("");
+const passwordConfirm = ref("");
+const email = ref("");
+const phoneNumber = ref("");
+const title = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const show1 = ref(false);
+const show2 = ref(false);
+const dialogVisible = ref(false);
+const dialogError = ref(false);
+
+const passwordRules = [(v: string) => !!v || "Şifre gerekli!"];
+const emailRules = [
+  (v: string) => !!v || "E-posta gerekli!",
+  (v: string) => /.+@.+\..+/.test(v) || "E-posta geçerli olmalıdır!",
+];
+const titleRules = [(v: string) => !!v || "Ünvan gerekli!"];
+const nameRules = [(v: string) => !!v || "Ad gerekli!"];
+const surnameRules = [(v: string) => !!v || "Soyad gerekli!"];
+
+const selectUserType = (type: string) => {
+  if (type === 'patient') stepItem.value = 4;
+  if (type === 'doctor') stepItem.value = 5;
+  userType.value = type;
+};
+
+const register = async () => {
+  try {
+    if (password.value !== passwordConfirm.value) {
+      throw new Error("Şifreler eşleşmiyor");
+    }
+
+    if (stepItem.value == 5) {
+      const newUser: DoctorType = {
+        id: "",
+        name: firstName.value,
+        surname: lastName.value,
+        email: email.value,
+        title: title.value,
+        phoneNumber: phoneNumber.value,
+        password: password.value,
+        confirmPassword: passwordConfirm.value,
+        profileImageUrl: null
+      };
+
+      await userStore.registerDoctor(newUser);
+      dialogVisible.value = true;
+    }
+
+    if (stepItem.value == 4) {
+      const newUser: PatientType = {
+        id: "",
+        name: firstName.value,
+        surname: lastName.value,
+        email: email.value,
+        phoneNumber: phoneNumber.value,
+        password: password.value,
+        confirmPassword: passwordConfirm.value,
+        profileImageUrl: null,
+      };
+
+      await userStore.registerPatient(newUser);
+      dialogVisible.value = true;
+    }
+
+  } catch (error: any) {
+    console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
+    errorText.value = error.message;
+    dialogError.value = true;
+  }
+};
+
+const stepperProgress = computed(() => {
+  return `${(100 / (stepItem.value - 1)) * (step.value - 1)}%`;
 });
+
+const closeDialogAndRedirect = () => {
+  dialogVisible.value = false;
+  router.push({ path: '/auth/login' });
+};
+
+const closeDialog = () => {
+  dialogError.value = false;
+};
 </script>
 
 <template>
   <div class="wrapper-stepper">
     <div class="stepper">
       <div class="stepper-progress">
-        <div
-          class="stepper-progress-bar"
-          :style="'width:' + stepperProgress"
-        ></div>
+        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
       </div>
 
-      <div
-        class="stepper-item"
-        :class="{ current: step == item, success: step > item }"
-        v-for="item in stepItem"
-        :key="item"
-      >
+      <div class="stepper-item" :class="{ current: step == item, success: step > item }" v-for="item in stepItem"
+        :key="item">
         <div class="stepper-item-counter">
-          <img
-            class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
-            alt=""
-          />
+          <img class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
           <span class="number">{{ item }}</span>
         </div>
         <span class="stepper-item-title">Adım {{ item }}</span>
@@ -83,66 +118,40 @@ export default defineComponent({
     <div class="stepper-pane" v-if="step == 1">
       <v-row class="d-flex my-2 mx-2">
         <v-col cols="12" sm="6">
-          <v-btn
-            :class="{ 'selected-button': userType === 'patient' }"
-            variant="outlined"
-            size="large"
-            class="border text-subtitle-1"
-            block
-            @click="selectUserType('patient')"
-          >
+          <v-btn :class="{ 'selected-button': userType === 'patient' }" variant="outlined" size="large"
+            class="border text-subtitle-1" block @click="selectUserType('patient')">
             <span class="d-sm-flex mr-1">Hasta Kaydı</span>
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-btn
-            :class="{ 'selected-button': userType === 'doctor' }"
-            variant="outlined"
-            size="large"
-            class="border text-subtitle-1"
-            block
-            @click="selectUserType('doctor')"
-          >
+          <v-btn :class="{ 'selected-button': userType === 'doctor' }" variant="outlined" size="large"
+            class="border text-subtitle-1" block @click="selectUserType('doctor')">
             <span class="d-sm-flex mr-1">Danışman Kaydı</span>
           </v-btn>
         </v-col>
       </v-row>
     </div>
     <!-- <div class="stepper-pane" v-if="step == 2"> -->
-      <div class="stepper-pane" v-if="userType === 'doctor' && step === 3 || userType === 'patient' && step === 2">
+    <div class="stepper-pane" v-if="userType === 'doctor' && step === 3 || userType === 'patient' && step === 2">
       <v-row>
         <v-col cols="12">
           <v-label class="text-subtitle-1 font-weight-medium pb-2">Ad</v-label>
-          <VTextField
-            v-model="firstName"
-            :rules="nameRules"
-            required
-          ></VTextField>
+          <VTextField v-model="firstName" :rules="nameRules" required></VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Soyad</v-label
-          >
-          <VTextField
-            v-model="lastName"
-            :rules="surnameRules"
-            required
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Soyad</v-label>
+          <VTextField v-model="lastName" :rules="surnameRules" required></VTextField>
         </v-col>
       </v-row>
     </div>
     <div class="stepper-pane" v-if="userType === 'doctor' && step === 4 || userType === 'patient' && step === 3">
       <v-row>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Email</v-label
-          >
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Email</v-label>
           <VTextField v-model="email" :rules="emailRules" required></VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Telefon Numarası</v-label
-          >
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Telefon Numarası</v-label>
           <VTextField v-model="phoneNumber"></VTextField>
         </v-col>
       </v-row>
@@ -150,52 +159,26 @@ export default defineComponent({
     <div class="stepper-pane" v-if="userType === 'doctor' && step === 5 || userType === 'patient' && step === 4">
       <v-row>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Şifre</v-label
-          >
-          <VTextField
-            v-model="password"
-            :counter="10"
-            :rules="passwordRules"
-            required
-            variant="outlined"
-            hide-details="auto"
-            :type="show1 ? 'text' : 'password'"
-            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append-inner="show1 = !show1"
-            color="primary"
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre</v-label>
+          <VTextField v-model="password" :counter="10" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show1 ? 'text' : 'password'"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show1 = !show1" color="primary">
+          </VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Şifre Tekrar</v-label
-          >
-          <VTextField
-            v-model="passwordConfirm"
-            :counter="10"
-            :rules="passwordRules"
-            required
-            variant="outlined"
-            hide-details="auto"
-            :type="show2 ? 'text' : 'password'"
-            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append-inner="show2 = !show2"
-            color="primary"
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre Tekrar</v-label>
+          <VTextField v-model="passwordConfirm" :counter="10" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show2 ? 'text' : 'password'"
+            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show2 = !show2" color="primary">
+          </VTextField>
         </v-col>
       </v-row>
     </div>
     <div class="stepper-pane" v-if="userType === 'doctor' && step === 2">
       <v-row>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Ünvan</v-label
-          >
-          <VTextField
-            v-model="title"
-            :rules="titleRules"
-            required
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Ünvan</v-label>
+          <VTextField v-model="title" :rules="titleRules" required></VTextField>
         </v-col>
       </v-row>
     </div>
@@ -206,9 +189,33 @@ export default defineComponent({
       <button class="btn btn--pink-1" @click="step++" :disabled="step == stepItem" v-if="step != stepItem">
         İleri
       </button>
-      <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem">
+      <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem" @click="register">
         KAYDOL
       </button>
+      <v-dialog v-model="dialogVisible" width="500">
+        <v-card title="Kayıt Başarılı">
+          <v-card-text>
+            Kaydınız başarıyla tamamlandı.
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text="Kapat" @click="closeDialogAndRedirect"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="dialogError" width="500">
+        <v-card title="Hata">
+          <v-card-text>
+            {{ errorText }}
+          </v-card-text>
+
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text="Kapat" @click="closeDialog"></v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
@@ -238,9 +245,11 @@ $transiton: all 500ms ease;
   z-index: 0;
   margin-bottom: 24px;
   width: 320px;
+
   @media screen and (min-width: 450px) {
     width: 400px;
   }
+
   @media screen and (min-width: 1200px) {
     width: 500px;
   }
@@ -348,10 +357,12 @@ $transiton: all 500ms ease;
   align-items: center;
   display: flex;
   width: 320px;
+
   @media screen and (min-width: 450px) {
     width: 400px;
     padding: 40px 40px;
   }
+
   @media screen and (min-width: 1200px) {
     width: 500px;
     padding: 60px 60px;

@@ -3,13 +3,13 @@ import { RouterView } from 'vue-router';
 import { useCustomizerStore } from '@/stores/customizer';
 import { pl, zhHans } from 'vuetify/locale'
 const customizer = useCustomizerStore();
-const title = ref("Modernize - Nuxt3 Typescript based Admin Dashboard Template");
+const title = ref("Artı Bir Destek");
 useHead({
     meta: [{ content: title }],
     titleTemplate: (titleChunk) => {
         return titleChunk
             ? `${titleChunk}`
-            : "Modernize - Nuxt3 Typescript based Admin Dashboard Template";
+            : "Artı Bir Destek";
     },
 });
 </script>
