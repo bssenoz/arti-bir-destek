@@ -6,8 +6,8 @@
   <NuxtLink to="/profile/chat" class="text-decoration-none">
     <v-btn variant="text" color="primary">Mesaj</v-btn>
   </NuxtLink>
-  <NuxtLink to="/profile/randevu/randevu-al" class="text-decoration-none">
-    <v-btn variant="text" color="primary">Randevu Al</v-btn>
+  <NuxtLink to="/profile/randevu/randevularim" class="text-decoration-none">
+    <v-btn variant="text" color="primary">Randevu</v-btn>
   </NuxtLink>
   <NuxtLink to="/profile/video" class="text-decoration-none">
     <v-btn variant="text" color="primary">Videolar </v-btn>

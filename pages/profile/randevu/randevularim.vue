@@ -1,15 +1,14 @@
 <template>
     <v-container>
         <v-row>
-            <!-- Yeni Görüşme Butonu -->
-            <v-col>
+            <!-- <v-col>
                 <v-btn color="primary" to="/profile/randevu/add" class="mb-2 float-left">Yeni Görüşme</v-btn>
             </v-col>
             <v-col>
                 <v-btn color="primary" to="/profile/randevu/takvim" class="mb-2">Randevu Saatleri</v-btn>
-            </v-col>
-            <v-col>
-                <v-btn color="primary" to="/profile/randevu/randevu-al" class="mb-2">Randevu Al</v-btn>
+            </v-col> -->
+            <v-col cols="12">
+                <v-btn color="primary" to="/profile/randevu/randevu-al" class="mb-2 float-right">Randevu Al</v-btn>
             </v-col>
             <!-- Takvim Görüntüleme -->
             <v-col>
@@ -35,7 +34,7 @@
         </v-row>
         <!-- Görüşme Kartları -->
         <v-row>
-            <v-col cols="12" lg="10">
+            <v-col cols="12" lg="9">
                 <v-row>
                     <v-col v-for="(appointment, index) in appointments" :key="index" cols="12">
                         <UiParentCard :title="appointment.name">
@@ -50,7 +49,7 @@
                 </v-row>
             </v-col>
             <!-- Takvim (Sadece Büyük Ekranlar İçin) -->
-            <v-col cols="12" lg="2" class="d-none d-lg-flex">
+            <v-col cols="12" lg="3" class="d-none d-lg-flex float-right">
                 <VCalendar :attributes="attributes" :rows="3" :step="1" locale="tr" />
             </v-col>
         </v-row>
@@ -102,3 +101,9 @@ const getMeets = computed(() => {
 
 const appointments = getMeets;
 </script>
+
+<style scoped>
+::v-deep(.vc-container) {
+    width: 325px;
+}
+</style>

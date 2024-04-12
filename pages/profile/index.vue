@@ -16,7 +16,6 @@ definePageMeta({
 </script>
 
 <template>
-    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <p>Profile Page</p>
     <v-col>
                 <v-btn color="primary" to="/profile/randevu/add" class="mb-2 float-left">Yeni Görüşme</v-btn>
@@ -27,7 +26,10 @@ definePageMeta({
             <v-col>
                 <v-btn color="primary" to="/profile/randevu/randevu-al" class="mb-2">Randevu Al</v-btn>
             </v-col>
-    <!-- <ProfileBanner />
+            <v-col>
+                <v-btn color="primary" to="/profile/randevu/randevularim" class="mb-2">Randevularım</v-btn>
+            </v-col>
+    <ProfileBanner />
     <v-row class="mt-4">
         <v-col cols="12" lg="4" md="4">
             <IntroCard />
@@ -37,5 +39,5 @@ definePageMeta({
             <AddPost />
             <PostListing />
         </v-col>
-    </v-row> -->
+    </v-row>
 </template>
