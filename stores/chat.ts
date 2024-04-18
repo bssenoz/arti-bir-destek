@@ -112,7 +112,12 @@ export const useChatStore = defineStore({
 
         async fetchMessages(chatUsers: any) {
            console.log("chatusers: ",chatUsers)
-            const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers);
+            const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            });
             console.log(response.data);
             this.messages = response.data
         },
@@ -121,13 +126,25 @@ export const useChatStore = defineStore({
             console.log("this: ", this.fromUserId)
         },
         async fetchMessageInfo(userId: any) {
-            const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`);
+            const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            });
             console.log(response.data);
             this.allMessageInfo = response.data
         },
         async updateStatus(chatUsers: any) {
             console.log("chatuser: ",chatUsers)
-            const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers);
+            const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            });
+
+          this.fetchMessageInfo(chatUsers.receiverId)
         },
         
     }

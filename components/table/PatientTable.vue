@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
-import { Vue } from 'nuxt-property-decorator';
+import user from '/images/profile/user.png';
 
 const userStore = useUserStore();
 
@@ -21,11 +21,6 @@ const filteredList = computed(() => {
         return user.name.toLowerCase().includes(search.value.toLowerCase());
     });
 });
-const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-    return formattedDate;
-};
 
 </script>
 <template>
@@ -41,8 +36,7 @@ const formatDate = (dateString: string) => {
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">#</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Gebelik Başlangıç</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">İşlem</th>
+
             </tr>
         </thead>
         <tbody>
@@ -51,10 +45,10 @@ const formatDate = (dateString: string) => {
                 <td>
                     <div class="d-flex align-center py-4">
                         <div v-if="item.profileImageUrl">
-                            <v-img :src="item.profileImageUrl" width="45px" class="rounded-circle img-fluid"></v-img>
+                            <v-img :src="item.profileImageUrl" width="45px" class="rounded-circle img-fluid" ></v-img>
                         </div>
                         <div v-else>
-                            <div class="rounded-circle" style="width: 45px; height: 45px; background-color: #ccc;"></div>
+                            <v-img :src="user" width="45"/>
                         </div>
 
                         <div class="ml-5">
@@ -64,27 +58,6 @@ const formatDate = (dateString: string) => {
                     </div>
                 </td>
                 <td class="text-subtitle-1 text-no-wrap">{{ item.phoneNumber }}</td>
-                <td>
-                    <span class="text-subtitle-1 d-block mt-1 textSecondary">{{ formatDate(item.pregnancyStartDate) }}</span>
-                </td>
-                <td>
-                    <div class="d-flex align-center">
-                        <v-tooltip text="Görüşme Oluştur">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon flat v-bind="props" to="/profile/randevu/add">
-                                    <ClockIcon stroke-width="1.5" size="20" class="text-primary" />
-                                </v-btn>
-                            </template>
-                        </v-tooltip>
-                        <v-tooltip text="Mesaj At">
-                            <template v-slot:activator="{ props }">
-                                <v-btn icon flat v-bind="props" to="/profile/chat">
-                                    <MailIcon stroke-width="1.5" size="20" class="text-secondary" />
-                                </v-btn>
-                            </template>
-                        </v-tooltip>
-                    </div>
-                </td>
             </tr>
         </tbody>
     </v-table>

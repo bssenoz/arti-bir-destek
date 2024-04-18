@@ -7,10 +7,10 @@ definePageMeta({
 <template>
     <div class="d-flex justify-center align-center text-center h-100">
         <div>
-            <img src="/images/backgrounds/errorimg.svg" width="500" alt="404" />
-            <h1 class="text-h1 pt-3">Opps!!!</h1>
-            <h4 class="text-h4 my-8">This page you are looking for could not be found.</h4>
-            <v-btn flat color="primary" class="mb-4" to="/">Go Back to Home</v-btn>
+            <img src="/images/backgrounds/404-Error-pana.png" width="800" alt="404" />
+            <h1 class="text-h1">Hay Aksi!!!</h1>
+            <h4 class="text-h4 my-6">Aradığın sayfa bulunmamakta.</h4>
+            <v-btn flat color="primary" class="mb-4" to="/">Anasayfaya Geri Dön</v-btn>
         </div>    
     </div>
 </template>

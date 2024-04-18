@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
+import userProfile from '/images/profile/user.png';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -9,11 +10,6 @@ const currenypwd = ref('123456789142');
 const newpwd = ref('123456789142');
 const confirmpwd = ref('123456789142');
 
-/*personal detail*/
-const name = ref('Mathew');
-const surname = ref('Anderson');
-const email = ref('mathew@gmail.com');
-const pregnancyStartDate = ref('11.11.2023');
 const show1 = ref(false);
 const show2 = ref(false);
 const show3 = ref(false);
@@ -26,22 +22,22 @@ const currentDelete = () => {
         console.log(error)
     }
 }
-
+const props = defineProps({ user: Object});
 </script>
 
 <template>
-    <v-card elevation="10">
         <v-row class="ma-sm-n2 ma-n1">
 
             <v-col cols="12" sm="6">
                 <v-card elevation="10">
                     <v-card-item>
-                        <h5 class="text-h5">Fotoğraf</h5>
+                         <h5 class="text-h5">Fotoğraf</h5>
                         <div class="text-subtitle-1 text-medium-emphasis mt-2">Profil resminizi buradan değiştirin.
                         </div>
                         <div class="text-center mt-6 mb-6">
                             <v-avatar size="120">
-                                <img src="/images/profile/user-1.jpg" height="120" alt="image" />
+                                <img :src="user.profileImageUrl" height="120" alt="image" v-if="user.profileImageUrl"/>
+                                <img :src="userProfile" height="120" alt="image" v-else/>
                             </v-avatar>
                         </div>
                         <div class="d-flex justify-center">
@@ -89,23 +85,23 @@ const currentDelete = () => {
                             <v-row>
                                 <v-col cols="12" md="6">
                                     <v-label class="mb-2 font-weight-medium">Ad</v-label>
-                                    <v-text-field color="primary" variant="outlined" type="text" v-model="name"
+                                    <v-text-field color="primary" variant="outlined" type="text" v-model="user.name"
                                         hide-details />
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-label class="mb-2 font-weight-medium">Soyad</v-label>
-                                    <v-text-field color="primary" variant="outlined" type="text" v-model="surname"
+                                    <v-text-field color="primary" variant="outlined" type="text" v-model="user.surname"
                                         hide-details />
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-label class="mb-2 font-weight-medium">Email</v-label>
-                                    <v-text-field color="primary" variant="outlined" type="text" v-model="email"
+                                    <v-text-field color="primary" variant="outlined" type="text" v-model="user.email" disabled
                                         hide-details />
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-label class="mb-2 font-weight-medium">Gebelik Başlama Tarihi</v-label>
+                                    <v-label class="mb-2 font-weight-medium">Telefon Numarası</v-label>
                                     <v-text-field color="primary" variant="outlined" type="text"
-                                        v-model="pregnancyStartDate" hide-details />
+                                        v-model="user.phoneNumber" hide-details />
                                 </v-col>
 
                             </v-row>
@@ -143,5 +139,4 @@ const currentDelete = () => {
             <v-btn size="large" color="primary" class="mr-4" flat>Kaydet</v-btn>
             <v-btn size="large" class="bg-lighterror text-error" flat>İptal</v-btn>
         </div>
-    </v-card>
 </template>

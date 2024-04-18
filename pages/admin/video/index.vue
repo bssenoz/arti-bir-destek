@@ -1,7 +1,7 @@
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
-        <v-col cols="12"><v-btn class="float-right" to="/admin/video/add">Video Yükle</v-btn></v-col>
+        <v-col cols="12"><v-btn class="float-right" color="primary" to="/admin/video/ekle">Video Yükle</v-btn></v-col>
     </v-row>
     <v-row>
         <v-col cols="12">
@@ -9,12 +9,18 @@
                 <template v-slot:item="{ item }">
                     <tr>
                         <td class="text-subtitle-1"> {{ item.columns.id }}</td>
-                        <td class="text-subtitle-1">{{ item.columns.title }}</td>
-                        <td class="text-subtitle-1">{{ item.columns.description }}</td>
+                        <td class="text-subtitle-1"> {{ item.columns.title }}</td>
+                        <td class="text-subtitle-1">
+                            <div style="max-height: 90px; overflow-y: auto;">
+                                {{ item.columns.description }}
+                            </div>
+                        </td>
+
                         <td class="text-subtitle-1">{{ item.columns.url }}</td>
                         <td class="text-subtitle-1">
-                            <v-btn color="primary" @click="editVideo(item)">Düzenle</v-btn>
-                            <v-btn class="ml-2" color="primary" @click="deleteVideo(item.columns.id)">Sil</v-btn>
+                            <v-btn color="" @click="showVideoDialog(item.columns)" class="mb-2">Göster</v-btn>
+                            <v-btn color="" @click="editVideo(item)" class="mb-2">Düzenle</v-btn>
+                            <v-btn class="ml-2" color="" @click="deleteVideo(item.columns.id)">Sil</v-btn>
                         </td>
                     </tr>
                 </template>
@@ -22,13 +28,28 @@
         </v-col>
     </v-row>
 
+
+    <!-- Video Dialog -->
+    <v-dialog v-model="videoDialog" max-width="800">
+        <v-card>
+            <v-card-title>{{ editedItem.title }}</v-card-title>
+            <v-card-text>
+                <video controls :src="editedItem.url" style="width: 100%"></video>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+                <v-btn @click="videoDialog = false">Kapat</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+
+
     <!-- Edit Dialog -->
     <v-dialog v-model="editDialog" max-width="500">
         <v-card>
             <v-card-title>Düzenle</v-card-title>
             <v-card-text>
                 <v-text-field v-model="editedItem.title" label="Başlık"></v-text-field>
-                <v-text-field v-model="editedItem.description" label="Açıklama"></v-text-field>
+                <v-textarea v-model="editedItem.description" label="Açıklama"></v-textarea>
                 <v-text-field v-model="editedItem.url" label="URL" readonly></v-text-field>
             </v-card-text>
             <v-card-actions>
@@ -82,7 +103,7 @@ import { useVideoStore } from '@/stores/video';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 
 const videoStore = useVideoStore();
-
+const videoDialog = ref(false);
 const editDialog = ref(false);
 const editedItem = ref<{ title?: string; description?: string; url?: string }>({});
 const errorDialog = ref(false);
@@ -114,6 +135,11 @@ const confirmDelete = () => {
     deleteDialog.value = false;
     successDialog.value = true;
 }
+const showVideoDialog = (item: any) => {
+    editedItem.value = Object.assign({}, item);
+    videoDialog.value = true;
+}
+
 
 const editVideo = (item: any) => {
     editedItem.value = Object.assign({}, item.columns);
@@ -146,10 +172,17 @@ const breadcrumbs = ref([
 ]);
 
 const headers = ref([
-    { title: 'ID', align: 'start', key: 'id', sortable: false },
-    { title: 'Başlık', align: 'start', key: 'title', sortable: false },
-    { title: 'Açıklama', align: 'start', key: 'description', sortable: false },
+    { title: 'ID', align: 'start', key: 'id' },
+    { title: 'Başlık', align: 'start', key: 'title' },
+    { title: 'Açıklama', align: 'start', key: 'description', },
     { title: 'Url', align: 'start', key: 'url' },
-    { title: '', align: 'start', key: 'action' },
+    { title: 'İşlem', align: 'center', key: 'action', sortable: false },
 ]);
 </script>
+
+<style scoped>
+.v-btn:hover {
+    background-color: #db2777;
+    color: #fff;
+}
+</style>

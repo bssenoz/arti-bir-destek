@@ -1,0 +1,59 @@
+<template>
+    <v-container>
+        <v-row>
+            <v-col>
+                <div class="font-weight-bold text-h3 text-center color-pink-1 mt-2">Video İstatistikleri</div>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col v-for="(video, index) in videoStatistics" :key="index" cols="12" sm="6" md="4" class="h-100">
+                <Chart :title="video.videoTitle" :clickNumber="video.videoStatistics[0].videoClicksNumber"
+                    :watchPercentage="video.videoStatistics[0].videoViewingRate" image="none"
+                    v-if="video.videoStatistics[0]" />
+                <Chart :title="video.videoTitle" :clickNumber="0" :watchPercentage="0" v-if="video.videoStatistics == ''"
+                    image="none" />
+            </v-col>
+        </v-row>
+    </v-container>
+</template>
+
+<script setup lang="ts">
+import Chart from '@/components/video/Chart.vue';
+import Chart2 from '@/components/video/Chart2.vue';
+import { useVideoStore } from '@/stores/video';
+import { useVideoStatisticStore } from '@/stores/videoStatistic';
+import { useUserStore } from '@/stores/user';
+import { VideoStatisticsType } from "~/types/VideoType";
+
+const videoStore = useVideoStore();
+const videoStatisticStore = useVideoStatisticStore();
+const userStore = useUserStore();
+onMounted(() => {
+    videoStore.fetchVideos();
+    videoStatisticStore.getCurrentUserVideoStatistics();
+});
+
+const videos: any = computed(() => {
+    return videoStore.videos;
+});
+const videoStatistics: any = computed(() => {
+    return videoStatisticStore.currentVideoStatistics;
+});
+
+definePageMeta({
+    layout: "default",
+    middleware: [
+        function (to, from) {
+            // Custom inline middleware
+        },
+        'auth',
+    ],
+});
+
+const videoData = [
+    { title: "Video 1", description: "Description 1", watchPercentage: 60 },
+    { title: "Video 2", description: "Description 2", watchPercentage: 25 },
+    { title: "Video 3", description: "Description 3", watchPercentage: 80 },
+    { title: "Video 4", description: "Description 4", watchPercentage: 100 }
+];
+</script>

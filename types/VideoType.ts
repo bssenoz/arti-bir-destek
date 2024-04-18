@@ -4,3 +4,8 @@ export type VideoType = {
     description: string;
     url: string;
 };
+export type VideoStatisticsType = {
+    videoId: number;
+    clicksNumber: number;
+    viewingRate: number;
+};

@@ -26,6 +26,10 @@ onMounted(async () => {
     await userStore.getCurrentUser()
     chatStore.connectToHub(currentUser.value)
 });
+
+const userRole = computed(() => {
+    return userStore.userRole;
+})
 watchEffect(() => {
     currentUser.value = userStore.currentUser;
 });
@@ -36,14 +40,14 @@ watchEffect(() => {
     <v-card elevation="10">
         <AppBaseCard>
             <template v-slot:leftpart>
-                <ChatList/>
+                <ChatList :userRole="userRole"/>
             </template>
             <template v-slot:rightpart>
                 <ChatDetail/>
             </template>
 
             <template v-slot:mobileLeftContent>
-                <ChatList />
+                <ChatList :userRole="userRole"/>
             </template>
         </AppBaseCard>
     </v-card>

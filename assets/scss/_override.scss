@@ -21,33 +21,73 @@ html {
     border-color: rgba(var(--v-border-color), 1) !important;
     opacity: 1;
 }
+
 .avtar-border {
     border: 2px solid rgb(var(--v-theme-surface)) !important;
 }
+
 //*Calender font-color*//
-.vc-container,.vc-pane-container{
+.vc-container,
+.vc-pane-container {
     font-family: inherit !important;
     border-color: rgba(var(--v-border-color), 1) !important;
 }
-.vc-title{
+
+.vc-title {
     color: inherit !important;
 }
-.vc-select select,.vc-am-pm{
+
+.vc-select select,
+.vc-am-pm {
     color: inherit !important;
     background-color: inherit !important;
 }
+
 .font-mansalva {
     font-family: 'Mansalva', cursive !important;
 }
+
 .top-12 {
     top: 3rem;
 }
+
+.top-24 {
+    top: 6rem;
+}
+
+@media screen and (min-width:2000px) {
+    .top-24 {
+        top: 10rem;
+    }
+}
+
 .d-grid {
     display: grid;
 }
+
 .color-pink-1 {
     color: #db2777;
 }
+
 .color-pink-2 {
     color: #facae0;
+}
+
+.truncate {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #a69ba1;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #cecaca;
 }

@@ -21,7 +21,7 @@ const sidebarMenu = shallowRef(sidebarItems);
         </v-locale-provider>
         <v-locale-provider v-else>
             <Nuxt to="/">
-                <div class="pa-5 font-mansalva font-weight-bold color-pink-1">
+                <div class="pt-7 font-mansalva font-weight-bold color-pink-1 text-h4 text-center">
                     Artı Bir Destek
                 </div>
             </Nuxt>

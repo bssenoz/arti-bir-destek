@@ -1,85 +1,40 @@
 import {
-    CircleIcon,
-    HomeIcon,
-    ClipboardIcon,
-    AlertCircleIcon,
-    SettingsIcon,
-    LoginIcon,
-    UserPlusIcon,
-    RotateIcon,
-    ZoomCodeIcon,
-    FileDescriptionIcon,
-    BorderAllIcon,
-    AppsIcon,
-    EyeTableIcon,
-    ColumnsIcon,
-    SortAscendingIcon,
-    PageBreakIcon,
-    FilterIcon,
-    BoxModelIcon,
-    ServerIcon,
-    BrandAirtableIcon,
-    RowInsertBottomIcon
+    VideoIcon,
+    UsersIcon,
+    UserCheckIcon,
+    PercentageIcon
     
 } from 'vue-tabler-icons';
 
 export interface menu {
-    header?: string;
+    children: any;
+    header: any;
     title?: string;
     icon?: any;
     to?: string;
-    divider?: boolean;
-    chip?: string;
-    chipColor?: string;
-    chipVariant?: string;
-    chipIcon?: string;
-    children?: menu[];
-    disabled?: boolean;
-    subCaption?: string;
-    class?: string;
-    extraclass?: string;
-    type?: string;
 }
 
 const horizontalItems: menu[] = [
     {
-        title: 'Mesaj',
-        icon: BrandAirtableIcon,
-        to: '/profile/chat'
+        title: 'Hastalar',
+        icon: UsersIcon,
+        to: '/admin/hastalar'
     },
     {
-        title: 'Profil',
-        icon: BrandAirtableIcon,
-        to: '/profile'
-    },
-    {
-        title: 'Ayarlar',
-        icon: BrandAirtableIcon,
-        to: '/profile/settings'
-    },
-    {
-        title: 'Randevu',
-        icon: BrandAirtableIcon,
-        to: '/profile/randevu/randevularim'
+        title: 'Danışmanlar',
+        icon: UserCheckIcon,
+        to: '/admin/danismanlar'
     },
     {
         title: 'Videolar',
-        icon: BrandAirtableIcon,
-        to: '#',
-        children: [
-            {
-                title: 'Video İzle',
-                icon: BoxModelIcon,
-                to: '/profile/video'
-            },
-            {
-                title: 'Video Yüzdelikleri',
-                icon: ServerIcon,
-                to: '/profile/video/viewing-rate'
-            },
-        ]
+        icon: VideoIcon,
+        to: '/admin/video'
     },
-
+    {
+        title: 'Video İstatistikleri',
+        icon: PercentageIcon,
+        to: '/admin/video/istatistikler'
+    },
 ];
 
 export default horizontalItems;

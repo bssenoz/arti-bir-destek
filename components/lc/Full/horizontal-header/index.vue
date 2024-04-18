@@ -1,14 +1,30 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 import { useCustomizerStore } from "@/stores/customizer";
-import { GridDotsIcon, SearchIcon, Menu2Icon } from "vue-tabler-icons";
+import { Menu2Icon } from "vue-tabler-icons";
 const customizer = useCustomizerStore();
-const showSearch = ref(false);
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
-function searchbox() {
-  showSearch.value = !showSearch.value;
-}
+import jwt_decode from 'jwt-decode';
+
+const isAdmin = ref(false);
+
+onMounted(() => {
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+
+    const userRole = decodedToken.role as string | undefined;
+
+    if (userRole == "Admin") isAdmin.value = true;
+
+
+  } else {
+    console.error('Access token bulunamadı veya null.');
+  }
+})
+
 watch(priority, (newPriority) => {
   priority.value = newPriority;
 });
@@ -19,8 +35,8 @@ watch(priority, (newPriority) => {
     <div :class="customizer.boxed
       ? 'maxWidth v-toolbar__content'
       : 'v-toolbar__content px-6'
-    ">
-      <NuxtLink to="/" class="text-decoration-none">
+      ">
+      <NuxtLink to="/" class="text-decoration-none" v-if="!isAdmin">
         <div class="hidden-md-and-down mr-3 font-mansalva font-weight-bold color-pink-1">
           Artı Bir Destek
         </div>
@@ -50,7 +66,7 @@ watch(priority, (newPriority) => {
       <!-- User Profile -->
       <!-- ---------------------------------------------- -->
       <div class="ml-3 mr-sm-0 mr-3">
-        <LcFullVerticalHeaderProfileDD />
+        <LcFullVerticalHeaderProfileDD :isAdmin="isAdmin"/>
       </div>
     </div>
   </v-app-bar>

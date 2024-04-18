@@ -9,7 +9,9 @@ export function customizer() {
   return cst.actTheme;
 
 }
-
+const getGray = computed(() => {
+    return themeColors.AQUA_THEME.colors.lightsecondary
+})
 const getPrimary = computed(() => {
     const custmizer = customizer();
     if (custmizer === 'AQUA_THEME') {
@@ -151,4 +153,4 @@ const getLight100 = computed(() => {
     }
 });
 
-export { getPrimary, getSecondary, getLightPrimary, getLightSecondary, getLight100 };
+export { getPrimary, getSecondary, getLightPrimary, getLightSecondary, getLight100, getGray };

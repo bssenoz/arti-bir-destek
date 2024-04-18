@@ -14,8 +14,8 @@ const cards: homeCard[] = [
         href:  "/admin/video",
     },
     {
-        title: "Videolar",
-        href:  "/admin/video",
+        title: "Video İstatistikleri",
+        href:  "/admin/video/istatistikler",
     },
 ];
 

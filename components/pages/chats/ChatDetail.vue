@@ -3,6 +3,8 @@ import { ref, computed, onMounted, onUpdated, nextTick } from 'vue';
 import { useChatStore } from '@/stores/chat';
 import { useUserStore } from '@/stores/user';
 import { formatDistanceToNowStrict } from 'date-fns';
+import trLocale from 'date-fns/locale/tr';
+import user from '/images/profile/user.png';
 
 const msg = ref('');
 const chatStore = useChatStore();
@@ -53,12 +55,10 @@ onUpdated(scrollToBottom)
     <div v-if="fromUser.id" class="customHeight">
         <div>
             <div class="d-flex align-center gap-3 pa-4">
-                <!---Topbar Row-->
                 <div class="d-flex gap-2 align-center">
-                    <!---User Avatar-->
                     <v-avatar>
-                        <img :src="fromUser.profileImageUrl" alt="pro" width="50" v-if="fromUser.profileImageUrl"/>
-                        <div class="rounded-circle" v-else style="width: 80px; height: 80px; background-color: #ccc;"></div>
+                        <img :src="fromUser.profileImageUrl" alt="pro" width="50" v-if="fromUser.profileImageUrl" />
+                        <img :src="user" width="50" v-else />
                     </v-avatar>
 
                     <div>
@@ -71,17 +71,18 @@ onUpdated(scrollToBottom)
             <perfect-scrollbar class="rightpartHeight" id="chat-list">
                 <div class="d-flex">
                     <div class="w-100">
+                   
                         <div v-for="msg in messages" :key="msg.sendedTime" class="pa-5">
-                         
                             <div v-if="currentUser.id == msg.senderId" class="justify-end d-flex text-end mb-1">
                                 <div>
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
-        formatDistanceToNowStrict(new Date(msg.sendedTime), {
-            addSuffix: false
-        })
-    }}
-                                        ago</small>
+                                            formatDistanceToNowStrict(new Date(msg.sendedTime), {
+                                                addSuffix: false,
+                                                locale: trLocale,
+                                            })
+                                        }}
+                                        önce</small>
 
                                     <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1">
                                         <p class="text-body-1">{{ msg.text }}</p>
@@ -93,17 +94,18 @@ onUpdated(scrollToBottom)
                                 <!---User Avatar-->
                                 <v-avatar>
                                     <img :src="fromUser.profileImageUrl" alt="pro" width="40" v-if="fromUser.profileImageUrl" />
-                                    <div class="rounded-circle" v-else style="width: 80px; height: 80px; background-color: #ccc;"></div>
+                                    <img :src="user" width="40" v-else />
                                 </v-avatar>
-                                
+
                                 <div>
                                     <small class="text-medium-emphasis text-subtitle-2" v-if="msg.sendedTime">
                                         {{
-        formatDistanceToNowStrict(new Date(msg.sendedTime), {
-                                        addSuffix: false
-                                        })
+                                            formatDistanceToNowStrict(new Date(msg.sendedTime), {
+                                                addSuffix: false,
+                                                locale: trLocale,
+                                            })
                                         }}
-                                        ago
+                                        önce
                                     </small>
 
                                     <v-sheet class="bg-grey100 rounded-md px-3 py-2 mb-1">
@@ -130,12 +132,12 @@ onUpdated(scrollToBottom)
                 <SendIcon size="20" />
             </v-btn>
 
-            <v-btn icon variant="text" class="text-medium-emphasis">
+            <!-- <v-btn icon variant="text" class="text-medium-emphasis">
                 <PhotoIcon size="20" />
             </v-btn>
             <v-btn icon variant="text" class="text-medium-emphasis">
                 <PaperclipIcon size="20" />
-            </v-btn>
+            </v-btn> -->
         </form>
     </div>
 </template>
@@ -190,5 +192,8 @@ onUpdated(scrollToBottom)
         z-index: 1;
         background: rgba(0, 0, 0, 0.2);
     }
+}
+.text-body-1 {
+  max-width: 400px;
 }
 </style>

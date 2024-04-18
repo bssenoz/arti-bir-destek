@@ -15,7 +15,6 @@ onMounted(() => {
   AOS.init();
 });
 
-/*for Blank Layout*/
 definePageMeta({
   layout: "blank",
 });

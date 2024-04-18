@@ -1,21 +1,38 @@
 <template>
   <v-card elevation="10">
     <v-card-item>
-      <h4 class="text-h4 text-no-wrap">{{ title }}</h4>
-      <h6 class="text-subtitle-1 textSecondary mt-1">{{ description }}</h6>
+      <v-tooltip :text="title">
+        <template v-slot:activator="{ props }">
+          <v-row v-if="image != 'none'">
+            <v-col cols="3" style="padding-right: 0">
+              <v-img :src="image" width="40" />
+            </v-col>
+            <v-col cols="9">
+              <h4 class="text-h4 truncate mt-2">{{ title }}</h4>
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col cols="12">
+              <h4 class="text-h4 truncate mt-2" v-bind="props">{{ title }}</h4>
+            </v-col>
+          </v-row>
+
+        </template>
+      </v-tooltip>
       <apexchart type="donut" height="120" class="mt-3 ml-n2" :options="chartOptions" :series="seriesData"></apexchart>
+      <h6 class="text-subtitle-1 textSecondary mt-1">{{ clickNumber }} izlenme</h6>
     </v-card-item>
   </v-card>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { getPrimary, getSecondary } from '@/utils/UpdateColors';
+import { getPrimary, getSecondary, getGray } from '@/utils/UpdateColors';
 
-// Props
 const props = defineProps<{
+  image: string;
   title: string;
-  description: string;
+  clickNumber: number;
   watchPercentage: number;
 }>()
 
@@ -37,7 +54,7 @@ const chartOptions = computed(() => {
       foreColor: "#adb0bb",
       fontFamily: "inherit",
     },
-    colors: [getPrimary.value, getSecondary.value],
+    colors: [getPrimary.value, getGray.value],
     dataLabels: { enabled: false },
     legend: { show: false },
     grid: {

@@ -2,14 +2,8 @@
 import { RouterView } from 'vue-router';
 import { useCustomizerStore } from '@/stores/customizer';
 import { pl, zhHans } from 'vuetify/locale'
-import { UserRole } from '@/stores/user';
-import { useUserStore } from '@/stores/user';
-
 const customizer = useCustomizerStore();
 const title = ref("Artı Bir Destek");
-
-const userStore = useUserStore();
-
 useHead({
     meta: [{ content: title }],
     titleTemplate: (titleChunk) => {
@@ -40,8 +34,8 @@ useHead({
             <LcFullHorizontalHeader v-if="customizer.setHorizontalLayout" />
             <LcFullHorizontalSidebar v-if="customizer.setHorizontalLayout" />
             <v-main>
-                <v-container fluid class="page-wrapper">
-                    <div :class="customizer.boxed ? 'maxWidth' : ''">
+                <v-container fluid class="">
+                    <div :class="customizer.boxed ? 'fullContainer' : ''">
                         <RouterView />
                         <v-btn class="customizer-btn" size="large" icon variant="flat" color="primary"
                             @click.stop="customizer.SET_CUSTOMIZER_DRAWER(!customizer.Customizer_drawer)">
@@ -67,13 +61,13 @@ useHead({
                 width="320">
                 <LcFullCustomizer />
             </v-navigation-drawer>
-            <LcFullVerticalSidebar v-if="userStore.userRole == 'Admin'" />
+            <LcFullVerticalSidebar v-if="!customizer.setHorizontalLayout" />
             <LcFullVerticalHeader v-if="!customizer.setHorizontalLayout" />
             <LcFullHorizontalHeader v-if="customizer.setHorizontalLayout" />
             <LcFullHorizontalSidebar v-if="customizer.setHorizontalLayout" />
             <v-main>
-                <v-container fluid class="page-wrapper">
-                    <div :class="customizer.boxed ? 'maxWidth' : ''">
+                <v-container fluid class="">
+                    <div :class="customizer.boxed ? 'fullContainer' : ''">
                         <RouterView />
                         <v-btn class="customizer-btn" size="large" icon variant="flat" color="primary"
                             @click.stop="customizer.SET_CUSTOMIZER_DRAWER(!customizer.Customizer_drawer)">
@@ -85,3 +79,9 @@ useHead({
         </v-app>
     </v-locale-provider>
 </template>
+
+<style scoped>
+.v-container {
+    padding: 0;
+}
+</style>

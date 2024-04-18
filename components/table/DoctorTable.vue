@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
+import user from '/images/profile/user.png';
 
 const userStore = useUserStore();
 
@@ -52,10 +53,10 @@ function deleteItem(item: any) {
                 <td>
                     <div class="d-flex align-center py-4">
                         <div v-if="item.profileImageUrl">
-                            <v-img :src="item.profileImageUrl" width="45px" class="rounded-circle img-fluid"></v-img>
+                            <v-img :src="item.profileImageUrl" width="45px" class="rounded-circle img-fluid" ></v-img>
                         </div>
                         <div v-else>
-                            <div class="rounded-circle" style="width: 45px; height: 45px; background-color: #ccc;"></div>
+                            <v-img :src="user" width="45"/>
                         </div>
                         <div class="ml-5">
                             <h4 class="text-h6 font-weight-semibold">{{ item.name }} {{ item.surname }}</h4>

@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useUserStore } from '@/stores/user';
 import { UserType } from '@/types/UserType';
+import jwt_decode from 'jwt-decode';
 import {
   GoogleSignInButton,
   type CredentialResponse,
@@ -29,7 +30,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
   const { credential } = response;
 
   try {
-    if (typeof credential === 'string') { 
+    if (typeof credential === 'string') {
       await userStore.loginWithGoogle(credential);
       router.push({ path: "/profile" });
     } else {
@@ -56,7 +57,19 @@ const login = async () => {
       confirmPassword: ""
     };
     await userStore.login(user);
-    router.push({ path: "/profile" });
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (accessToken) {
+      const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+
+      const userRole = decodedToken.role as string | undefined;
+
+      if(userRole == 'Admin') router.push({ path: "/admin" });
+      else  router.push({ path: "/profile" });
+
+    }
+
+   
   } catch (error) {
     console.error("login error: ", error);
     if (error.response && error.response.status === 401) {
@@ -125,4 +138,3 @@ const closeDialog = () => {
     </v-card>
   </v-dialog>
 </template>
-

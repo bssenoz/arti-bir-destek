@@ -2,11 +2,35 @@
 import { MailIcon } from "vue-tabler-icons";
 import { profileDD } from "@/_mockApis/headerData";
 import { useUserStore } from '@/stores/user';
+import user from '/images/profile/user.png';
+import admin from '/images/profile/admin.png';
+import jwt_decode from 'jwt-decode';
 
 const userStore = useUserStore();
+const isAdmin = ref(false);
+
+const props = defineProps({
+    isAdmin: {
+      type: Boolean,
+      default: true,
+    }
+});
 
 onMounted(() => {
   userStore.getCurrentUser()
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+
+    const userRole = decodedToken.role as string | undefined;
+
+    if (userRole == "Admin") isAdmin.value = true;
+
+
+  } else {
+    console.error('Access token bulunamadı veya null.');
+  }
 });
 
 const currentUser = computed(() => {
@@ -26,18 +50,19 @@ const logout = async () => {
     <template v-slot:activator="{ props }">
       <v-btn class="custom-hover-primary" variant="text" v-bind="props" icon>
         <v-avatar size="35">
-          <img :src="currentUser.profileImageUrl" width="35" v-if="currentUser.profileImageUrl" />
-          <div class="rounded-circle" v-else style="width: 45px; height: 45px; background-color: #ccc;"></div>
+          <img :src="admin" width="35" v-if="isAdmin" />
+          <img :src="currentUser.profileImageUrl" width="35" v-if="currentUser.profileImageUrl && !isAdmin" />
+          <img :src="user" width="35" v-if="!currentUser.profileImageUrl && !isAdmin" />
         </v-avatar>
       </v-btn>
     </template>
     <v-sheet rounded="md" width="360" elevation="10">
       <div class="px-8 pt-6">
-        <h6 class="text-h5 font-weight-medium">Kullanıcı Profili</h6>
         <div class="d-flex align-center mt-4 pb-6">
           <v-avatar size="80">
-            <img :src="currentUser.profileImageUrl" width="80" v-if="currentUser.profileImageUrl" />
-            <div class="rounded-circle" v-else style="width: 80px; height: 80px; background-color: #ccc;"></div>
+            <img :src="admin" width="80" v-if="isAdmin" />
+            <img :src="currentUser.profileImageUrl" width="80" v-if="currentUser.profileImageUrl && !isAdmin" />
+            <img :src="user" width="80" v-if="!currentUser.profileImageUrl && !isAdmin" />
           </v-avatar>
           <div class="ml-3">
             <h6 class="text-h6 mb-n1">{{ currentUser.name }} {{ currentUser.surname }}</h6>
@@ -52,7 +77,7 @@ const logout = async () => {
       </div>
       <!-- height: calc(100vh - 240px); -->
       <perfect-scrollbar style="max-height: 240px">
-        <v-list class="py-0 theme-list" lines="two">
+        <v-list class="py-0 theme-list" lines="two" v-if="!isAdmin">
           <v-list-item v-for="item in profileDD" :key="item.title" class="py-4 px-8 custom-text-primary"
             :to="item.href">
             <template v-slot:prepend>

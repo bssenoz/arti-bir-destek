@@ -1,12 +1,21 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
 import { DoctorType, PatientType, CurrentUserType } from '@/types/UserType';
+import jwt_decode from 'jwt-decode';
+
+export enum UserRole {
+    Doctor = 'Doctor',
+    Admin = 'Admin',
+    Patient = 'Patient'
+}
 
 export interface UserType {
+    userRole: UserRole;
     currentUser: CurrentUserType;
     user: any;
     refreshToken: string | null;
     accessToken: string | null;
+    accessTime: string | null;
     doctors: Array<DoctorType>
     patients: Array<PatientType>
 }
@@ -15,6 +24,7 @@ export const useUserStore = defineStore({
     id: 'user',
     state: (): UserType => ({
         user: {},
+        userRole: UserRole.Patient,
         currentUser: {
             id: '',
             name: '',
@@ -26,6 +36,7 @@ export const useUserStore = defineStore({
         },
         refreshToken: localStorage.getItem('refreshToken'),
         accessToken: localStorage.getItem('accessToken'),
+        accessTime: localStorage.getItem('accessTime'),
         doctors: [],
         patients: []
     }),
@@ -52,13 +63,17 @@ export const useUserStore = defineStore({
         async login(user: any) {
             try {
                 const response = await axios.post('http://localhost:5261/api/Authentication/Login', user);
-                console.log("Kullanıcı giriş yaptı:", response.data);
+                console.log("Kullanıcı giriş yaptı:", response.data.jwtTokenDTO);
 
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
+                this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
+                // console.log("tihs: ",this.accessTime)
                 // // localStorage'a tokenları kaydet
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
-                // localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+                localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+                localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
+
                 // console.log("ref: ", this.refreshToken)
                 // console.log("acc: ", this.accessToken)
 
@@ -87,13 +102,13 @@ export const useUserStore = defineStore({
                 console.log("res: ", response.data);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
-   
+
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
             } catch (error) {
                 console.error("Error occurred: ", error);
             }
-        },        
+        },
         async loginWithFacebook(userToken: string) {
             console.log("token:: ", userToken);
             try {
@@ -109,25 +124,32 @@ export const useUserStore = defineStore({
                 console.log("res: ", response.data);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
-  
+
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
             } catch (error) {
                 console.error("Error occurred: ", error);
             }
-        },  
+        },
         async refreshAccessToken() {
             try {
+                debugger;
                 console.log("refresh token")
-                const refreshToken = this.refreshToken;
-                const response = await axios.post('http://localhost:5261/api/Authentication/RefreshToken', { refreshToken });
+                const response = await axios.post('http://localhost:5261/api/Authentication/LoginWithRefreshToken', JSON.stringify(localStorage.getItem('refreshToken')), {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                }
+
+                );
                 const newAccessToken = response.data.accessToken;
                 this.accessToken = newAccessToken;
-                // localStorage'a yeni accessToken'u kaydet
+
                 localStorage.setItem('accessToken', newAccessToken);
             } catch (error) {
                 console.error('Token yenileme hatası:', error);
-                this.logout(); // Access token süresi dolarsa kullanıcıyı oturumdan çıkar
+                this.logout();
                 throw new Error('Oturum süresi doldu. Lütfen tekrar oturum açın.');
             }
         },
@@ -135,9 +157,12 @@ export const useUserStore = defineStore({
             try {
                 this.refreshToken = null;
                 this.accessToken = null;
+                this.accessTime = null;
 
                 localStorage.removeItem('refreshToken');
                 localStorage.removeItem('accessToken');
+                localStorage.removeItem('accessTime');
+
 
             } catch (error) {
                 console.error('Oturum kapatma hatası:', error);
@@ -145,24 +170,48 @@ export const useUserStore = defineStore({
             }
         },
         async fetchUserDoctor() {
-            const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors')
+            const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
             this.doctors = response.data
         },
         async fetchUserPatient() {
-            const response = await axios.get('http://localhost:5261/api/User/GetAllPatients')
+            const response = await axios.get('http://localhost:5261/api/User/GetAllPatients', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
             this.patients = response.data
         },
-   
-        async getCurrentUser() {
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${this.accessToken}`
-                }
-            };
 
+        async getCurrentUser() {
             try {
-                const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', config);
+                const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
                 this.currentUser = response.data
+                const accessToken = localStorage.getItem('accessToken');
+
+                if (accessToken) {
+                    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+
+                    const userRole = decodedToken.role as string | undefined;
+
+                    console.log('Kullanıcı rolü:', userRole);
+                    if (userRole == "Admin") this.userRole = UserRole.Admin;
+                    if (userRole == "Doctor") this.userRole = UserRole.Doctor;
+                    if (userRole == "Patient") this.userRole = UserRole.Patient;
+
+                } else {
+                    console.error('Access token bulunamadı veya null.');
+                }
             } catch (error) {
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');
@@ -170,7 +219,12 @@ export const useUserStore = defineStore({
         },
         async getUserId(id: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/User/GetUserById?userID=${id}`);
+                const response = await axios.get(`http://localhost:5261/api/User/GetUserById?userID=${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
                 this.user = response.data
             } catch (error) {
                 console.error('Error while fetching current user:', error);
@@ -185,7 +239,7 @@ export const useUserStore = defineStore({
                     },
                     data: JSON.stringify(userId)
                 });
-                  
+
             } catch (error) {
                 console.error('Delete request failed:', error);
             }
@@ -198,7 +252,7 @@ export const useUserStore = defineStore({
                     }
                 };
                 await axios.delete('http://localhost:5261/api/User/DeleteCurrentUser', config);
-                  
+
             } catch (error) {
                 console.error('Delete request failed:', error);
             }

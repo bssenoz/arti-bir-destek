@@ -64,6 +64,15 @@ import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { VCalendarAttribute } from 'v-calendar/dist/types';
 
 const store = useMeetStore();
+definePageMeta({
+  layout: "default",
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
+});
 
 // Doktor adı ve randevu saatini içeren nesneleri kullanacağız
 const appointmentsData = [

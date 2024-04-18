@@ -48,7 +48,7 @@ const DARK_AQUA_THEME: ThemeTypes = {
         warning: '#FFAE1F',
         error: '#FA896B',
         lightprimary: '#103247',
-        lightsecondary: '#0C4339',
+        lightsecondary: '#808080',
         lightsuccess: '#1B3C48',
         lighterror: '#4B313D',
         lightwarning: '#4D3A2A',
