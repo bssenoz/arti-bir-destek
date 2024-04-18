@@ -137,19 +137,19 @@ const transformChatItem = (item: any): ChatsUserType => {
 <template>
   <v-sheet>
     <div class="select" v-if="userRole=='Patient'">
-      <v-btn variant="outlined" @click="dialogVisible = true" class="w-100 rounded-0 rounded-ts-lg"
+      <v-btn variant="outlined" @click="dialogVisible = true" class="w-100 rounded-0 rounded-ts-lg text-h5 font-weight-thin h-100 py-2"
         style="border-color: #db2777;background-color: #db2777;color:#fff">Danışman Seç</v-btn>
     </div>
-    <div class="d-flex gap-2 align-center pa-6">
+    <div class="d-flex gap-2 align-center pa-5">
 
       <v-avatar size="large">
-        <img :src="currentUser?.profileImageUrl" alt="pro" width="54" v-if="currentUser?.profileImageUrl" />
-        <img :src="user" width="54" v-else />
+        <img :src="currentUser?.profileImageUrl" alt="pro" width="60" v-if="currentUser?.profileImageUrl" />
+        <img :src="user" width="60" v-else />
       </v-avatar>
 
       <v-badge class="badg-dotDetail" dot color="success"> </v-badge>
       <div>
-        <h5 class="text-subtitle-1 font-weight-semibold">{{ currentUser?.name }} {{ currentUser?.surname }}</h5>
+        <h5 class="text-h5 font-weight-semibold">{{ currentUser?.name }} {{ currentUser?.surname }}</h5>
       </div>
 
     </div>
@@ -191,16 +191,16 @@ const transformChatItem = (item: any): ChatsUserType => {
               <img :src="user" width="50" v-else />
             </v-avatar>
           </template>
-          <v-list-item-title v-if="chat.user" class="text-subtitle-1 textPrimary w-100 font-weight-semibold">{{
+          <v-list-item-title v-if="chat.user" class="text-h5 textPrimary w-100 font-weight-semibold">{{
             chat.user.receiverName }} {{ chat.user.receiverSurname }}
             <p class="text-body-1 float-right" v-if="chat.lastMessage.senderId === currentUser?.id"> {{ formatMessageTime(chat.lastMessage.sendedTime) }}</p>
             <p class="text-body-1 float-right" v-if="chat.lastMessage.senderId !== currentUser?.id"> {{ formatMessageTime(chat.lastMessage.sendedTime) }}</p>
             
           </v-list-item-title>
           <v-sheet class="mt-1 mb-1 d-flex justify-space-between">
-            <p class="text-body-1 truncate" v-if="chat.lastMessage.senderId === currentUser?.id">Siz: {{ chat.lastMessage.text }}</p>
+            <p class="text-h6 truncate font-weight-thin" v-if="chat.lastMessage.senderId === currentUser?.id">Siz: {{ chat.lastMessage.text }}</p>
 
-            <p class="text-body-1 truncate" v-if="chat.lastMessage.senderId !== currentUser?.id">{{ chat.lastMessage.text }}</p>
+            <p class="text-h6 font-weight-thin truncate" v-if="chat.lastMessage.senderId !== currentUser?.id">{{ chat.lastMessage.text }}</p>
             <p class="text-body-1 bg-grey100 rounded-circle px-2" v-if="chat.unreadMessageCount !== 0">{{
               chat.unreadMessageCount
             }}</p>

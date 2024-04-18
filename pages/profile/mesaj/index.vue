@@ -37,7 +37,7 @@ watchEffect(() => {
 </script>
 
 <template>
-    <v-card elevation="10">
+    <v-card elevation="10" style="height: 85vh;margin-top:1rem">
         <AppBaseCard>
             <template v-slot:leftpart>
                 <ChatList :userRole="userRole"/>
@@ -50,6 +50,7 @@ watchEffect(() => {
                 <ChatList :userRole="userRole"/>
             </template>
         </AppBaseCard>
+
     </v-card>
 </template>
 

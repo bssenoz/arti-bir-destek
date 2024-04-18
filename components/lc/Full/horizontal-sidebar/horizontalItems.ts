@@ -2,7 +2,8 @@ import {
     VideoIcon,
     UsersIcon,
     UserCheckIcon,
-    PercentageIcon
+    PercentageIcon,
+    CalendarTimeIcon
     
 } from 'vue-tabler-icons';
 
@@ -24,6 +25,11 @@ const horizontalItems: menu[] = [
         title: 'Danışmanlar',
         icon: UserCheckIcon,
         to: '/admin/danismanlar'
+    },
+    {
+        title: 'Randevu Takvimleri',
+        icon: CalendarTimeIcon,
+        to: '/admin/danismanlar/randevu-takvimi'
     },
     {
         title: 'Videolar',

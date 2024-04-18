@@ -16,7 +16,7 @@ const appsdrawer = ref(false);
                 <v-container class="maxWidth py-sm-4 py-0">
                     <v-toolbar class="d-flex align-center">
                         <!-- Logo -->
-                        <span class="font-mansalva color-pink-1 font-weight-bold">Artı Bir Destek</span>
+                        <span class="font-mansalva color-pink-1 font-weight-bold text-h4">Artı Bir Destek</span>
                 
                         <!-- Desktop view Navigation -->
                         <div class="navigation ml-auto d-lg-flex d-none">

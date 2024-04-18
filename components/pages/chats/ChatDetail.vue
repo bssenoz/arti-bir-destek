@@ -53,7 +53,7 @@ onUpdated(scrollToBottom)
 
 <template>
     <div v-if="fromUser.id" class="customHeight">
-        <div>
+        <div style="height: 76vh">
             <div class="d-flex align-center gap-3 pa-4">
                 <div class="d-flex gap-2 align-center">
                     <v-avatar>
@@ -127,7 +127,7 @@ onUpdated(scrollToBottom)
             </v-btn>
 
             <v-text-field variant="solo" hide-details v-model="msg" color="primary" class="shadow-none"
-                density="compact" placeholder="Type a Message"></v-text-field>
+                density="compact" placeholder="Mesaj Yaz"></v-text-field>
             <v-btn icon variant="text" type="submit" class="text-medium-emphasis" :disabled="!msg">
                 <SendIcon size="20" />
             </v-btn>

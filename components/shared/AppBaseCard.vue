@@ -24,6 +24,7 @@ const sDrawer = ref(false);
             <slot name="rightpart"></slot>
         </div>
 
+
         <!---right chat conversation -->
     </div>
 
@@ -58,7 +59,7 @@ const sDrawer = ref(false);
 }
 .right-part {
     width: 100%;
-    min-height: 500px;
+    min-height: 85vh;
     position: relative;
 }
 </style>
