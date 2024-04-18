@@ -11,7 +11,7 @@ const sidebarMenu = shallowRef(sidebarItems);
         app class="leftSidebar" :rail="customizer.mini_sidebar" expand-on-hover width="270">
         <!---Logo part -->
 
-        <!---Logo buseee part -->
+        <!---Logo part -->
         <v-locale-provider v-if="customizer.setRTLLayout" rtl>
             <Nuxt to="/">
                 <div class="pa-5 font-mansalva font-weight-bold color-pink-1">

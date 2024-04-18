@@ -1,13 +1,70 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useMeetStore } from '@/stores/meet';
+import { useUserStore } from '@/stores/user';
+import 'v-calendar/dist/style.css';
+import UiParentCard from '@/components/shared/UiParentCard.vue';
+import { VCalendarAttribute } from 'v-calendar/dist/types';
+
+const store = useMeetStore();
+const userStore = useUserStore();
+definePageMeta({
+  layout: "default",
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
+});
+
+const userRole = computed(() => {
+    return userStore.userRole;
+})
+
+
+// Doktor adı ve randevu saatini içeren nesneleri kullanacağız
+const appointmentsData = [
+    { date: new Date(2024, 1, 2), doctor: 'Dr. Smith', appointmentTime: '10:00' },
+    { date: new Date(2024, 1, 19), doctor: 'Dr. Johnson', appointmentTime: '14:30' },
+    { date: new Date(2024, 1, 22), doctor: 'Dr. Brown', appointmentTime: '11:15' },
+    { date: new Date(2024, 2, 12), doctor: 'Dr. Wilson', appointmentTime: '09:45' },
+    { date: new Date(2024, 2, 14), doctor: 'Dr. Martinez', appointmentTime: '16:00' },
+];
+
+const attributes: VCalendarAttribute[] = ref([]);
+
+onMounted(() => {
+    userStore.getCurrentUser();
+    store.fetchMeets();
+    const calendarAttributes: VCalendarAttribute[] = appointmentsData.map(appointment => ({
+        key: appointment.date.toISOString(),
+        highlight: {
+            color: 'pink',
+            fillMode: 'light',
+            contentClass: 'italic',
+        },
+        dates: appointment.date,
+        // Tooltip Eklemek için `popover` alanını kullanın
+        popover: {
+            label: `${appointment.doctor}, ${appointment.appointmentTime}`, // Doktor adı ve randevu saati
+        },
+    }));
+
+    attributes.value = calendarAttributes;
+});
+
+const getMeets = computed(() => {
+    return store.meets;
+});
+
+const appointments = getMeets;
+</script>
+
 <template>
     <v-container>
         <v-row>
-            <!-- <v-col>
-                <v-btn color="primary" to="/profile/randevu/add" class="mb-2 float-left">Yeni Görüşme</v-btn>
-            </v-col>
-            <v-col>
-                <v-btn color="primary" to="/profile/randevu/takvim" class="mb-2">Randevu Saatleri</v-btn>
-            </v-col> -->
-            <v-col cols="12">
+            <v-col cols="12" v-if="userRole == 'Patient'">
                 <v-btn color="primary" to="/profile/randevu/randevu-al" class="mb-2 float-right">Randevu Al</v-btn>
             </v-col>
             <!-- Takvim Görüntüleme -->
@@ -56,60 +113,7 @@
     </v-container>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useMeetStore } from '@/stores/meet';
-import 'v-calendar/dist/style.css';
-import UiParentCard from '@/components/shared/UiParentCard.vue';
-import { VCalendarAttribute } from 'v-calendar/dist/types';
 
-const store = useMeetStore();
-definePageMeta({
-  layout: "default",
-  middleware: [
-    function (to, from) {
-      // Custom inline middleware
-    },
-    'auth',
-  ],
-});
-
-// Doktor adı ve randevu saatini içeren nesneleri kullanacağız
-const appointmentsData = [
-    { date: new Date(2024, 1, 2), doctor: 'Dr. Smith', appointmentTime: '10:00' },
-    { date: new Date(2024, 1, 19), doctor: 'Dr. Johnson', appointmentTime: '14:30' },
-    { date: new Date(2024, 1, 22), doctor: 'Dr. Brown', appointmentTime: '11:15' },
-    { date: new Date(2024, 2, 12), doctor: 'Dr. Wilson', appointmentTime: '09:45' },
-    { date: new Date(2024, 2, 14), doctor: 'Dr. Martinez', appointmentTime: '16:00' },
-];
-
-const attributes: VCalendarAttribute[] = ref([]);
-
-onMounted(() => {
-    store.fetchMeets();
-    const calendarAttributes: VCalendarAttribute[] = appointmentsData.map(appointment => ({
-        key: appointment.date.toISOString(),
-        highlight: {
-            color: 'pink',
-            fillMode: 'light',
-            contentClass: 'italic',
-        },
-        dates: appointment.date,
-        // Tooltip Eklemek için `popover` alanını kullanın
-        popover: {
-            label: `${appointment.doctor}, ${appointment.appointmentTime}`, // Doktor adı ve randevu saati
-        },
-    }));
-
-    attributes.value = calendarAttributes;
-});
-
-const getMeets = computed(() => {
-    return store.meets;
-});
-
-const appointments = getMeets;
-</script>
 
 <style scoped>
 ::v-deep(.vc-container) {
