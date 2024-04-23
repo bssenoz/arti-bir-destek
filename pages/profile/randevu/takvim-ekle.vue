@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watchEffect } from "vue";
 import { useMeetStore } from "~/stores/meet";
+import { useUserStore } from "~/stores/user";
+import { DoctorIdType } from '~/types/UserType';
+
+const succesDialog = ref(false);
+const errorDialog = ref(false);
 
 interface Day {
   id: number;
@@ -18,10 +23,21 @@ const days: Day[] = [
 ];
 
 const meetStore = useMeetStore();
+const userStore = useUserStore();
+
 const hours = Array.from({ length: 10 }, (_, i) => [i + 8, i + 9]);
 const selectedHours = ref<Array<Array<boolean>>>(
   Array.from({ length: 7 }, () => Array.from({ length: 11 }, () => false))
 );
+
+onMounted(() => {
+  meetStore.getDoctorSchedule();
+  userStore.getCurrentUser();
+})
+
+const currentUser = computed(() => {
+  return userStore.currentUser;
+});
 
 const saveSchedule = () => {
 
@@ -37,9 +53,17 @@ const saveSchedule = () => {
       });
     }
   });
-
-  console.log(JSON.stringify(selectedTimes));
-  meetStore.postCalendar(JSON.stringify(selectedTimes))
+  try {
+    console.log(JSON.stringify(selectedTimes));
+    const data: DoctorIdType = {
+      doctorId: currentUser.value.id,
+    };
+    meetStore.postCalendar(JSON.stringify(selectedTimes), data)
+    succesDialog.value = true;
+  } catch (err) {
+    console.log(err)
+    errorDialog.value = true;
+  }
 };
 
 const handleButtonClick = (dayId: number, hourIndex: number) => {
@@ -47,9 +71,7 @@ const handleButtonClick = (dayId: number, hourIndex: number) => {
     !selectedHours.value[dayId][hourIndex];
 };
 
-onMounted(() => {
-  meetStore.getDoctorSchedule();
-})
+
 
 watchEffect(() => {
   const updatedSelectedHours = Array.from({ length: 7 }, () =>
@@ -93,7 +115,7 @@ watchEffect(() => {
                     @click="handleButtonClick(day.id, hourIndex)">
                     <span>{{ `${hour[0]}:00 - ${hour[1]}:00` }}</span>
                   </v-btn>
-  
+
                 </v-col>
               </v-row>
 
@@ -106,6 +128,28 @@ watchEffect(() => {
           <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
         </v-col>
       </v-row>
+      <v-dialog v-model="errorDialog" max-width="500">
+      <v-card>
+        <v-card-title>HATA!</v-card-title>
+        <v-card-text>
+          Bir hatayla karşılaşıldı :(
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+      <v-dialog v-model="succesDialog" max-width="500">
+      <v-card>
+        <v-card-title>Başarılı!</v-card-title>
+        <v-card-text>
+          Randevu takvimi oluşturuldu.
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="succesDialog = false">Tamam</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     </v-container>
   </div>
 </template>

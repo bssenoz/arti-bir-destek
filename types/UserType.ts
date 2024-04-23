@@ -30,3 +30,7 @@ export type CurrentUserType = {
     profileImageUrl: string | null;
     title:string | null;
 } 
+
+export type DoctorIdType = {
+    doctorId: string;
+} 

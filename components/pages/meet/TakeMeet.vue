@@ -14,7 +14,7 @@
             <v-slide-group-item v-for="(item, index) in weeklyDates" :key="index" v-slot="{ isSelected }">
               <v-btn :color="selectedDay === index ? 'primary' : undefined" class="ma-2" rounded
                 @click="selectDay(index)">
-                {{ item.date }} - {{ item.day }}
+                {{ item.date }}
               </v-btn>
             </v-slide-group-item>
           </v-slide-group>
@@ -30,7 +30,7 @@
                 <v-expansion-panel-content v-if="activeAccordion === index">
                   <v-list class="mt-8 overflow-visible">
                     <v-row>
-                      <v-col v-for="(timeObj, i) in appointment.times" :key="i" cols="12" sm="3" md="1">
+                      <v-col v-for="(timeObj, i) in appointment.times" :key="i" cols="12" sm="3" md="3">
                         <v-btn :color="timeObj.selected ? 'grey200' : 'primary'" class="ma-1" outlined
                           @click="handleAppointmentClick(timeObj, appointment)">
                           {{ timeObj.time }}
@@ -119,92 +119,145 @@ export default {
       allAppointments: [
         [
           {
-            doctor: "Dr. Ahmet",
+            doctor: "Uzman Sevgi Yörükoğlu",
             times: [
-              { time: "8:00", selected: false },
-              { time: "9:00", selected: true },
-              { time: "10:00", selected: true },
-              { time: "11:00", selected: true },
-              { time: "12:00", selected: false },
-              { time: "13:00", selected: false },
-              { time: "14:00", selected: false },
-              { time: "15:00", selected: true },
-              { time: "16:00", selected: false },
-              { time: "17:00", selected: false },
-              { time: "18:00", selected: true },
+              { time: "8:00 - 9:00", selected: false },
+              { time: "9:00 - 10:00", selected: true },
+              { time: "10:00 - 11:00", selected: true },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: false },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: false },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
             ],
             day: "Pazartesi",
           },
           {
-            doctor: "Dr. Ayşe",
-            times: [{ time: "14:00", selected: true }],
-            day: "Pazartesi",
-          },
-          {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
-            day: "Pazartesi",
-          },
-          {
-            doctor: "Dr. Zeynep",
-            times: [
-              { time: "10:00", selected: true },
-              { time: "11:00", selected: true },
-              { time: "12:00", selected: true },
-              { time: "15:00", selected: false },
+            doctor: "Bursiyer Psikolog",
+                  times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
             ],
             day: "Pazartesi",
           },
+   
         ],
         [
           {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
+            doctor: "Bursiyer Psikolog",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
+            ],
             day: "Salı",
           },
-          {
-            doctor: "Dr. Zeynep",
-            times: [{ time: "15:00", selected: true }],
-            day: "Salı",
-          },
+   
         ],
         [
           {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
+            doctor: "Uzman Sevgi Yörükoğlu",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
+            ],
             day: "Çarşamba",
           },
-          {
-            doctor: "Dr. Zeynep",
-            times: [{ time: "15:00", selected: true }],
-            day: "Çarşamba",
-          },
+    
         ],
+      
         [
           {
-            doctor: "Dr. Zeynep",
-            times: [{ time: "15:00", selected: true }],
-            day: "Perşembe",
-          },
-        ],
-        [
-          {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
+            doctor: "Uzman Sevgi Yörükoğlu",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
+            ],
             day: "Cuma",
           },
         ],
         [
           {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
+            doctor: "Uzman Sevgi Yörükoğlu",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
+            ],
+            day: "Cumartesi",
+          },
+          {
+            doctor: "Bursiyer Psikolog",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: false },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: false },
+            ],
             day: "Cumartesi",
           },
         ],
         [
           {
-            doctor: "Dr. Mehmet",
-            times: [{ time: "09:00", selected: false }],
+            doctor: "Uzman Sevgi Yörükoğlu",
+            times: [
+              { time: "8:00 - 9:00", selected: true },
+              { time: "9:00 - 10:00", selected: false },
+              { time: "10:00 - 11:00", selected: false },
+              { time: "11:00 - 12:00", selected: true },
+              { time: "12:00 - 13:00", selected: true },
+              { time: "13:00 - 14:00", selected: true },
+              { time: "14:00 - 15:00", selected: true },
+              { time: "15:00 - 16:00", selected: true },
+              { time: "16:00 - 17:00", selected: false },
+              { time: "17:00 - 18:00", selected: true },
+            ],
             day: "Pazar",
           },
         ],

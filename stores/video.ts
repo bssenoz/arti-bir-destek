@@ -24,7 +24,7 @@ export const useVideoStore = defineStore({
             this.videos = response.data.reverse();
         },
         async getVideo(id: number) {
-            const response = await axios.get(`http://localhost:5261/api/Video/GetAllVideoById?videoID=${id}`, {
+            const response = await axios.get(`http://localhost:5261/api/Video/GetVideoById?videoID=${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

@@ -53,7 +53,7 @@ onUpdated(scrollToBottom)
 
 <template>
     <div v-if="fromUser.id" class="customHeight">
-        <div style="height: 76vh">
+        <div class="h-76">
             <div class="d-flex align-center gap-3 pa-4">
                 <div class="d-flex gap-2 align-center">
                     <v-avatar>
@@ -142,6 +142,24 @@ onUpdated(scrollToBottom)
     </div>
 </template>
 <style lang="scss">
+.h-76 {
+    height:76vh;
+}
+@media screen and (max-width:1400px) {
+    .h-76 {
+    height:68vh;
+    }
+}
+@media screen and (max-width:1300px) {
+    .h-76 {
+    height:70vh;
+    }
+}
+@media screen and (max-width:1100px) {
+    .h-76 {
+    height: 100%;
+}
+}
 .shadow-none .v-field--no-label {
     --v-field-padding-top: -7px;
 }

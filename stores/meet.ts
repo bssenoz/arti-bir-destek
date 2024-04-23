@@ -4,6 +4,7 @@ import axios from '@/utils/axios';
 interface meetType {
     meets: any;
     schedule: any;
+    allSchedule:any;
 }
 
 export const useMeetStore = defineStore({
@@ -11,6 +12,7 @@ export const useMeetStore = defineStore({
     state: (): meetType => ({
         meets: [],
         schedule: [],
+        allSchedule: []
     }),
     getters: {
 
@@ -27,13 +29,17 @@ export const useMeetStore = defineStore({
                 console.log(error);
             }
         },
-        async postCalendar(time: any) {
-            await axios.post('http://localhost:5261/api/DoctorSchedule/CreateDoctorSchedule', time, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'Content-Type': 'application/json'
-                },
-            })
+        async postCalendar(time: any, data: any) {
+    
+                await axios.post('http://localhost:5261/api/DoctorSchedule/CreateDoctorSchedule', time, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                this.addAppointmentSchedule(data)
+
+      
         },
         async updateCalendar(time: any) {
             await axios.put('http://localhost:5261/api/DoctorSchedule/UpdateDoctorSchedule', time, {
@@ -56,7 +62,45 @@ export const useMeetStore = defineStore({
                 console.error(error);
                 alert('Hata oluştu. Lütfen tekrar deneyin.');
             }
-        }
-        
+        },
+        async addAppointmentSchedule(data: any) {
+            const response = await axios.post('http://localhost:5261/api/AppointmentSchedule/AddAppointmentSchedule', data, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+        },
+        // async getAllAppointmentSchedule() {
+        //     try {
+        //         const response = await axios.get('http://localhost:5261/api/AppointmentSchedule/GetAllAppointmentSchedules', {
+        //             headers: {
+        //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        //                 'Content-Type': 'application/json'
+        //             },
+        //         });
+        //         this.allSchedule = response.data;
+        //         console.log("al: ",this.allSchedule)
+        //     } catch (error) {
+        //         console.error(error);
+        //         alert('Hata oluştu. Lütfen tekrar deneyin.');
+        //     }
+        // },
+        async getAllAppointmentSchedule(date: string) {
+            try {
+                console.log(date)
+                const response = await axios.get(`http://localhost:5261/api/AppointmentSchedule/GetAllAppointmentSchedules?date=${date}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.allSchedule = response.data;
+                console.log("al: ",this.allSchedule)
+            } catch (error) {
+                console.error(error);
+                alert('Hata oluştu. Lütfen tekrar deneyin.');
+            }
+        },
     }
 });

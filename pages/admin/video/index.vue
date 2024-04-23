@@ -30,11 +30,18 @@
 
 
     <!-- Video Dialog -->
-    <v-dialog v-model="videoDialog" max-width="800">
+    <v-dialog v-model="videoDialog" max-width="1200" >
         <v-card>
             <v-card-title>{{ editedItem.title }}</v-card-title>
             <v-card-text>
-                <video controls :src="editedItem.url" style="width: 100%"></video>
+                <v-row>
+                    <v-col>
+                        <video controls :src="editedItem.url" style="width: 100%"></video>
+                    </v-col>
+                    <v-col>
+                        <p class="mt-4">{{ editedItem.description }}</p>
+                    </v-col>
+                </v-row>
             </v-card-text>
             <v-card-actions class="justify-end">
                 <v-btn @click="videoDialog = false">Kapat</v-btn>
@@ -44,12 +51,12 @@
 
 
     <!-- Edit Dialog -->
-    <v-dialog v-model="editDialog" max-width="500">
+    <v-dialog v-model="editDialog" max-width="800">
         <v-card>
             <v-card-title>Düzenle</v-card-title>
             <v-card-text>
                 <v-text-field v-model="editedItem.title" label="Başlık"></v-text-field>
-                <v-textarea v-model="editedItem.description" label="Açıklama"></v-textarea>
+                <v-textarea v-model="editedItem.description" label="Açıklama" rows="16"></v-textarea>
                 <v-text-field v-model="editedItem.url" label="URL" readonly></v-text-field>
             </v-card-text>
             <v-card-actions>

@@ -55,7 +55,7 @@ const previewVideo = (selectedFile: File) => {
 const submitFile = () => {
   if (file.value !== "") {
     console.log(title.value.length)
-    if (title.value.length < 50) {
+    if (title.value.length < 100) {
       const formData = new FormData();
       formData.append("file", file.value);
       formData.append("title", title.value);
@@ -92,13 +92,13 @@ const submitFile = () => {
     <v-col cols="12">
       <div>
         <label> Video Başlığı <span class="text-primary">*</span></label>
-        <v-text-field v-model="title"  :counter="50" ></v-text-field>
+        <v-text-field v-model="title"  :counter="100" ></v-text-field>
       </div>
     </v-col>
     <v-col cols="12">
       <div>
         <label> Video Açıklaması </label>
-        <v-text-field v-model="description"></v-text-field>
+        <v-textarea v-model="description" rows="16"></v-textarea>
       </div>
     </v-col>
     <v-col cols="12">
@@ -117,7 +117,7 @@ const submitFile = () => {
       <v-card>
         <v-card-title>Karakter Sınırı Aşıldı!</v-card-title>
         <v-card-text>
-          Başlık en fazla 50 karakter olabilir. Lütfen kontrol ediniz.
+          Başlık en fazla 100 karakter olabilir. Lütfen kontrol ediniz.
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
