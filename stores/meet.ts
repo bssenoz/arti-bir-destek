@@ -4,7 +4,8 @@ import axios from '@/utils/axios';
 interface meetType {
     meets: any;
     schedule: any;
-    allSchedule:any;
+    allSchedule: any;
+    patientAppointment: any;
 }
 
 export const useMeetStore = defineStore({
@@ -12,7 +13,8 @@ export const useMeetStore = defineStore({
     state: (): meetType => ({
         meets: [],
         schedule: [],
-        allSchedule: []
+        allSchedule: [],
+        patientAppointment: []
     }),
     getters: {
 
@@ -37,7 +39,7 @@ export const useMeetStore = defineStore({
                         'Content-Type': 'application/json'
                     },
                 })
-                this.addAppointmentSchedule(data)
+                // this.addAppointmentSchedule(data)
 
       
         },
@@ -51,7 +53,7 @@ export const useMeetStore = defineStore({
         },
         async getDoctorSchedule() {
             try {
-                const response = await axios.get('http://localhost:5261/api/DoctorSchedule/GetDoctorSchedule', {
+                const response = await axios.get('http://localhost:5261/api/DoctorSchedule/GetDoctorSchedules', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -63,14 +65,14 @@ export const useMeetStore = defineStore({
                 alert('Hata oluştu. Lütfen tekrar deneyin.');
             }
         },
-        async addAppointmentSchedule(data: any) {
-            const response = await axios.post('http://localhost:5261/api/AppointmentSchedule/AddAppointmentSchedule', data, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'Content-Type': 'application/json'
-                },
-            })
-        },
+        // async addAppointmentSchedule(data: any) {
+        //     const response = await axios.post('http://localhost:5261/api/AppointmentSchedule/AddAppointmentSchedule', data, {
+        //         headers: {
+        //             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+        //             'Content-Type': 'application/json'
+        //         },
+        //     })
+        // },
         // async getAllAppointmentSchedule() {
         //     try {
         //         const response = await axios.get('http://localhost:5261/api/AppointmentSchedule/GetAllAppointmentSchedules', {
@@ -99,7 +101,37 @@ export const useMeetStore = defineStore({
                 console.log("al: ",this.allSchedule)
             } catch (error) {
                 console.error(error);
-                alert('Hata oluştu. Lütfen tekrar deneyin.');
+                this.allSchedule = '';
+            }
+        },
+        async makeAppointment(newAppointment: any) {
+            try {
+                console.log(newAppointment)
+                const response = await axios.patch('http://localhost:5261/api/Appointment/MakeAppointment',newAppointment, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.getAllAppointmentSchedule(newAppointment.day)
+            } catch (error) {
+                console.error(error);
+            }
+        },
+        async fetchPatientAppointments() {
+            try {
+                // console.log(newAppointment)
+                const response = await axios.get('http://localhost:5261/api/Appointment/GetPatientAppointments', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.patientAppointment = response.data.reverse()
+                console.log(this.patientAppointment)
+                // this.patientAppointment(newAppointment.day)
+            } catch (error) {
+                console.error(error);
             }
         },
     }

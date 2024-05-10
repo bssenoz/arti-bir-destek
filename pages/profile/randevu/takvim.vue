@@ -1,221 +1,174 @@
-<template>
-<v-container v-if="schedule == ''" class="text-center">
-    <v-row >
-        <v-col cols="8">
-            <v-img src="/images/backgrounds/Calendar-bro.png"  class="w-100"/>
-        </v-col>
-        <v-col cols="4">
-            <div class="text-h5 mb-4" style="margin-top: 12rem;">Henüz takvimini oluşturmadın !</div>
-            <v-btn href="/profile/randevu/takvim-ekle" color="primary">Takvim Oluştur</v-btn>
-        </v-col>
-    </v-row>
-</v-container>
+<script setup lang="ts">
+import { ref, onMounted, computed, watchEffect } from "vue";
+import { useMeetStore } from "~/stores/meet";
+import { useUserStore } from "~/stores/user";
+import { DoctorIdType } from '~/types/UserType';
 
-    <v-container v-else>
-        <v-row>
-            <v-col cols="12">
-                <v-sheet class="mx-auto mt-4">
-                    <v-btn-toggle v-model="selectedDay" mandatory>
-                        <v-btn v-for="(item, index) in weeklyDates" :key="index" :value="index" 
-                            @click="selectDay(item.day.id)">
-                            {{ item.day.day }}
-                        </v-btn>
-                    </v-btn-toggle>
-                </v-sheet>
-            </v-col>
-        </v-row>
-        <v-row>
-            <v-col cols="12">
-                <v-card class="elevation-2">
+const succesDialog = ref(false);
+const errorDialog = ref(false);
 
-                    <v-container v-for="(day, dayIndex) in appointments" :key="dayIndex">
-                        <v-row align="center">
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].eightToNine ? 'primary' : 'grey200'" class="ma-1 w-100"
-                                    outlined @click="handleButtonClick(appointments[0], 'eightToNine')">
-                                    08:00 - 09:00
-                                </v-btn>
+const daysToAdd = 15;
+const today = new Date();
+const dates = Array.from({ length: daysToAdd }, (_, i) => new Date(today.getFullYear(), today.getMonth(), today.getDate() + i));
 
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].nineToTen ? 'primary' : 'grey200'" class="ma-1 w-100"
-                                    outlined @click="handleButtonClick(appointments[0], 'nineToTen')">
-                                    09:00 - 10:00
-                                </v-btn>
+const meetStore = useMeetStore();
+const userStore = useUserStore();
 
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].tenToEleven ? 'primary' : 'grey200'" class="ma-1 w-100"
-                                    outlined @click="handleButtonClick(appointments[0], 'tenToEleven')">
-                                    10:00 - 11:00
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].elevenToTwelve ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'elevenToTwelve')">
-                                    11:00 - 12:00
-                                </v-btn>
+const hours = Array.from({ length: 9 }, (_, i) => [i + 8, i + 9]);
+const selectedHours = ref<Array<Array<boolean>>>(
+  Array.from({ length: daysToAdd }, () => Array.from({ length: 10 }, () => false))
+);
 
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].twelveToThirteen ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'twelveToThirteen')">
-                                    12:00 - 13:00
-                                </v-btn>
-
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].thirteenToFourteen ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'thirteenToFourteen')">
-                                    13:00 - 14:00
-                                </v-btn>
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].fourteenToFifteen ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'fourteenToFifteen')">
-                                    14:00 - 15:00
-                                </v-btn>
-
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].fifteenToSixteen ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'fifteenToSixteen')">
-                                    15:00 - 16:00
-                                </v-btn>
-
-                            </v-col>
-                            <v-col cols="4">
-                                <v-btn :color="appointments[0].sixteenToSeventeen ? 'primary' : 'grey200'"
-                                    class="ma-1 w-100" outlined
-                                    @click="handleButtonClick(appointments[0], 'sixteenToSeventeen')">
-                                    16:00 - 17:00
-                                </v-btn>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
-                                <v-dialog max-width="500">
-                                    <template v-slot:activator="{ props: activatorProps }">
-                                        <v-btn v-bind="activatorProps" color="surface-variant" text="Kaydet"
-                                            class="float-right mt-6" variant="flat"></v-btn>
-                                    </template>
-                                    <template v-slot:default="{ isActive }">
-                                        <v-card title="Güncelleme">
-                                            <v-card-text class="text-h5">
-                                                İlgili güne ait randevular güncellensin mi?
-                                            </v-card-text>
-                                            <v-card-actions>
-                                                <v-spacer></v-spacer>
-                                                <v-btn text="Güncelle" color="primary" class="text-h6"
-                                                    @click="updateSchedule(day)"></v-btn>
-                                                <v-btn text="İptal" class="text-h6"
-                                                    @click="isActive.value = false"></v-btn>
-                                            </v-card-actions>
-                                        </v-card>
-                                    </template>
-                                </v-dialog>
-                            </v-col>
-                        </v-row>
-                    </v-container>
-
-                </v-card>
-            </v-col>
-        </v-row>
-    </v-container>
-</template>
-
-<script lang="ts">
-import { defineComponent, ref, computed, onMounted } from 'vue';
-import { useMeetStore } from '~/stores/meet';
-
-interface Time {
-    time: string;
-    selected: boolean;
-}
-
-interface Day {
-    times: Time[];
-    day: number;
-}
-
-export default defineComponent({
-    setup() {
-        const days = ref < Record < number, string>> ({
-            0: 'Pazar',
-            1: 'Pazartesi',
-            2: 'Salı',
-            3: 'Çarşamba',
-            4: 'Perşembe',
-            5: 'Cuma',
-            6: 'Cumartesi'
-        });
-        const selectedDay = ref < number > (0);
-        const appointments = ref < Day[][] > ([]);
-        const weeklyDates = ref < { day: { id: number; day: string } }[] > ([]);
-        const meetStore = useMeetStore();
-
-        const schedule = computed(() => meetStore.schedule);
-        onMounted(() => {
-            meetStore.getDoctorSchedule().then(() => {
-                appointments.value = schedule.value.filter(item => item.day === 1);
-            });
-        });
-
-
-        const selectDay = (index: number) => {
-            selectedDay.value = index;
-            console.log("index: ", index)
-            appointments.value = schedule.value.filter(item => item.day === index);
-            console.log(appointments.value)
-        };
-
-        const handleButtonClick = (timeObj: Time, propertyName: string) => {
-            console.log(timeObj);
-            timeObj[propertyName] = !timeObj[propertyName];
-        };
-
-        const updateSchedule = (day: any) => {
-            meetStore.updateCalendar(day)
-            isActive.value = false;
-        }
-
-        const handleAppointmentClick = (timeObj: Time, day: Day) => {
-            if (!timeObj.selected) {
-                // İşlemler burada gerçekleştirilecek
-            } else {
-                // İşlemler burada gerçekleştirilecek
-            }
-        };
-
-        weeklyDates.value = Array.from({ length: 7 }, (_, i) => {
-            const dayIndex = i;
-            return { day: { id: dayIndex, day: days.value[dayIndex] } };
-        });
-
-        selectDay(0);
-
-
-
-        return {
-            days,
-            selectedDay,
-            appointments,
-            weeklyDates,
-            selectDay,
-            handleAppointmentClick,
-            handleButtonClick,
-            schedule,
-            updateSchedule
-        };
-    }
+onMounted(() => {
+  meetStore.getDoctorSchedule();
+  userStore.getCurrentUser();
 });
+
+const currentUser = computed(() => {
+  return userStore.currentUser;
+});
+
+const saveSchedule = () => {
+  console.log("save")
+  const selectedTimes: { day: string; timeRanges: number[] }[] = [];
+  selectedHours.value.forEach((day, dayIndex) => {
+    const date = dates[dayIndex];
+    const formattedDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+    const selectedTimesForDay = hours
+      .filter((hour, hourIndex) => day[hourIndex])
+      .map((hour) => hour[0]);
+    if (selectedTimesForDay.length > 0) {
+      selectedTimes.push({
+        day: formattedDate,
+        timeRanges: selectedTimesForDay,
+      });
+    }
+  });
+  try {
+    // console.log(JSON.stringify(selectedTimes));
+    const data: DoctorIdType = {
+      doctorId: currentUser.value.id,
+    };
+    meetStore.postCalendar(JSON.stringify(selectedTimes), data)
+    succesDialog.value = true;
+  } catch (err) {
+    console.log(err)
+    errorDialog.value = true;
+  }
+};
+
+const handleButtonClick = (dayId: number, hourIndex: number) => {
+  selectedHours.value[dayId][hourIndex] =
+    !selectedHours.value[dayId][hourIndex];
+};
+
+watchEffect(() => {
+  const updatedSelectedHours = Array.from({ length: daysToAdd }, () =>
+    Array.from({ length: 11 }, () => false)
+  );
+  meetStore.schedule.forEach((entry: { [x: string]: any; day: any; }) => {
+    const dayIndex = entry.day;
+    console.log(entry.eightToNine)
+
+    const givenDateStr = dayIndex;
+    const parts = givenDateStr.split('.');
+
+    const givenDate = new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
+
+    const formattedGivenDate = givenDate.toLocaleDateString("en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "2-digit",
+    });
+
+    let i = 0;
+    const index = dates.findIndex((date) => {
+      i++;
+
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      }) === formattedGivenDate;
+    });
+
+    console.log("index: ", index);
+
+
+    if (entry.eightToNine) updatedSelectedHours[index][0] = true;
+    if (entry.nineToTen) updatedSelectedHours[index][1] = true;
+    if (entry.tenToEleven) updatedSelectedHours[index][2] = true;
+    if (entry.elevenToTwelve) updatedSelectedHours[index][3] = true;
+    if (entry.twelveToThirteen) updatedSelectedHours[index][4] = true;
+    if (entry.thirteenToFourteen) updatedSelectedHours[index][5] = true;
+    if (entry.fourteenToFifteen) updatedSelectedHours[index][6] = true;
+    if (entry.fifteenToSixteen) updatedSelectedHours[index][7] = true;
+    if (entry.sixteenToSeventeen) updatedSelectedHours[index][8] = true;
+  });
+  selectedHours.value = updatedSelectedHours;
+});
+
+const formatDate = (date: Date) => {
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('tr-TR', options);
+};
 </script>
 
-<style scoped>
-/* Stiller buraya eklenecek */
-</style>
+<template>
+    <div>
+      <v-container>
+        <v-row>
+          <v-col>
+            <h2 class="text-center">RANDEVU TAKVİMİ</h2>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-container v-for="(date, index) in dates" :key="index">
+              <v-card class="px-6 py-6 elevation-6">
+                <h3 class="mb-4">{{ formatDate(date) }}</h3>
+                <v-row align="center">
+                  <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="12" md="4" lg="2">
+                    <v-btn :color="selectedHours[index][hourIndex] ? 'primary' : 'grey200'" dense
+                      @click="handleButtonClick(index, hourIndex)">
+                      <span>{{ `${hour[0]}:00 - ${hour[1]}:00` }}</span>
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-container>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
+          </v-col>
+        </v-row>
+        <v-dialog v-model="errorDialog" max-width="500">
+          <v-card>
+            <v-card-title>HATA!</v-card-title>
+            <v-card-text>
+              Bir hatayla karşılaşıldı :(
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <v-dialog v-model="succesDialog" max-width="500">
+          <v-card>
+            <v-card-title>Başarılı!</v-card-title>
+            <v-card-text>
+              Randevu takvimi oluşturuldu.
+            </v-card-text>
+            <v-card-actions>
+              <v-btn color="primary" @click="succesDialog = false">Tamam</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-container>
+    </div>
+  </template>
+  

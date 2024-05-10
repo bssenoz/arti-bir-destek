@@ -133,7 +133,6 @@ export const useUserStore = defineStore({
         },
         async refreshAccessToken() {
             try {
-                debugger;
                 console.log("refresh token")
                 const response = await axios.post('http://localhost:5261/api/Authentication/LoginWithRefreshToken', JSON.stringify(localStorage.getItem('refreshToken')), {
                     headers: {

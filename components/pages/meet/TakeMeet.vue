@@ -1,39 +1,176 @@
+<script setup lang="ts">
+import { ref, onMounted, computed, watchEffect } from "vue";
+import { format, addDays, getDay } from "date-fns";
+import { useMeetStore } from "~/stores/meet";
+import { useUserStore } from "~/stores/user";
+import { MakeAppointmentType } from "@/types/MeetType"
+
+const meetStore = useMeetStore();
+const userStore = useUserStore();
+const snackbar = ref(false);
+const text = ref(`Randevu dolu!`);
+const timeout = ref(2000);
+const range = ref([]);
+const selectedDay = ref('');
+const appointments = ref([]);
+const dialog = ref(false);
+const successDialog = ref(false);
+const activeAccordion = ref(null);
+const selectedAppointment = ref(null);
+const weeklyDates = ref([]);
+const days = ref(["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"]);
+
+const today = new Date();
+const formattedToday = format(today, 'dd.MM.yyyy');
+selectedDay.value = formattedToday;
+
+watchEffect(() => {
+  const today = new Date();
+  const dates = Array.from({ length: 15 }, (_, i) => {
+    const date = addDays(today, i);
+    const dayIndex = getDay(date);
+    const day = days.value[dayIndex];
+    weeklyDates.value.push({ date: format(date, "dd.MM.yyyy"), day: day });
+  });
+});
+
+function getFormattedDate() {
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const year = today.getFullYear();
+  return `${day}.${month}.${year}`;
+}
+
+onMounted(() => {
+  const today = getFormattedDate();
+  meetStore.getAllAppointmentSchedule(today);
+  userStore.getCurrentUser();
+});
+
+const allAppointmentsDay = computed(() => {
+  return meetStore.allSchedule;
+});
+
+// burası sonra düzenlenecek
+watchEffect(() => {
+  const start = range.value.start;
+  const end = range.value.end;
+  if (start && end) {
+    console.log("Seçilen tarih aralığı:", start, " | ", end);
+    updateWeeklyDates(start, end);
+  }
+});
+
+const updateWeeklyDates = (start: string | number | Date, end: string | number | Date) => {
+  const updatedDates = [];
+  const startDate = new Date(start);
+  const lastDate = new Date(end);
+
+  while (startDate <= lastDate) {
+    const dayIndex = getDay(startDate);
+    const day = days.value[dayIndex];
+    const formattedDate = format(startDate, "dd.MM.yyyy");
+    updatedDates.push({ date: formattedDate, day: day });
+    startDate.setDate(startDate.getDate() + 1);
+  }
+
+  weeklyDates.value.splice(0, weeklyDates.value.length);
+  
+  updatedDates.forEach(date => {
+    weeklyDates.value.push(date);
+  });
+};
+
+const selectDay = (index) => {
+  selectedDay.value = index;
+  try {
+    meetStore.getAllAppointmentSchedule(index);
+
+  } catch (err) {
+    console.log(err)
+    allAppointmentsDay.value = []
+  }
+};
+
+const handleAppointmentClick = (timeObj: { selected: any; timeRange: number; }, appointment: { doctorID: any; doctorTitle: any; doctorName: any; doctorSurname: any; }) => {
+  console.log(timeObj)
+  console.log(appointment)
+  if (!timeObj.selected) {
+    selectedAppointment.value = {
+      doctorId: appointment.doctorID,
+      timeRange: timeObj.timeRange,
+      doctor: `${appointment.doctorTitle} ${appointment.doctorName} ${appointment.doctorSurname}`,
+      timeObj: `${timeObj.timeRange}.00 - ${timeObj.timeRange + 1}.00`,
+      day: selectedDay.value,
+    };
+    dialog.value = true;
+  } else {
+    snackbar.value = true;
+  }
+};
+
+const confirmAppointment = (selectedAppointment: any) => {
+  console.log(selectedAppointment)
+  const newAppointment: MakeAppointmentType = {
+    doctorId: selectedAppointment.doctorId,
+    day: selectedAppointment.day,
+    timeRange: selectedAppointment.timeRange,
+  };
+  console.log(newAppointment)
+  meetStore.makeAppointment(newAppointment)
+  dialog.value = false;
+  successDialog.value = true;
+};
+
+const toggleAccordion = (index) => {
+  activeAccordion.value = activeAccordion.value === index ? null : index;
+};
+
+const handleDateChange = (value) => {
+  console.log("Başlangıç Tarihi:", format(value.start, "dd.MM.yyyy"));
+  console.log("Bitiş Tarihi:", format(value.end, "dd.MM.yyyy"));
+};
+
+</script>
+
 <template>
   <v-container>
     <v-row>
       <v-col cols="12" lg="3">
-
         <div class="float-left">
-          <VDatePicker v-model.range="range" :disabled-dates="disabledDates" />
+          <VDatePicker v-model.range="range" :disabled-dates="['*']" />
         </div>
       </v-col>
       <v-col cols="12" lg="7">
-
         <v-sheet class="mx-auto mt-4">
           <v-slide-group show-arrows>
             <v-slide-group-item v-for="(item, index) in weeklyDates" :key="index" v-slot="{ isSelected }">
-              <v-btn :color="selectedDay === index ? 'primary' : undefined" class="ma-2" rounded
-                @click="selectDay(index)">
+              <v-btn :color="selectedDay === item.date ? 'primary' : undefined" class="ma-2" rounded
+                @click="selectDay(item.date)">
                 {{ item.date }}
               </v-btn>
             </v-slide-group-item>
           </v-slide-group>
-          <div v-if="selectedDay !== null" class="text-center mt-4">
+          <div v-if="selectedDay !== null && allAppointmentsDay && allAppointmentsDay[0]?.doctors"
+            class="text-center mt-4">
             <v-expansion-panels>
-              <v-expansion-panel v-for="(appointment, index) in appointments" :key="index" class="mt-2 mb-2"
-                @click="toggleAccordion(index)">
+              <v-expansion-panel v-for="(appointment, index) in allAppointmentsDay[0].doctors" :key="index"
+                class="mt-2 mb-2" @click="toggleAccordion(index)">
                 <v-icon v-if="activeAccordion === index" class="float-left">mdi-chevron-up</v-icon>
                 <v-icon v-else class="float-left">mdi-chevron-down</v-icon>
                 <v-expansion-panel-header :class="{ 'panel-header-active': activeAccordion === index }">
-                  <span class="float-left pl-4">{{ appointment.doctor }}</span>
+                  <span class="float-left pl-4">{{ appointment.doctorTitle }} {{ appointment.doctorName }} {{
+                    appointment.doctorSurname }}</span>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content v-if="activeAccordion === index">
                   <v-list class="mt-8 overflow-visible">
                     <v-row>
-                      <v-col v-for="(timeObj, i) in appointment.times" :key="i" cols="12" sm="3" md="3">
-                        <v-btn :color="timeObj.selected ? 'grey200' : 'primary'" class="ma-1" outlined
+                      <v-col v-for="(timeObj, i) in appointment.appointments" :key="i" cols="12" sm="3" md="3">
+                        <v-btn :color="timeObj.status ? 'grey200' : 'primary'" class="ma-1" outlined
                           @click="handleAppointmentClick(timeObj, appointment)">
-                          {{ timeObj.time }}
+                          <p>{{ timeObj.timeRange < 10 ? '0' + timeObj.timeRange : timeObj.timeRange }}.00 - {{
+                            timeObj.timeRange < 9 ? '0' + (timeObj.timeRange + 1) : timeObj.timeRange + 1 }}.00</p>
                         </v-btn>
                       </v-col>
                     </v-row>
@@ -42,6 +179,9 @@
               </v-expansion-panel>
             </v-expansion-panels>
           </div>
+          <div v-else>
+            <div class="d-flex justify-center align-center mt-16">Bu Tarihte Randevu Bulunamadı!</div>
+          </div>
           <v-dialog v-model="dialog" max-width="600">
             <v-card>
               <v-card-title>Randevu Detayı</v-card-title>
@@ -49,8 +189,8 @@
                 <v-row>
                   <v-col>
                     <p>Doktor: {{ selectedAppointment.doctor }}</p>
-                    <p>Saat: {{ selectedAppointment.timeObj.time }}</p>
                     <p>Gün: {{ selectedAppointment.day }}</p>
+                    <p>Saat: {{ selectedAppointment.timeObj }}</p>
                   </v-col>
                 </v-row>
                 <v-row>
@@ -60,7 +200,7 @@
                 </v-row>
               </v-card-text>
               <v-card-actions class="justify-end">
-                <v-btn color="primary" text @click="confirmAppointment">Onayla</v-btn>
+                <v-btn color="primary" text @click="confirmAppointment(selectedAppointment)">Onayla</v-btn>
                 <v-btn color="error" text @click="dialog = false">İptal</v-btn>
               </v-card-actions>
             </v-card>
@@ -71,8 +211,8 @@
               <v-card-title>Randevu alınmıştır.</v-card-title>
               <v-card-text>
                 <p>Doktor: {{ selectedAppointment.doctor }}</p>
-                <p>Saat: {{ selectedAppointment.timeObj.time }}</p>
                 <p>Gün: {{ selectedAppointment.day }}</p>
+                <p>Saat: {{ selectedAppointment.timeObj }}</p>
               </v-card-text>
               <v-card-actions class="justify-end">
                 <v-btn color="error" text @click="successDialog = false">Kapat</v-btn>
@@ -87,281 +227,8 @@
       </v-col>
 
     </v-row>
-
-
-
   </v-container>
 </template>
-
-<script>
-import { format, addDays, getDay } from "date-fns";
-
-export default {
-  data() {
-    return {
-      snackbar: false,
-      text: `Randevu dolu!`,
-      timeout: 2000,
-      range: [],
-      selectedDay: 0,
-      appointments: [],
-      dialog: false,
-      successDialog: false,
-      activeAccordion: null,
-      selectedAppointment: null,
-      weeklyDates: [],
-      disabledDates: [{
-        repeat: {
-          weekdays: [7, 1]
-        }
-      }],
-      days: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
-      allAppointments: [
-        [
-          {
-            doctor: "Uzman Sevgi Yörükoğlu",
-            times: [
-              { time: "8:00 - 9:00", selected: false },
-              { time: "9:00 - 10:00", selected: true },
-              { time: "10:00 - 11:00", selected: true },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: false },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: false },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Pazartesi",
-          },
-          {
-            doctor: "Bursiyer Psikolog",
-                  times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Pazartesi",
-          },
-   
-        ],
-        [
-          {
-            doctor: "Bursiyer Psikolog",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Salı",
-          },
-   
-        ],
-        [
-          {
-            doctor: "Uzman Sevgi Yörükoğlu",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Çarşamba",
-          },
-    
-        ],
-      
-        [
-          {
-            doctor: "Uzman Sevgi Yörükoğlu",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Cuma",
-          },
-        ],
-        [
-          {
-            doctor: "Uzman Sevgi Yörükoğlu",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Cumartesi",
-          },
-          {
-            doctor: "Bursiyer Psikolog",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: false },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: false },
-            ],
-            day: "Cumartesi",
-          },
-        ],
-        [
-          {
-            doctor: "Uzman Sevgi Yörükoğlu",
-            times: [
-              { time: "8:00 - 9:00", selected: true },
-              { time: "9:00 - 10:00", selected: false },
-              { time: "10:00 - 11:00", selected: false },
-              { time: "11:00 - 12:00", selected: true },
-              { time: "12:00 - 13:00", selected: true },
-              { time: "13:00 - 14:00", selected: true },
-              { time: "14:00 - 15:00", selected: true },
-              { time: "15:00 - 16:00", selected: true },
-              { time: "16:00 - 17:00", selected: false },
-              { time: "17:00 - 18:00", selected: true },
-            ],
-            day: "Pazar",
-          },
-        ],
-      ]
-    };
-  },
-  watch: {
-    range(newVal) {
-      console.log("Seçilen tarih aralığı:", newVal.start, " | ", newVal.end);
-      this.updateWeeklyDates(newVal.start, newVal.end);
-    }
-  },
-  created() {
-    const today = new Date();
-    const weeklyDates = Array.from({ length: 15 }, (_, i) => {
-      const date = addDays(today, i);
-      const dayIndex = getDay(date);
-      const day = this.days[dayIndex];
-      return { date: format(date, "dd.MM.yyyy"), day: day };
-    });
-
-    this.weeklyDates = weeklyDates;
-
-    this.selectDay(0);
-  },
-
-
-  methods: {
-    updateWeeklyDates(start, end) {
-      const updatedDates = [];
-      const startDate = new Date(start);
-      const lastDate = new Date(end);
-      const today = new Date();
-      console.log(today)
-
-      while (startDate <= lastDate) {
-        const dayIndex = getDay(startDate);
-        const day = this.days[dayIndex];
-        const formattedDate = format(startDate, "dd.MM.yyyy");
-        updatedDates.push({ date: formattedDate, day: day });
-        startDate.setDate(startDate.getDate() + 1);
-      }
-
-      this.weeklyDates = updatedDates;
-    },
-
-
-    handleDateChange(value) {
-      console.log("Başlangıç Tarihi:", format(value.start, "dd.MM.yyyy"));
-      console.log("Bitiş Tarihi:", format(value.end, "dd.MM.yyyy"));
-
-      // Yeni tarih aralığına göre weeklyDates bileşenini güncelle
-      this.updateWeeklyDates(value.start, value.end);
-    },
-    selectDay(index) {
-      this.selectedDay = index;
-      this.getAppointments();
-    },
-    getAppointments() {
-      this.appointments = [];
-
-      // Seçilen günün adını alın
-      const selectedDayName = this.days[this.selectedDay];
-
-      // Tüm randevuları dolaşın ve sadece seçilen günle eşleşenleri filtreleyin
-      this.appointments = this.allAppointments.flatMap(dayAppointments => {
-        return dayAppointments.filter(appointment => appointment.day === selectedDayName);
-      });
-    },
-
-    handleAppointmentClick(timeObj, appointment) {
-      if (!timeObj.selected) {
-        this.selectedAppointment = {
-          doctor: appointment.doctor,
-          timeObj: timeObj,
-          day: appointment.day,
-        };
-        this.dialog = true;
-      } else {
-        this.snackbar = true;
-      }
-    },
-    confirmAppointment() {
-      console.log("Randevu Onaylandı");
-      console.log("Doktor: ", this.selectedAppointment.doctor);
-      console.log("Saat: ", this.selectedAppointment.timeObj.time);
-      console.log("Gün: ", this.selectedAppointment.day);
-
-      this.selectedAppointment.timeObj.selected = true;
-
-      this.dialog = false;
-      this.successDialog = true;
-    },
-    toggleAccordion(index) {
-      this.activeAccordion = this.activeAccordion === index ? null : index;
-    },
-    handleDateChange(value) {
-      // Tarih seçimi değiştiğinde yapılacak işlemler
-      console.log("Başlangıç Tarihi:", format(value.start, "dd.MM.yyyy"));
-      console.log("Bitiş Tarihi:", format(value.end, "dd.MM.yyyy"));
-    },
-  },
-};
-</script>
 
 <style scoped>
 .v-expansion-panel {
