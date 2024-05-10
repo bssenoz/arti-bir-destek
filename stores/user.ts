@@ -178,7 +178,7 @@ export const useUserStore = defineStore({
             this.doctors = response.data
         },
         async fetchUserPatient() {
-            const response = await axios.get('http://localhost:5261/api/User/GetAllPatients', {
+            const response = await axios.get('http://localhost:5261/api/Admin/GetAllPatients', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

@@ -33,7 +33,7 @@ export const useVideoStore = defineStore({
             this.video = response.data;
         },
         async deleteVideo(id: number) {
-            const response = await axios.delete(`http://localhost:5261/api/Video/DeleteVideo?videoID=${id}`, {
+            const response = await axios.delete(`http://localhost:5261/api/Admin/DeleteVideo?videoID=${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ export const useVideoStore = defineStore({
             this.fetchVideos()
         },
         async editVideo(editItem: any) {
-            const response = await axios.put('http://localhost:5261/api/Video/UpdateVideo', editItem, {
+            const response = await axios.put('http://localhost:5261/api/Admin/UpdateVideo', editItem, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

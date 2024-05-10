@@ -121,7 +121,6 @@ const videoHeight = computed(() => {
                                 @play="handlePlay" @pause="handlePause($event, video)" @ended="handleEvent" @loadeddata="handleEvent"
                                 @waiting="handleEvent" @playing="handleEvent" @canplay="handleEvent"
                                 @canplaythrough="handleEvent" @timeupdate="handleTimeUpdate" />
-
                         </div>
                     </v-col>
                 </v-row>
@@ -131,8 +130,7 @@ const videoHeight = computed(() => {
                             <p class="text-h4">
                                 {{ video.title }}
                             </p>
-                            <p class="text-h5 font-weight-thin mt-2">
-                                {{ video.description }}
+                            <p class="text-h5 font-weight-thin mt-2" v-html="video.description">
                             </p>
                         </div>
                     </v-col>

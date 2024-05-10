@@ -24,11 +24,8 @@ export const useVideoStatisticStore = defineStore({
                 }
             });
         },
-        async updateVideoStatistics(videoId: any) {
-            const response = await axios.put('http://localhost:5261/api/VideoStatistics/UpdateVideoStatistics', videoId)
-        },
         async getVideoStatistics() {
-            const response = await axios.get('http://localhost:5261/api/VideoStatistics/GetAllVideoStatistics', {
+            const response = await axios.get('http://localhost:5261/api/Admin/GetAllVideoStatistics', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

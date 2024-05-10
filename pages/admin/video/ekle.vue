@@ -2,6 +2,8 @@
 import { ref } from "vue";
 import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb.vue";
 import axios from "axios";
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 const page = ref({ title: "Video Yükle" });
 const breadcrumbs = ref([
@@ -22,14 +24,8 @@ const breadcrumbs = ref([
   },
 ]);
 
-const headers = ref([
-  { title: "Video Adı", align: "start", key: "name", sortable: false },
-  { title: "Video Url", align: "start", key: "link" },
-  { title: "", align: "start", key: "action" },
-]);
 const errorDialog = ref(false);
 const errorDialog2 = ref(false);
-
 const file = ref<File | string>("");
 
 const videoPreview = ref<HTMLVideoElement | null>(null);
@@ -62,7 +58,7 @@ const submitFile = () => {
       formData.append("description", description.value);
 
       axios
-        .post("http://localhost:5261/api/Video/UploadVideo", formData, {
+        .post("http://localhost:5261/api/Admin/UploadVideo", formData, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
             "Content-Type": "multipart/form-data",
@@ -92,13 +88,13 @@ const submitFile = () => {
     <v-col cols="12">
       <div>
         <label> Video Başlığı <span class="text-primary">*</span></label>
-        <v-text-field v-model="title"  :counter="100" ></v-text-field>
+        <v-text-field v-model="title" :counter="100"></v-text-field>
       </div>
     </v-col>
     <v-col cols="12">
       <div>
         <label> Video Açıklaması </label>
-        <v-textarea v-model="description" rows="16"></v-textarea>
+        <quill-editor v-model:content="description" content-type="html" theme="snow"></quill-editor>
       </div>
     </v-col>
     <v-col cols="12">
@@ -138,3 +134,4 @@ const submitFile = () => {
     </v-dialog>
   </v-row>
 </template>
+
