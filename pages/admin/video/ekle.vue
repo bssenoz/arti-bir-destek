@@ -135,3 +135,15 @@ const submitFile = () => {
   </v-row>
 </template>
 
+<style scoped>
+::v-deep(.ql-toolbar.ql-snow) {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+::v-deep(.ql-container.ql-snow) {
+    height: 400px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+</style>

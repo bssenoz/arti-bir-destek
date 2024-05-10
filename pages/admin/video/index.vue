@@ -1,3 +1,88 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { useVideoStore } from '@/stores/video';
+import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
+const videoStore = useVideoStore();
+const videoDialog = ref(false);
+const editDialog = ref(false);
+const editedItem = ref<{ title?: string; description?: string; url?: string }>({});
+const errorDialog = ref(false);
+const successDialog = ref(false);
+let deletingVideoId: number | null = null;
+const deleteDialog = ref(false);
+
+onMounted(() => {
+    videoStore.fetchVideos();
+});
+
+const videos: any = computed(() => {
+    return videoStore.videos;
+});
+
+const deleteVideo = (id: number) => {
+    deletingVideoId = id;
+    deleteDialog.value = true;
+}
+
+const confirmDelete = () => {
+    if (deletingVideoId !== null) {
+        const success = videoStore.deleteVideo(deletingVideoId);
+        if (!success) {
+            errorDialog.value = true;
+        }
+        deletingVideoId = null;
+    }
+    deleteDialog.value = false;
+    successDialog.value = true;
+}
+const showVideoDialog = (item: any) => {
+    editedItem.value = Object.assign({}, item);
+    videoDialog.value = true;
+}
+
+
+const editVideo = (item: any) => {
+    editedItem.value = Object.assign({}, item.columns);
+    editDialog.value = true;
+}
+
+const saveEdit = async () => {
+    try {
+        await videoStore.editVideo(editedItem.value);
+        editDialog.value = false;
+        successDialog.value = true;
+    } catch (error) {
+        editDialog.value = false;
+        errorDialog.value = true;
+    }
+}
+
+const page = ref({ title: 'Videolar' });
+const breadcrumbs = ref([
+    {
+        text: 'Admin',
+        disabled: false,
+        href: '#'
+    },
+    {
+        text: 'Video',
+        disabled: true,
+        href: '#'
+    }
+]);
+
+const headers = ref([
+    { title: 'ID', align: 'start', key: 'id' },
+    { title: 'Başlık', align: 'start', key: 'title' },
+    { title: 'Açıklama', align: 'start', key: 'description', },
+    { title: 'Url', align: 'start', key: 'url' },
+    { title: 'İşlem', align: 'center', key: 'action', sortable: false },
+]);
+</script>
+
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
     <v-row>
@@ -11,7 +96,7 @@
                         <td class="text-subtitle-1"> {{ item.columns.id }}</td>
                         <td class="text-subtitle-1"> {{ item.columns.title }}</td>
                         <td class="text-subtitle-1">
-                            <div style="max-height: 90px; overflow-y: auto;" v-html="item.columns.description">
+                            <div style="max-height: 90px; overflow-y: auto;scrollbar-width: thin;" v-html="item.columns.description">
                             </div>
                         </td>
 
@@ -105,94 +190,22 @@
     </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { useVideoStore } from '@/stores/video';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import { QuillEditor } from '@vueup/vue-quill'
-import '@vueup/vue-quill/dist/vue-quill.snow.css';
-
-const videoStore = useVideoStore();
-const videoDialog = ref(false);
-const editDialog = ref(false);
-const editedItem = ref<{ title?: string; description?: string; url?: string }>({});
-const errorDialog = ref(false);
-const successDialog = ref(false);
-let deletingVideoId: number | null = null;
-const deleteDialog = ref(false);
-
-onMounted(() => {
-    videoStore.fetchVideos();
-});
-
-const videos: any = computed(() => {
-    return videoStore.videos;
-});
-
-const deleteVideo = (id: number) => {
-    deletingVideoId = id;
-    deleteDialog.value = true;
-}
-
-const confirmDelete = () => {
-    if (deletingVideoId !== null) {
-        const success = videoStore.deleteVideo(deletingVideoId);
-        if (!success) {
-            errorDialog.value = true;
-        }
-        deletingVideoId = null;
-    }
-    deleteDialog.value = false;
-    successDialog.value = true;
-}
-const showVideoDialog = (item: any) => {
-    editedItem.value = Object.assign({}, item);
-    videoDialog.value = true;
-}
-
-
-const editVideo = (item: any) => {
-    editedItem.value = Object.assign({}, item.columns);
-    editDialog.value = true;
-}
-
-const saveEdit = async () => {
-    try {
-        await videoStore.editVideo(editedItem.value);
-        editDialog.value = false;
-        successDialog.value = true;
-    } catch (error) {
-        editDialog.value = false;
-        errorDialog.value = true;
-    }
-}
-
-const page = ref({ title: 'Videolar' });
-const breadcrumbs = ref([
-    {
-        text: 'Admin',
-        disabled: false,
-        href: '#'
-    },
-    {
-        text: 'Video',
-        disabled: true,
-        href: '#'
-    }
-]);
-
-const headers = ref([
-    { title: 'ID', align: 'start', key: 'id' },
-    { title: 'Başlık', align: 'start', key: 'title' },
-    { title: 'Açıklama', align: 'start', key: 'description', },
-    { title: 'Url', align: 'start', key: 'url' },
-    { title: 'İşlem', align: 'center', key: 'action', sortable: false },
-]);
-</script>
-
 <style scoped>
 .v-btn:hover {
     background-color: #db2777;
     color: #fff;
+}
+::v-deep(.ql-toolbar.ql-snow) {
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+::v-deep(.ql-container.ql-snow) {
+    height: 400px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+::v-deep(v-table__wrapper) {
+    scrollbar-width: thin;
 }
 </style>

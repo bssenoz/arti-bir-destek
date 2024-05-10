@@ -16,7 +16,7 @@
                             <v-card title="İzleyen Kullanıcılar">
                                 <v-card-text>
                                     <v-row>
-                                        <v-col v-for="(istatistic, index) in video.videoStatistics" cols="4">
+                                        <v-col v-for="(istatistic, index) in video.videoStatistics" cols="12" sm="4">
                                             <Chart :title="`${istatistic.patientName} ${istatistic.patientSurname}`"  :clickNumber="istatistic.videoClicksNumber" :watchPercentage="istatistic.videoViewingRate" :image="istatistic.patientProfileImageUrl"  v-if="istatistic.patientProfileImageUrl" class="my-4"/>
                                             <Chart :title="`${istatistic.patientName} ${istatistic.patientSurname}`"  :clickNumber="istatistic.videoClicksNumber" :watchPercentage="istatistic.videoViewingRate" :image="user" v-else class="my-4"/>
                                         </v-col>
