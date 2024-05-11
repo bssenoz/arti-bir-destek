@@ -68,7 +68,6 @@ watchEffect(() => {
   );
   meetStore.schedule.forEach((entry: { [x: string]: any; day: any; }) => {
     const dayIndex = entry.day;
-    console.log(entry.eightToNine)
 
     const givenDateStr = dayIndex;
     const parts = givenDateStr.split('.');
@@ -94,18 +93,18 @@ watchEffect(() => {
       }) === formattedGivenDate;
     });
 
-    console.log("index: ", index);
+    if (index > -1) {
+      if (entry.eightToNine) updatedSelectedHours[index][0] = true;
+      if (entry.nineToTen) updatedSelectedHours[index][1] = true;
+      if (entry.tenToEleven) updatedSelectedHours[index][2] = true;
+      if (entry.elevenToTwelve) updatedSelectedHours[index][3] = true;
+      if (entry.twelveToThirteen) updatedSelectedHours[index][4] = true;
+      if (entry.thirteenToFourteen) updatedSelectedHours[index][5] = true;
+      if (entry.fourteenToFifteen) updatedSelectedHours[index][6] = true;
+      if (entry.fifteenToSixteen) updatedSelectedHours[index][7] = true;
+      if (entry.sixteenToSeventeen) updatedSelectedHours[index][8] = true;
+    }
 
-
-    if (entry.eightToNine) updatedSelectedHours[index][0] = true;
-    if (entry.nineToTen) updatedSelectedHours[index][1] = true;
-    if (entry.tenToEleven) updatedSelectedHours[index][2] = true;
-    if (entry.elevenToTwelve) updatedSelectedHours[index][3] = true;
-    if (entry.twelveToThirteen) updatedSelectedHours[index][4] = true;
-    if (entry.thirteenToFourteen) updatedSelectedHours[index][5] = true;
-    if (entry.fourteenToFifteen) updatedSelectedHours[index][6] = true;
-    if (entry.fifteenToSixteen) updatedSelectedHours[index][7] = true;
-    if (entry.sixteenToSeventeen) updatedSelectedHours[index][8] = true;
   });
   selectedHours.value = updatedSelectedHours;
 });
@@ -117,58 +116,57 @@ const formatDate = (date: Date) => {
 </script>
 
 <template>
-    <div>
-      <v-container>
-        <v-row>
-          <v-col>
-            <h2 class="text-center">RANDEVU TAKVİMİ</h2>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col cols="12">
-            <v-container v-for="(date, index) in dates" :key="index">
-              <v-card class="px-6 py-6 elevation-6">
-                <h3 class="mb-4">{{ formatDate(date) }}</h3>
-                <v-row align="center">
-                  <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="12" md="4" lg="2">
-                    <v-btn :color="selectedHours[index][hourIndex] ? 'primary' : 'grey200'" dense
-                      @click="handleButtonClick(index, hourIndex)">
-                      <span>{{ `${hour[0]}:00 - ${hour[1]}:00` }}</span>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-container>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
-          </v-col>
-        </v-row>
-        <v-dialog v-model="errorDialog" max-width="500">
-          <v-card>
-            <v-card-title>HATA!</v-card-title>
-            <v-card-text>
-              Bir hatayla karşılaşıldı :(
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="succesDialog" max-width="500">
-          <v-card>
-            <v-card-title>Başarılı!</v-card-title>
-            <v-card-text>
-              Randevu takvimi oluşturuldu.
-            </v-card-text>
-            <v-card-actions>
-              <v-btn color="primary" @click="succesDialog = false">Tamam</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-container>
-    </div>
-  </template>
-  
+  <div>
+    <v-container>
+      <v-row>
+        <v-col>
+          <h2 class="text-center">RANDEVU TAKVİMİ</h2>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12">
+          <v-container v-for="(date, index) in dates" :key="index">
+            <v-card class="px-6 py-6 elevation-6">
+              <h3 class="mb-4">{{ formatDate(date) }}</h3>
+              <v-row align="center">
+                <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="12" md="4" lg="2">
+                  <v-btn :color="selectedHours[index][hourIndex] ? 'primary' : 'grey200'" dense
+                    @click="handleButtonClick(index, hourIndex)">
+                    <span>{{ `${hour[0]}:00 - ${hour[1]}:00` }}</span>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-container>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
+        </v-col>
+      </v-row>
+      <v-dialog v-model="errorDialog" max-width="500">
+        <v-card>
+          <v-card-title>HATA!</v-card-title>
+          <v-card-text>
+            Bir hatayla karşılaşıldı :(
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="succesDialog" max-width="500">
+        <v-card>
+          <v-card-title>Başarılı!</v-card-title>
+          <v-card-text>
+            Randevu takvimi güncellendi.
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="succesDialog = false">Tamam</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-container>
+  </div>
+</template>
