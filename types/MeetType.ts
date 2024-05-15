@@ -11,3 +11,11 @@ export type MakeAppointmentType = {
     day: string;
     timeRange: number;
 }
+
+export type AppointmentReportType = {
+    appointmentStartTime: string;
+    appointmentEndTime: string;
+    appointmentComment: string,
+    appointmentScheduleId: number;
+    patientId: string;
+}

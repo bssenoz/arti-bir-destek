@@ -4,14 +4,15 @@ import axios from '@/utils/axios';
 interface VideoStatisticsType {
     videoStatistics: Array<VideoStatisticsType>,
     currentVideoStatistics: Array<VideoStatisticsType>
-
+    userVideoStatistic: Array<VideoStatisticsType>,
 }
 
 export const useVideoStatisticStore = defineStore({
     id: 'videoStatistic',
     state: (): VideoStatisticsType => ({
         videoStatistics: [],
-        currentVideoStatistics: []
+        currentVideoStatistics: [],
+        userVideoStatistic: []
     }),
     
     actions: {
@@ -42,6 +43,15 @@ export const useVideoStatisticStore = defineStore({
                 }
             });
             this.currentVideoStatistics = response.data.reverse();
+        },
+        async getUserVideoStatistics(userSlug: string) {
+            const response = await axios.get(`http://localhost:5261/api/VideoStatistics/GetAllVideoStatisticsByPatientUserName?patientUserName=${userSlug}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            this.userVideoStatistic = response.data;
         },
     }
 });

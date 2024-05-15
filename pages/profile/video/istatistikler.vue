@@ -19,23 +19,16 @@
 
 <script setup lang="ts">
 import Chart from '@/components/video/Chart.vue';
-import Chart2 from '@/components/video/Chart2.vue';
 import { useVideoStore } from '@/stores/video';
 import { useVideoStatisticStore } from '@/stores/videoStatistic';
-import { useUserStore } from '@/stores/user';
-import { VideoStatisticsType } from "~/types/VideoType";
 
 const videoStore = useVideoStore();
 const videoStatisticStore = useVideoStatisticStore();
-const userStore = useUserStore();
 onMounted(() => {
     videoStore.fetchVideos();
     videoStatisticStore.getCurrentUserVideoStatistics();
 });
 
-const videos: any = computed(() => {
-    return videoStore.videos;
-});
 const videoStatistics: any = computed(() => {
     return videoStatisticStore.currentVideoStatistics;
 });

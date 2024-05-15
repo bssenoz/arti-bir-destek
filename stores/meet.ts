@@ -7,6 +7,10 @@ interface meetType {
     allSchedule: any;
     patientAppointment: any;
     doctorAppointment: any;
+    allPatients: any;
+    userReport: any;
+    pastAppointment: any;
+    getUser: any;
 }
 
 export const useMeetStore = defineStore({
@@ -16,7 +20,11 @@ export const useMeetStore = defineStore({
         schedule: [],
         allSchedule: [],
         patientAppointment: [],
-        doctorAppointment: []
+        doctorAppointment: [],
+        allPatients: [],
+        userReport: [],
+        pastAppointment: [],
+        getUser: []
     }),
     getters: {
 
@@ -67,29 +75,6 @@ export const useMeetStore = defineStore({
                 alert('Hata oluştu. Lütfen tekrar deneyin.');
             }
         },
-        // async addAppointmentSchedule(data: any) {
-        //     const response = await axios.post('http://localhost:5261/api/AppointmentSchedule/AddAppointmentSchedule', data, {
-        //         headers: {
-        //             'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        //             'Content-Type': 'application/json'
-        //         },
-        //     })
-        // },
-        // async getAllAppointmentSchedule() {
-        //     try {
-        //         const response = await axios.get('http://localhost:5261/api/AppointmentSchedule/GetAllAppointmentSchedules', {
-        //             headers: {
-        //                 'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-        //                 'Content-Type': 'application/json'
-        //             },
-        //         });
-        //         this.allSchedule = response.data;
-        //         console.log("al: ",this.allSchedule)
-        //     } catch (error) {
-        //         console.error(error);
-        //         alert('Hata oluştu. Lütfen tekrar deneyin.');
-        //     }
-        // },
         async getAllAppointmentSchedule(date: string) {
             try {
                 console.log(date)
@@ -148,6 +133,68 @@ export const useMeetStore = defineStore({
             } catch(error) {
                 console.log(error)
             }
-        }
+        },
+        async fetchAllPatientsForDoctor() {
+            try {
+                const response = await axios.get('http://localhost:5261/api/DoctorAppointment/GetAllPatients', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.allPatients = response.data.reverse()
+            } catch(error) {
+                console.log(error)
+            }
+        },
+        async getUserReport(userSlug: string) {
+            try {
+                const response = await axios.get(`http://localhost:5261/api/AppointmentStatistics/GetAllAppoinmentStatisticsByPatientUserName?patientUserName=${userSlug}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                response.data[0].appointmentStatistics.reverse()
+                this.userReport = response.data;
+
+            } catch(error) {
+                this.userReport =  ""
+                this.getUserSlug(userSlug)
+                console.log(error)
+            }
+        },
+        async fetchPastDoctorAppointment(patientSlug: string) {
+            try {
+                const response = await axios.get(`http://localhost:5261/api/DoctorAppointment/GetAllPastDoctorAppointmentsByPatientSlug?patientSlug=${patientSlug}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                this.pastAppointment = response.data;
+
+            } catch {
+                this.pastAppointment = ""
+                this.getUser(patientSlug)
+            }
+        },
+        async addAppointmentReport(report:any) {
+            try{
+                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics',report)
+                console.log(response.data)
+            } catch(error) {
+                console.log(error)
+            }
+        },
+        async getUserSlug(userSlug: string) {
+            const response = await axios.get(`http://localhost:5261/api/User/GetUserBySlug?userSlug=${userSlug}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            this.getUser = response.data;
+        },
     }
 });
