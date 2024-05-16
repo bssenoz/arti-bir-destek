@@ -24,7 +24,7 @@ const logout = async () => {
           icon
           rounded="md"
           color="primary"
-          to="/auth/login"
+          to="/giris-yap"
         >
           <PowerIcon />
           <v-tooltip activator="parent" location="top" @click="logout">Logout</v-tooltip>

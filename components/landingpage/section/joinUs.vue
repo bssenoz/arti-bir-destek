@@ -27,7 +27,7 @@ import img3 from '/images/profile/user-6.jpg';
                         <h6 class="text-h6 text-medium-emphasis font-weight-medium mt-2">
                           Anomali riski taşıyan bir gebeyseniz ve psikososyal desteğe ihtiyacınız varsa, programımızdan ücretsiz bir şekilde yararlanmak için kaydolun.
                         </h6>
-                        <v-btn color="primary" flat class="mt-5 px-8">Kaydol</v-btn>
+                        <v-btn color="primary" flat class="mt-5 px-8">Kayıt Ol</v-btn>
                     </div>
                 </v-card-item>
             </v-card>

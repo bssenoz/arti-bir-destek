@@ -36,7 +36,7 @@ definePageMeta({
             Zaten hesabın var mı? 
             <v-btn 
               variant="plain" 
-              to="/auth/login" 
+              to="/giris-yap" 
               class="text-primary text-body-1 opacity-1 pl-2" 
               >Giriş Yap</v-btn 
             > 

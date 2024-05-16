@@ -53,11 +53,11 @@ const customizer = useCustomizerStore();
         <v-btn style="width:100%"
                 color="primary"
                 target="_blank"
-                href="/auth/register"
+                href="/kayit-ol"
                 variant="outlined"
                 class="mt-sm-0 mt-4 m-btn-full bg-primary"
                 size="large"
-                >Kaydol</v-btn
+                >Kayıt Ol</v-btn
               >
       </v-list-item>
     </v-list>
@@ -66,7 +66,7 @@ const customizer = useCustomizerStore();
         <v-btn style="width:100%"
                 color="primary"
                 target="_blank"
-                href="/auth/login"
+                href="/giris-yap"
                 variant="outlined"
                 class="mt-sm-0 mt-4 m-btn-full "
                 size="large"

@@ -92,12 +92,12 @@ const sidebarItem: menu[] = [
       {
         title: "Side Login",
         icon: PointIcon,
-        to: "/auth/login",
+        to: "/giris-yap",
       },
       {
         title: "Boxed Login",
         icon: PointIcon,
-        to: "/auth/login2",
+        to: "/giris-yap2",
       },
     ],
   },
@@ -109,12 +109,12 @@ const sidebarItem: menu[] = [
       {
         title: "Side Register",
         icon: PointIcon,
-        to: "/auth/register",
+        to: "/kayit-ol",
       },
       {
         title: "Boxed Register",
         icon: PointIcon,
-        to: "/auth/register",
+        to: "/kayit-ol",
       },
     ],
   },
@@ -126,7 +126,7 @@ const sidebarItem: menu[] = [
       {
         title: "Side Şifremi Unuttum",
         icon: PointIcon,
-        to: "/auth/forgot-password",
+        to: "/sifremi-unuttum",
       },
       {
         title: "Boxed Şifremi Unuttum",

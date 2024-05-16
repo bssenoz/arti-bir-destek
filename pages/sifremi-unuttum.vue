@@ -36,7 +36,7 @@ definePageMeta({
                         Lütfen hesabınızla ilişkili e-posta adresini girin. Şifrenizi sıfırlamanız için size e-postayla bir bağlantı göndereceğiz.
                     </p>
                     <AuthResetForm />
-                    <v-btn size="large" to="/auth/login" block class="mt-5" flat style="background-color: rgb(221, 154, 194);color:#fff">Giriş Ekranına Dön</v-btn>
+                    <v-btn size="large" to="/giris-yap" block class="mt-5" flat style="background-color: rgb(221, 154, 194);color:#fff">Giriş Ekranına Dön</v-btn>
                 </div>
             </v-col>
         </v-row>

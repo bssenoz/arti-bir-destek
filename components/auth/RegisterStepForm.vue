@@ -89,7 +89,7 @@ const stepperProgress = computed(() => {
 
 const closeDialogAndRedirect = () => {
   dialogVisible.value = false;
-  router.push({ path: '/auth/login' });
+  router.push({ path: '/giris-yap' });
 };
 
 const closeDialog = () => {
@@ -190,7 +190,7 @@ const closeDialog = () => {
         İleri
       </button>
       <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem" @click="register">
-        KAYDOL
+        KAYIT OL
       </button>
       <v-dialog v-model="dialogVisible" width="500">
         <v-card title="Kayıt Başarılı">

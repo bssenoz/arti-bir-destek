@@ -66,7 +66,7 @@ const register = async () => {
 };
 const closeDialogAndRedirect = () => {
   dialogVisible.value = false;
-  router.push({ path: '/auth/login' });
+  router.push({ path: '/giris-yap' });
 };
 const closeDialog = () => {
   dialogError.value = false;

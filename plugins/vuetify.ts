@@ -23,9 +23,6 @@ import "@/assets/scss/style.scss";
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
 
-//i18
-import { createI18n } from "vue-i18n";
-import messages from "@/utils/locales/messages";
 import {
   BLUE_THEME,
   AQUA_THEME,
@@ -95,12 +92,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
   });
 
-  const i18n = createI18n({
-    locale: "en",
-    messages: messages,
-    silentTranslationWarn: true,
-    silentFallbackWarn: true,
-  });
+ 
   nuxtApp.vueApp.use(vuetify);
   nuxtApp.vueApp.component("EasyDataTable", Vue3EasyDataTable);
   nuxtApp.vueApp.use(PerfectScrollbar);
@@ -108,5 +100,4 @@ export default defineNuxtPlugin((nuxtApp) => {
   nuxtApp.vueApp.use(VueTablerIcons);
   nuxtApp.vueApp.use(VCalendar, {});
   nuxtApp.vueApp.use(Maska);
-  nuxtApp.vueApp.use(i18n);
 });

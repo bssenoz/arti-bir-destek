@@ -98,7 +98,7 @@ const logout = async () => {
       </perfect-scrollbar>
 
       <div class="pt-4 pb-6 px-8 text-center">
-        <v-btn color="primary" variant="outlined" block to="/auth/login" @click="logout">Çıkış</v-btn>
+        <v-btn color="primary" variant="outlined" block to="/giris-yap" @click="logout">Çıkış</v-btn>
       </div>
     </v-sheet>
   </v-menu>

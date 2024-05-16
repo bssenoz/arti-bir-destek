@@ -34,17 +34,17 @@
             >
               <v-btn
                 target="_blank"
-                href="/auth/register"
+                href="/kayit-ol"
                 color="primary"
                 size="large"
                 class="m-btn-full btn-custom-lg"
                 flat
-                >Kaydol</v-btn
+                >Kayıt Ol</v-btn
               >
               <v-btn
                 color="primary"
                 target="_blank"
-                href="/auth/login"
+                href="/giris-yap"
                 variant="outlined"
                 class="mt-sm-0 mt-4 lp-btn-shadow m-btn-full btn-custom-lg"
                 size="large"
