@@ -46,6 +46,7 @@
     "quill-blot-formatter": "^1.0.5",
     "remixicon": "2.5.0",
     "sass": "1.56.1",
+    "swiper": "^11.1.1",
     "v-calendar": "^3.1.2",
     "vee-validate": "4.6.7",
     "video.js": "^8.10.0",

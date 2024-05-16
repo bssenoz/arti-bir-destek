@@ -29,6 +29,9 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      link: [
+          {rel: 'icon', type: 'image/x-icon', href: '/images/backgrounds/adimlar.jpg'}
+      ],
       title:
         "Artı Bir Destek",
     },

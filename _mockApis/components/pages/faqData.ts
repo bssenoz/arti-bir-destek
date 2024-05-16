@@ -1,20 +1,32 @@
 import type { faqPageType } from '@/types/components/pages/faqData';
 const faqPage: faqPageType[] = [
     {
-        question: 'What is an Admin Dashboard?',
-        answer: 'Admin Dashboard is the backend interface of a website or an application that helps to manage the website s overall content and settings. It is widely used by the site owners to keep track of their website, make changes to their content, and more.'
+        question: 'Görüşmeler ne zaman ve nasıl gerçekleştirilecek?',
+        answer: 'Görüşmeler, belirli gün ve saatlerde çevrimiçi platformlar üzerinden yapılacaktır. Teknolojik bağlantıların kontrol edilmesi ve mahremiyetin sağlanması için gereken önlemler alınacaktır.'
     },
     {
-        question: 'What should an admin dashboard template include?',
-        answer: 'Admin dashboard template should include user & SEO friendly design with a variety of components and application designs to help create your own web application with ease. This could include customization options, technical support and about 6 months of future updates.'
+        question: 'Görüşme süresi nedir?',
+        answer: 'Görüşmeler, genellikle 35-40 dakika arasında (±5 dakika) yapılandırılacaktır. Ancak, danışanın hızına ve ihtiyaçlarına göre süre esneklik gösterebilir.'
     },
     {
-        question: 'Why should I buy admin templates from AdminMart?',
-        answer: 'Adminmart offers high-quality templates that are easy to use and fully customizable. With over 101,801 happy customers & trusted by 10,000+ Companies. AdminMart is recognized as the leading online source for buying admin templates.'
+        question: 'Görüşmeler kaç seans sürer ve ne sıklıkla yapılır?',
+        answer: 'Görüşmeler, haftada bir gün olmak üzere toplamda beş ila yedi seans arasında tamamlanacaktır.'
     },
     {
-        question: 'Do Adminmart offers a money back guarantee?',
-        answer: 'There is no money back guarantee in most companies, but if you are unhappy with our product, Adminmart gives you a 100% money back guarantee.'
+        question: 'Görüşmeler nasıl yapılandırılır?',
+        answer: 'Görüşmeler, bireyin ihtiyaçlarına ve programın hedeflerine göre yapılandırılacaktır. Danışanın hızına ve ihtiyaçlarına dikkat edilecek, iletişimi güçlendiren tedavi edici iletişim teknikleri kullanılacaktır.'
+    },
+    {
+        question: 'Görüşme süreci nasıl işler?',
+        answer: 'Görüşme sürecinde, bireyle bağ kurulacak, mahremiyet ve gizlilik ön planda tutulacaktır. Bireyin duygularını paylaşması için cesaretlendirilecek ve işlevsel olmayan baş etme yöntemleri yerine işlevsel olanlar güçlendirilecektir.'
+    },
+    {
+        question: 'Görüşmelerde hangi konular ele alınır?',
+        answer: 'Görüşmelerde, gebelik, fetal anomali, kayıp/yas süreci, psikososyal destek gibi konular ele alınacaktır. Ayrıca, bireyin duygusal ihtiyaçlarına ve yaşadığı zorluklara odaklanılacaktır.'
+    },
+    {
+        question: 'Nasıl başvurabilirim ve programdan nasıl faydalanabilirim?',
+        answer: 'Kayıt ol sayfasından kaydını tamamlayabilir, randevular sayfasından herhangi bir danışmandan randevu alarak iletişime geçebilirsin.'
     }
 ];
 

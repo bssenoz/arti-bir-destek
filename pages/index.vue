@@ -2,11 +2,12 @@
 import { ref, onMounted } from "vue";
 import Header from "@/components/landingpage/layout/Header.vue";
 import MainBanner from "@/components/landingpage/section/mainBanner.vue";
-import UserReview from "@/components/landingpage/section/userReview.vue";
-import AskQuestion from "@/components/landingpage/section/askQuestion.vue";
-import BuyNow from "@/components/landingpage/section/buyNow.vue";
 import FaqQuestion from "@/components/landingpage/section/faqQuestion.vue";
 import Footer from "@/components/landingpage/layout/Footer.vue";
+import Purpose from "@/components/landingpage/section/purpose.vue";
+import Facility from "@/components/landingpage/section/facility.vue";
+import WhyUs from "@/components/landingpage/section/whyUs.vue";
+import JoinUs from "@/components/landingpage/section/joinUs.vue";
 
 import "aos/dist/aos.css";
 import AOS from "aos";
@@ -25,11 +26,11 @@ definePageMeta({
     <Header />
     <!----------->
     <MainBanner />
-    <!-- <UserReview />
-    <AskQuestion />
-    <FaqQuestion/>
-    <BuyNow /> -->
-    <!----------->
-    <Footer />
+    <Purpose id="amaclarimiz"/>
+    <Facility class="my-16" id="neler-sagliyoruz"/>
+    <WhyUs class="my-16" id="neden-biz"/>
+    <FaqQuestion class="my-16" id="sss"/>
+    <JoinUs class="my-16" id="aramiza-katil"/>
+    <Footer class="mt-16"/>
   </div>
 </template>
