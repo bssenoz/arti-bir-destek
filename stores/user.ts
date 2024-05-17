@@ -256,5 +256,66 @@ export const useUserStore = defineStore({
                 console.error('Delete request failed:', error);
             }
         },
+        async updateDoctor(newInfo: any) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    }
+                };
+                await axios.put('http://localhost:5261/api/User/UpdateDoctor', newInfo, config)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async updatePatient(newInfo: any) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    }
+                };
+                await axios.put('http://localhost:5261/api/User/UpdatePatient', newInfo, config)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async changePassword(newPass: any) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`
+                    }
+                };
+                await axios.patch('http://localhost:5261/api/User/ChangePassword', newPass, config)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async uploadProfileImage(file: any) {
+            try {
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${this.accessToken}`,
+                        'Content-Type': 'multipart/form-data',
+                    }
+                };
+                axios.patch('http://localhost:5261/api/User/UploadProfileImage', file, config)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async deleteProfileImage() {
+            try {
+                await axios.patch('http://localhost:5261/api/User/DeleteProfileImage', null, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 });

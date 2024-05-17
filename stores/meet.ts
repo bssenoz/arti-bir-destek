@@ -11,6 +11,7 @@ interface meetType {
     userReport: any;
     pastAppointment: any;
     getUser: any;
+    patientDoctors: any;
 }
 
 export const useMeetStore = defineStore({
@@ -24,7 +25,8 @@ export const useMeetStore = defineStore({
         allPatients: [],
         userReport: [],
         pastAppointment: [],
-        getUser: []
+        getUser: [],
+        patientDoctors: []
     }),
     getters: {
 
@@ -196,5 +198,14 @@ export const useMeetStore = defineStore({
             });
             this.getUser = response.data;
         },
+        async fetchPatientDoctors() {
+            const response = await axios.get('http://localhost:5261/api/PatientAppointment/GetPatientDoctors', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            this.patientDoctors = response.data;
+        }
     }
 });

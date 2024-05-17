@@ -18,7 +18,7 @@ const props = defineProps({ item: Object, level: Number });
         <template v-slot:prepend>
             <Icon :item="item.icon" :level="level" />
         </template>
-        <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
+        <v-list-item-title>{{item.title}}</v-list-item-title>
         <!---If Caption-->
         <v-list-item-subtitle v-if="item.subCaption" class="text-caption mt-n1 hide-menu">
             {{ item.subCaption }}

@@ -10,6 +10,9 @@ onMounted(() => {
 const user = computed(() => {
     return userStore.currentUser;
 });
+const userRole = computed(() => {
+    return userStore.userRole;
+})
 
 definePageMeta({
     layout: "default",
@@ -24,5 +27,5 @@ definePageMeta({
 </script>
 
 <template>
-    <AccountTab :user="user" />
+    <AccountTab :user="user" :userRole="userRole"/>
 </template>

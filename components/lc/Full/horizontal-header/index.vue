@@ -2,14 +2,19 @@
 import { ref, watch } from "vue";
 import { useCustomizerStore } from "@/stores/customizer";
 import { Menu2Icon } from "vue-tabler-icons";
+import { useUserStore } from '@/stores/user';
 const customizer = useCustomizerStore();
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 import jwt_decode from 'jwt-decode';
 
+const userStore = useUserStore();
+
 const isAdmin = ref(false);
 
 onMounted(() => {
+  userStore.getCurrentUser()
+ 
   const accessToken = localStorage.getItem('accessToken');
 
   if (accessToken) {
@@ -19,12 +24,13 @@ onMounted(() => {
 
     if (userRole == "Admin") isAdmin.value = true;
 
-
   } else {
     console.error('Access token bulunamadı veya null.');
   }
 })
-
+const user = computed(() => {
+  return userStore.currentUser;
+});
 watch(priority, (newPriority) => {
   priority.value = newPriority;
 });
@@ -47,9 +53,6 @@ watch(priority, (newPriority) => {
         <Menu2Icon size="20" stroke-width="1.5" />
       </v-btn>
 
-      <!-- ------------------------------------------------>
-      <!-- Mega menu -->
-      <!-- ------------------------------------------------>
       <div class="hidden-md-and-down" style="margin-left: 14rem">
         <LcFullVerticalHeaderNavigations />
       </div>
@@ -59,14 +62,14 @@ watch(priority, (newPriority) => {
       <!-- ---------------------------------------------- -->
       <!-- Notification -->
       <!-- ---------------------------------------------- -->
-
-      <LcFullVerticalHeaderNotificationDD />
+<!-- 
+      <LcFullVerticalHeaderNotificationDD /> -->
 
       <!-- ---------------------------------------------- -->
       <!-- User Profile -->
       <!-- ---------------------------------------------- -->
       <div class="ml-3 mr-sm-0 mr-3">
-        <LcFullVerticalHeaderProfileDD :isAdmin="isAdmin"/>
+        <LcFullVerticalHeaderProfileDD :isAdmin="isAdmin" :currentUser="user"/>
       </div>
     </div>
   </v-app-bar>

@@ -29,7 +29,7 @@ function separateAppointments(appointments: any) {
 }
 
 onMounted(async () => {
-    await userStore.getCurrentUser();
+    // await userStore.getCurrentUser();
     await meetStore.fetchDoctorAppointments();
     separateAppointments(appointments.value);
 });

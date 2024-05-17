@@ -34,3 +34,22 @@ export type CurrentUserType = {
 export type DoctorIdType = {
     doctorId: string;
 } 
+
+export type ChangePassword = {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
+export type UpdateDoctor = {
+    name: string | null;
+    surname: string | null;
+    phoneNumber: string | null;
+    title: string | null;
+}
+
+export type UpdatePatient = {
+    name: string | null;
+    surname: string | null;
+    phoneNumber: string | null;
+}

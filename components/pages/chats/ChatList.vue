@@ -2,11 +2,13 @@
 import { ref, onMounted, computed } from 'vue';
 import { useChatStore } from '@/stores/chat';
 import { useUserStore } from '@/stores/user';
+import { useMeetStore } from '@/stores/meet';
 import { ChatUsersType, ChatsUserType } from '~/types/ChatType';
 import { CurrentUserType } from '~/types/UserType';
 import user from '/images/profile/user.png';
 
 const chatStore = useChatStore();
+const meetStore = useMeetStore();
 const userStore = useUserStore();
 
 const currentUser = ref<CurrentUserType | null>(null);
@@ -23,9 +25,9 @@ watchEffect(() => {
 });
 
 onMounted(async () => {
-  userStore.fetchUserDoctor();
   await userStore.getCurrentUser();
   if (currentUser.value) chatStore.fetchMessageInfo(userStore.currentUser.id);
+  meetStore.fetchPatientDoctors();
 });
 
 const getChats = computed(() => {
@@ -33,7 +35,7 @@ const getChats = computed(() => {
 });
 
 const getDoctors = computed(() => {
-  return userStore.doctors;
+  return meetStore.patientDoctors;
 });
 
 const dialogVisible = ref(false);

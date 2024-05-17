@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, onUpdated, nextTick } from 'vue';
 import { useChatStore } from '@/stores/chat';
 import { useUserStore } from '@/stores/user';
+import { useMeetStore } from '@/stores/meet';
+
 import { formatDistanceToNowStrict } from 'date-fns';
 import trLocale from 'date-fns/locale/tr';
 import user from '/images/profile/user.png';
@@ -9,11 +11,11 @@ import user from '/images/profile/user.png';
 const msg = ref('');
 const chatStore = useChatStore();
 const userStore = useUserStore();
+const meetStore = useMeetStore();
 
 onMounted(async () => {
     await userStore.getCurrentUser();
-    userStore.fetchUserDoctor();
-    userStore.getCurrentUser();
+    meetStore.fetchPatientDoctors();
 });
 
 const fromUser = computed(() => {

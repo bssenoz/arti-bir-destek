@@ -4,37 +4,17 @@ import { profileDD } from "@/_mockApis/headerData";
 import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
 import admin from '/images/profile/admin.png';
-import jwt_decode from 'jwt-decode';
 
 const userStore = useUserStore();
-const isAdmin = ref(false);
 
 const props = defineProps({
     isAdmin: {
       type: Boolean,
       default: true,
+    },
+    currentUser: {
+      type: Object,
     }
-});
-
-onMounted(() => {
-  userStore.getCurrentUser()
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (accessToken) {
-    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-
-    const userRole = decodedToken.role as string | undefined;
-
-    if (userRole == "Admin") isAdmin.value = true;
-
-
-  } else {
-    console.error('Access token bulunamadı veya null.');
-  }
-});
-
-const currentUser = computed(() => {
-  return userStore.currentUser;
 });
 
 const logout = async () => {
@@ -43,9 +23,6 @@ const logout = async () => {
 </script>
 
 <template>
-  <!-- ---------------------------------------------- -->
-  <!-- notifications DD -->
-  <!-- ---------------------------------------------- -->
   <v-menu :close-on-content-click="false">
     <template v-slot:activator="{ props }">
       <v-btn class="custom-hover-primary" variant="text" v-bind="props" icon>
@@ -64,6 +41,7 @@ const logout = async () => {
             <img :src="currentUser.profileImageUrl" width="80" v-if="currentUser.profileImageUrl && !isAdmin" />
             <img :src="user" width="80" v-if="!currentUser.profileImageUrl && !isAdmin" />
           </v-avatar>
+
           <div class="ml-3">
             <h6 class="text-h6 mb-n1">{{ currentUser.name }} {{ currentUser.surname }}</h6>
             <span class="text-subtitle-1 font-weight-regular textSecondary">{{ currentUser.title }}</span>

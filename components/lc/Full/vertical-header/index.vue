@@ -1,15 +1,38 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useCustomizerStore } from '@/stores/customizer';
-// Icon Imports
+import { useUserStore } from '@/stores/user';
 import { GridDotsIcon, Menu2Icon } from 'vue-tabler-icons';
 const customizer = useCustomizerStore();
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 
+const userStore = useUserStore();
+const isAdmin = ref(false);
+
 watch(priority, (newPriority) => {
     // yes, console.log() is a side effect
     priority.value = newPriority;
+});
+onMounted(() => {
+  userStore.getCurrentUser()
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (accessToken) {
+    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+
+    const userRole = decodedToken.role as string | undefined;
+
+    if (userRole == "Admin") isAdmin.value = true;
+
+
+  } else {
+    console.error('Access token bulunamadı veya null.');
+  }
+});
+
+const user = computed(() => {
+  return userStore.currentUser;
 });
 
 </script>
@@ -25,35 +48,15 @@ watch(priority, (newPriority) => {
             <Menu2Icon size="20" stroke-width="1.5" />
         </v-btn>
 
-        <!-- ---------------------------------------------- -->
-        <!-- Search part -->
-        <!-- ---------------------------------------------- -->
         <v-sheet class="">
             <LcFullVerticalHeaderSearchbar />
         </v-sheet>
 
-        <!---/Search part -->
-
-        <!-- ---------------------------------------------- -->
-        <!-- Mega menu -->
-        <!-- ---------------------------------------------- -->
         <div class="hidden-md-and-down">
             <LcFullVerticalHeaderNavigations />
         </div>
         <v-spacer />
-        <!-- ---------------------------------------------- -->
-        <!---right part -->
-        <!-- ---------------------------------------------- -->
-        <!-- ---------------------------------------------- -->
-        <!-- translate -->
-        <!-- ---------------------------------------------- -->
-  
-
-        <!-- ---------------------------------------------- -->
- 
-        <!-- ---------------------------------------------- -->
-   
-
+      
         <!-- ------------------------------------------------>
         <!-- Notification -->
         <!-- ------------------------------------------------>
@@ -70,6 +73,7 @@ watch(priority, (newPriority) => {
         <!-- User Profile -->
         <!-- ---------------------------------------------- -->
         <div class="ml-3">
+
             <LcFullVerticalHeaderProfileDD />
         </div>
     </v-app-bar>

@@ -11,29 +11,32 @@ import Chart from '@/components/video/Chart.vue';
 import { useVideoStore } from '@/stores/video';
 import { useVideoStatisticStore } from '@/stores/videoStatistic';
 
+const userStore = useUserStore();
 const videoStore = useVideoStore();
 const videoStatisticStore = useVideoStatisticStore();
+
 onMounted(() => {
-  videoStore.fetchVideos();
-  videoStatisticStore.getCurrentUserVideoStatistics();
+  userStore.getCurrentUser()
 });
 
+const user = computed(() => {
+  return userStore.currentUser;
+});
 const userRole = computed(() => {
   return userStore.userRole;
 })
-
+watchEffect(() => {
+  if (user) {
+      videoStore.fetchVideos();
+      videoStatisticStore.getCurrentUserVideoStatistics();
+  }
+});
 const videoStatistics: any = computed(() => {
   return videoStatisticStore.currentVideoStatistics;
 });
 
 const page = ref({ title: 'Social Profile' });
-const userStore = useUserStore();
-onMounted(() => {
-  userStore.getCurrentUser()
-});
-const user = computed(() => {
-  return userStore.currentUser;
-});
+
 
 definePageMeta({
   layout: "randevu",
@@ -92,8 +95,8 @@ definePageMeta({
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
-        <TimelinePatient v-if="userRole == 'Patient'" />
-        <TimelineDoctor v-if="userRole == 'Doctor'" />
+        <TimelinePatient v-if="userRole == 'Patient'" :user="user"/>
+        <TimelineDoctor v-if="userRole == 'Doctor'" :user="user"/>
       </v-col>
     </v-row>
   </v-container>
