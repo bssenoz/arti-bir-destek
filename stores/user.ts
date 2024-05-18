@@ -38,7 +38,7 @@ export const useUserStore = defineStore({
         accessToken: localStorage.getItem('accessToken'),
         accessTime: localStorage.getItem('accessTime'),
         doctors: [],
-        patients: []
+        patients: [],
     }),
     actions: {
         async registerPatient(newUser: any) {
@@ -316,6 +316,6 @@ export const useUserStore = defineStore({
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
     }
 });

@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useAdminStore } from '@/stores/admin';
+
 import user from '/images/profile/user.png';
+import { NoteIcon } from 'vue-tabler-icons';
+import { useRouter, useRoute } from 'vue-router';
 
 const userStore = useUserStore();
+const adminStore = useAdminStore();
+
+const router = useRouter();
 
 onMounted(() => {
-    userStore.fetchUserDoctor();
+    adminStore.fetchAllDoctors();
 });
 
 const doctors: any = computed(() => {
-    return userStore.doctors;
+    return adminStore.alldoctors;
 });
 
 const search = ref('');
@@ -28,6 +35,9 @@ function deleteItem(item: any) {
     // confirm('Are you sure you want to delete this item?') && desserts.value.splice(index, 1);
     userStore.deleteUser(item.id)
 }
+const navigateToNots = (doctorSlug: any) => {
+    router.push(`/admin/danismanlar/${doctorSlug}/raporlar`);
+};
 
 </script>
 
@@ -70,9 +80,17 @@ function deleteItem(item: any) {
                 </td>
                 <td>
                     <div class="d-flex align-center">
+                        <!-- <v-tooltip text="Raporlar">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon flat @click="navigateToNots(item)" v-bind="props"
+                                    ><NoteIcon stroke-width="1.5" size="20" class="text-primary"
+                                /></v-btn>
+                            </template>
+                        </v-tooltip> -->
+                        <v-btn  class="text-primary" @click="navigateToNots(item.userName)" >Raporlar</v-btn> 
                         <v-tooltip text="Danışmanı Sil">
                             <template v-slot:activator="{ props }">
-                                <v-btn icon flat @click="deleteItem(item)" v-bind="props"
+                                <v-btn icon flat @click="deleteItem(item)" v-bind="props" class="ml-2"
                                     ><TrashIcon stroke-width="1.5" size="20" class="text-error"
                                 /></v-btn>
                             </template>

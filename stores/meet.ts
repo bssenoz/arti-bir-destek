@@ -182,13 +182,19 @@ export const useMeetStore = defineStore({
             }
         },
         async addAppointmentReport(report:any) {
-            try{
-                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics',report)
-                console.log(response.data)
+            try {
+                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics',report, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                return response.data; 
             } catch(error) {
-                console.log(error)
+                throw error;
             }
         },
+        
         async getUserSlug(userSlug: string) {
             const response = await axios.get(`http://localhost:5261/api/User/GetUserBySlug?userSlug=${userSlug}`, {
                 headers: {

@@ -85,6 +85,7 @@ function isPastAppointment(appointmentDay: string | number | Date, appointmentTi
         </v-timeline>
         <div v-if="appointments == ''" style="border-left: 2px solid #2777">
             <p>Henüz Hiç Randevun Yok</p>
+            <v-btn class="my-2" color="warning" href="/profile/randevu/randevu-al">Randevu Al</v-btn>
         </div>
     </div>
 

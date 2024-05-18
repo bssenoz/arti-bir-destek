@@ -2,13 +2,14 @@
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
-import { useMeetStore } from '~/stores/meet';
+import { useAdminStore } from '~/stores/admin';
 import { useVideoStatisticStore } from '~/stores/videoStatistic';
 import Chart from '@/components/video/Chart.vue';
 
 import { useRouter, useRoute } from 'vue-router';
 
-const meetStore = useMeetStore();
+const adminStore = useAdminStore();
+const userStore = useUserStore();
 const videoStatisticStore = useVideoStatisticStore();
 
 const id = ref<string>('');
@@ -17,21 +18,21 @@ const router = useRouter();
 onMounted(() => {
     const { id: routeId } = useRoute().params;
     id.value = routeId;
-    videoStatisticStore.getUserVideoStatistics(routeId);
+    adminStore.getVideoIstatisticPatient(routeId);
 });
 
 const userVideoStatistic: any = computed(() => {
-    return videoStatisticStore.userVideoStatistic;
+    return adminStore.videoStatistic;
 });
 
 </script>
 <template>
     <v-container>
         <v-row>
-                    <v-col>
-                        <div class="text-h5 text-primary">| Video İstatistikleri</div>
-                    </v-col>
-                </v-row>
+            <v-col>
+                <div class="text-h5 text-primary">| Video İstatistikleri</div>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col v-for="(i, index) in userVideoStatistic">
                 <v-row>

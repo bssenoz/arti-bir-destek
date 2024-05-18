@@ -2,18 +2,20 @@
 import { ref, computed, onMounted } from 'vue';
 import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
-import { useMeetStore } from '~/stores/meet';
+import { useAdminStore } from '~/stores/admin';
 import { useRouter, useRoute } from 'vue-router';
 
-const meetStore = useMeetStore();
+const userStore = useUserStore();
+const adminStore = useAdminStore();
+
 
 const router = useRouter();
 onMounted(() => {
-    meetStore.fetchAllPatientsForDoctor();
+    adminStore.fetchUserPatient();
 });
 
 const patients: any = computed(() => {
-    return meetStore.allPatients;
+    return adminStore.patients;
 });
 
 const search = ref('');
@@ -26,13 +28,10 @@ const filteredList = computed(() => {
 });
 
 const navigateToStatistic = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/video-istatistikleri`);
+    router.push(`/admin/hastalar/${patientSlug}/video-istatistikleri`);
 };
 const navigateToNots = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/raporlar`);
-};
-const navigateToPast = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/gecmis-randevular`);
+    router.push(`/admin/hastalar/${patientSlug}/raporlar`);
 };
 </script>
 <template>
@@ -70,9 +69,9 @@ const navigateToPast = (patientSlug: any) => {
                     </div>
                 </td>
                 <td class="text-subtitle-1 text-no-wrap">{{ item.phoneNumber }}</td>
-                <td class="text-subtitle-1 text-no-wrap"><v-btn @click="navigateToStatistic(item.userName)">Video İstatistikleri</v-btn> 
-                    <v-btn @click="navigateToNots(item.userName)" class="text-primary mx-2">Raporlar</v-btn>
-                    <v-btn @click="navigateToPast(item.userName)">Geçmiş Randevular</v-btn>
+                <td class="text-subtitle-1 text-no-wrap">
+                    <v-btn @click="navigateToNots(item.userName)" class="text-primary">Raporlar</v-btn>
+                    <v-btn @click="navigateToStatistic(item.userName)" class="text-error ml-2">Video İstatistikleri</v-btn> 
                 </td>
 
             </tr>

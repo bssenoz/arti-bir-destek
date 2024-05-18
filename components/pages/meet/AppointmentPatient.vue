@@ -117,6 +117,16 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
         </v-row>
         <!-- Görüşme Kartları -->
         <v-row>
+            <v-col>
+                <div class="text-primary text-h6">| Randevularım</div>
+            </v-col>
+        </v-row>
+        <v-row v-if="appointments = ' '">
+            <v-col>
+                <div class=text-h6>Henüz bir randevunuz yok.</div>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12" lg="9">
                 <v-row>
                     <v-col v-for="(appointment, index) in appointments" :key="index" cols="12">
@@ -125,8 +135,10 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
                                 :isUpcoming="isAppointmentSoon(i.day, i.timeRange)"
                                 :isPast="isPastAppointment(i.day, i.timeRange)" class="mt-2">
                                 <div class="text-h6">Tarih: <span class="font-weight-thin">{{ i.day }}</span></div>
-                                <div class="text-h6 mt-1">Saat: <span class="font-weight-thin">{{ i.timeRange }}.00</span></div>
-                                <div class="text-h6 mt-1">Doktor: <span class="font-weight-thin">{{ i.doctorName }} {{ i.doctorSurname }}</span></div>
+                                <div class="text-h6 mt-1">Saat: <span class="font-weight-thin">{{ i.timeRange
+                                        }}.00</span></div>
+                                <div class="text-h6 mt-1">Doktor: <span class="font-weight-thin">{{ i.doctorName }} {{
+                                        i.doctorSurname }}</span></div>
                                 <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
                                     :disabled="isPastAppointment(i.day, i.timeRange)">Randevuya Katıl</v-btn>
                             </UiParentCard>
