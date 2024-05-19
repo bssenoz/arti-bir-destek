@@ -27,9 +27,9 @@ const horizontalItems: menu[] = [
         to: '/admin/danismanlar'
     },
     {
-        title: 'Randevu Takvimleri',
+        title: 'Randevular',
         icon: CalendarTimeIcon,
-        to: '/admin/danismanlar/randevu-takvimi'
+        to: '/admin/randevular'
     },
     {
         title: 'Videolar',
@@ -40,6 +40,11 @@ const horizontalItems: menu[] = [
         title: 'Video İstatistikleri',
         icon: PercentageIcon,
         to: '/admin/video/istatistikler'
+    },
+    {
+        title: "Danışman Ünvanları",
+        icon: UserCheckIcon,
+        to:  "/admin/unvan",
     },
 ];
 

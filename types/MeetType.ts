@@ -19,3 +19,14 @@ export type AppointmentReportType = {
     appointmentScheduleId: number;
     patientId: string;
 }
+
+export type CancelPatientAppointment = {
+    day: string;
+    timeRange: number;
+    doctorId: string;
+}
+
+export type CancelDoctorAppointment = {
+    day: string;
+    timeRange: number;
+}

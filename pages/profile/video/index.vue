@@ -86,7 +86,7 @@ export default defineComponent({
 
         <v-row class="mt-8">
           <v-col cols="12" lg="4" v-for="(video, index) in filteredVideos" :key="index">
-            <v-card class="mb-6">
+            <v-card class="mb-6" elevation="2">
               <div @click="navigateToVideo(video.videoSlug)" class="cursor-pointer">
                 <video-player class="video-player vjs-big-play-centered" :src="video.url" :id="'player_' + index"
                   crossorigin="anonymous" playsinline controls :volume="0.6" :height="videoHeight" />

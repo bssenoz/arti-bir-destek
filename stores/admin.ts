@@ -9,6 +9,8 @@ export interface UserType {
     videoStatistic: any;
     reportPatient: any;
     reportDoctor: any
+    allSchedule: any;
+    allTitle:any;
 }
 
 export const useAdminStore = defineStore({
@@ -19,7 +21,9 @@ export const useAdminStore = defineStore({
         alldoctors: [],
         videoStatistic: [],
         reportPatient: [],
-        reportDoctor: []
+        reportDoctor: [],
+        allSchedule: [],
+        allTitle: []
     }),
     actions: {
 
@@ -51,23 +55,89 @@ export const useAdminStore = defineStore({
             this.videoStatistic = response.data
         },
         async getReportPatient(slug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByPatientUserName?patientUserName=${slug}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'Content-Type': 'application/json'
-                },
-            })
-            response.data[0].appointmentStatistics.reverse()
-            this.reportPatient = response.data
+            try {
+                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByPatientUserName?patientUserName=${slug}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                response.data[0].appointmentStatistics.reverse()
+                this.reportPatient = response.data
+                console.log("::: ", this.reportPatient[0])
+
+            } catch (error) {
+                this.reportPatient = ' '
+            }
         },
         async getReportDoctor(slug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByDoctorUserName?doctorUserName=${slug}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                    'Content-Type': 'application/json'
-                },
-            })
-            this.reportDoctor = response.data
+            try {
+                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByDoctorUserName?doctorUserName=${slug}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                this.reportDoctor = response.data
+
+            } catch (error) {
+                this.reportDoctor = ''
+            }
         },
+        async getAllAppointmentSchedule(date: string) {
+            try {
+                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllDoctorSchedulesByDate?day=${date}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.allSchedule = response.data;
+            } catch (error) {
+                console.error(error);
+                this.allSchedule = '';
+            }
+        },
+        async addTitle(title: any) {
+            try {
+                await axios.post('http://localhost:5261/api/Admin/AddDoctorTitle', title, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                this.fetchTitle();
+
+            } catch (error) {
+
+            }
+        },
+        async fetchTitle() {
+            try {
+                const response = await axios.get('http://localhost:5261/api/User/GetAllDoctorTitles', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                this.allTitle = response.data;
+            } catch (error) {
+
+            }
+        },
+        async deleteTitle(id: number) {
+            try {
+                await axios.delete(`http://localhost:5261/api/Admin/DeleteDoctorTitle?doctorTitleId=${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                });
+                this.fetchTitle();
+            } catch (error) {
+                console.error('Silme işlemi sırasında bir hata oluştu:', error);
+            }
+        }
+        
     }
 });

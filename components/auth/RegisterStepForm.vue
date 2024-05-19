@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from 'vue'; 
 import { useUserStore } from '@/stores/user';
 import { DoctorType, PatientType } from '@/types/UserType';
+import { useAdminStore } from '@/stores/admin';
 
+const adminStore = useAdminStore();
 const userStore = useUserStore();
 
 const router = useRouter();
@@ -49,7 +51,7 @@ const register = async () => {
         name: firstName.value,
         surname: lastName.value,
         email: email.value,
-        title: title.value,
+        titleId: title.value,
         phoneNumber: phoneNumber.value,
         password: password.value,
         confirmPassword: passwordConfirm.value,
@@ -95,6 +97,17 @@ const closeDialogAndRedirect = () => {
 const closeDialog = () => {
   dialogError.value = false;
 };
+onMounted(() => {
+    adminStore.fetchTitle();
+});
+
+const allTitle = computed(() => {
+    return adminStore.allTitle;
+});
+
+const allTitleOptions = computed(() => {
+  return allTitle.value.map((title: { id: any; title: any; }) => ({ id: title.id, title: title.title }));
+});
 </script>
 
 <template>
@@ -178,7 +191,8 @@ const closeDialog = () => {
       <v-row>
         <v-col cols="12">
           <v-label class="text-subtitle-1 font-weight-medium pb-2">Ünvan</v-label>
-          <VTextField v-model="title" :rules="titleRules" required></VTextField>
+        <!-- Ünvan seçimi için select bileşeni -->
+        <v-select v-model="title" :items="allTitleOptions" item-value="id" item-text="title" label="Ünvan Seç" outlined></v-select>
         </v-col>
       </v-row>
     </div>

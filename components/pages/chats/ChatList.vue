@@ -169,7 +169,7 @@ const transformChatItem = (item: any): ChatsUserType => {
                 <div>{{ doctor.title }} {{ doctor.name }} {{ doctor.surname }}</div>
               </v-card>
             </v-col>
-            <v-col v-if="displayedDoctors = ' '">
+            <v-col v-if="displayedDoctors.length === 0">
               <div class="text-h6 text-primary">| Mesaj atabilmek için önce randevu almanız gerekir.</div>
             </v-col>
           </v-row>

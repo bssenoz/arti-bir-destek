@@ -212,6 +212,30 @@ export const useMeetStore = defineStore({
                 }
             })
             this.patientDoctors = response.data;
+        },
+        async cancelPatientAppointment(appointment:any) {
+            try {
+                await axios.patch('http://localhost:5261/api/PatientAppointment/CancelPatientAppointment', appointment, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            } catch(error) {
+                console.log(error)
+            }
+        },
+        async cancelDoctorAppointment(appointment:any) {
+            try {
+                await axios.patch('http://localhost:5261/api/DoctorAppointment/CancelDoctorAppointment', appointment, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+            } catch(error) {
+                console.log(error)
+            }
         }
     }
 });

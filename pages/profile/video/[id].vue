@@ -139,7 +139,7 @@ const videoHeight = computed(() => {
             </v-col>
             <v-col cols="2">
                 <div v-for="(i, index) in shuffledVideos" class="mb-4">
-                    <v-card @click="navigateToVideo(i.videoSlug)" class="elevation-4 ">
+                    <v-card @click="navigateToVideo(i.videoSlug)" elevation="2">
                         <video-player class="video-player vjs-big-play-centered" :src="i.url" :height="200" crossorigin="anonymous" />
                         <p class="px-2 py-2 text-h6 font-weight-thin ">{{ i.title }}</p>
                     </v-card>

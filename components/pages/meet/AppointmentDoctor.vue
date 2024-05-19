@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user';
 import 'v-calendar/dist/style.css';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { VCalendarAttribute } from 'v-calendar/dist/types';
+import { CancelDoctorAppointment } from '@/types/MeetType';
 
 const meetStore = useMeetStore();
 const userStore = useUserStore();
@@ -83,6 +84,16 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
         return '';
     }
 };
+
+const cancelAppointment = (i: any) => {
+    const cancelInfo: CancelDoctorAppointment = {
+        day: i.day,
+        timeRange: i.timeRange,
+        doctorId: i.doctorId,
+    }
+
+    meetStore.cancelPatientAppointment(cancelInfo)
+}
 </script>
 
 <template>
@@ -112,6 +123,16 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
         </v-row>
         <!-- Görüşme Kartları -->
         <v-row>
+            <v-col>
+                <div class="text-primary text-h6">| Randevularım</div>
+            </v-col>
+        </v-row>
+        <v-row v-if="appointments.length === 0">
+            <v-col>
+                <div class=text-h6>Henüz bir randevunuz yok.</div>
+            </v-col>
+        </v-row>
+        <v-row>
             <v-col cols="12" lg="9">
                 <v-row>
                     <v-col v-for="(appointment, index) in appointments" :key="index" cols="12">
@@ -125,10 +146,13 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
                                 <div class="text-h6 mt-1">Saat: <span class="font-weight-thin">{{ i.appointmentTimeRange
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Hasta: <span class="font-weight-thin">{{ i.patientName }} {{
-                                        i.patientSurname }}</span></div>
+                                    i.patientSurname }}</span></div>
                                 <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
                                     :disabled="isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange)">Randevuya
                                     Katıl</v-btn>
+                                <v-btn :href="i.appointmentURL" target="_blank" color="warning" class="mt-3 ml-4"
+                                    :class="{ 'd-none': isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) }"
+                                    @click="cancelAppointment(i)">İptal Et</v-btn>
                             </UiParentCard>
                         </div>
                     </v-col>

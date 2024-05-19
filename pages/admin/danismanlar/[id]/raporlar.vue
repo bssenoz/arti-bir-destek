@@ -65,7 +65,6 @@ const downloadPDF2 = () => {
                 <div class="text-h5 text-primary">| Raporlar</div>
             </v-col>
         </v-row>
-
         <v-row v-for="(i, index) in report">
             <v-col cols="6">
                 <v-card elevation="2" @click="openDialog(i)">
@@ -74,6 +73,9 @@ const downloadPDF2 = () => {
                     </v-card-text>
                 </v-card>
             </v-col>
+        </v-row>
+        <v-row v-if="!report">
+            <v-col><div class="text-h6">Rapor bulunmamaktadır.</div></v-col>
         </v-row>
 
         <v-dialog v-model="dialogReport" transition="dialog-bottom-transition" fullscreen>

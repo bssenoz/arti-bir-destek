@@ -42,15 +42,25 @@ function sendMessage(item: string) {
 const scrollToBottom = () => {
     nextTick(() => {
         const chatList = document.getElementById('chat-list');
+        console.log("ccc:", chatList)
         if (chatList) {
+            console.log(chatList.scrollTop)
             chatList.scrollTop = chatList.scrollHeight;
+            console.log(chatList.scrollTop)
+
         }
+
     });
 };
 
-onMounted(scrollToBottom);
+onMounted(() => {
+    scrollToBottom();
+});
+onUpdated(() => {
+    debugger;
+    scrollToBottom();
+});
 
-onUpdated(scrollToBottom)
 </script>
 
 <template>
@@ -70,10 +80,12 @@ onUpdated(scrollToBottom)
             </div>
             <v-divider />
             <!---Chat History-->
+            <!-- Loading -->
+            <div v-if="!messages" class="loading">Loading...</div>
             <perfect-scrollbar class="rightpartHeight" id="chat-list">
                 <div class="d-flex">
                     <div class="w-100">
-                   
+
                         <div v-for="msg in messages" :key="msg.sendedTime" class="pa-5">
                             <div v-if="currentUser.id == msg.senderId" class="justify-end d-flex text-end mb-1">
                                 <div>
@@ -95,7 +107,8 @@ onUpdated(scrollToBottom)
                             <div v-if="senderID == msg.senderId" class="d-flex align-items-start gap-3 mb-1">
                                 <!---User Avatar-->
                                 <v-avatar>
-                                    <img :src="fromUser.profileImageUrl" alt="pro" width="40" v-if="fromUser.profileImageUrl" />
+                                    <img :src="fromUser.profileImageUrl" alt="pro" width="40"
+                                        v-if="fromUser.profileImageUrl" />
                                     <img :src="user" width="40" v-else />
                                 </v-avatar>
 
@@ -124,9 +137,9 @@ onUpdated(scrollToBottom)
         <v-divider />
         <!---Chat send-->
         <form class="d-flex align-center pa-4" @submit.prevent="sendMessage(msg)">
-            <v-btn icon variant="text" class="text-medium-emphasis">
+            <!-- <v-btn icon variant="text" class="text-medium-emphasis">
                 <MoodSmileIcon size="24" />
-            </v-btn>
+            </v-btn> -->
 
             <v-text-field variant="solo" hide-details v-model="msg" color="primary" class="shadow-none"
                 density="compact" placeholder="Mesaj Yaz"></v-text-field>
@@ -145,29 +158,33 @@ onUpdated(scrollToBottom)
 </template>
 <style lang="scss">
 .h-76 {
-    height:76vh;
+    height: 76vh;
 }
-@media screen and (max-width:1400px) {
+
+/* @media screen and (max-width:1400px) {
     .h-76 {
-    height:68vh;
+        height: 68vh;
     }
 }
+
 @media screen and (max-width:1300px) {
     .h-76 {
-    height:70vh;
+        height: 70vh;
     }
 }
+
 @media screen and (max-width:1100px) {
     .h-76 {
-    height: 100%;
+        height: 100%;
+    }
 }
-}
+*/
 .shadow-none .v-field--no-label {
     --v-field-padding-top: -7px;
 }
 
 .rightpartHeight {
-    height: 530px;
+    height: 68vh;
 }
 
 .badg-dotDetail {
@@ -213,7 +230,16 @@ onUpdated(scrollToBottom)
         background: rgba(0, 0, 0, 0.2);
     }
 }
+
 .text-body-1 {
-  max-width: 400px;
+    max-width: 400px;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 1.2rem;
 }
 </style>

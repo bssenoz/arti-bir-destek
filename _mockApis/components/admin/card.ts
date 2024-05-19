@@ -10,8 +10,8 @@ const cards: homeCard[] = [
         href:  "/admin/danismanlar",
     },
     {
-        title: "Randevu Takvimleri",
-        href:  "/admin/danismanlar/randevu-takvimi",
+        title: "Randevular",
+        href:  "/admin/randevular",
     },
     {
         title: "Videolar",
@@ -20,6 +20,10 @@ const cards: homeCard[] = [
     {
         title: "Video İstatistikleri",
         href:  "/admin/video/istatistikler",
+    },
+    {
+        title: "Danışman Ünvanları",
+        href:  "/admin/unvan",
     },
 ];
 

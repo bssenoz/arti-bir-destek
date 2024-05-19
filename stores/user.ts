@@ -300,7 +300,8 @@ export const useUserStore = defineStore({
                         'Content-Type': 'multipart/form-data',
                     }
                 };
-                axios.patch('http://localhost:5261/api/User/UploadProfileImage', file, config)
+                await axios.patch('http://localhost:5261/api/User/UploadProfileImage', file, config)
+                this.getCurrentUser()
             } catch (error) {
                 console.log(error)
             }
@@ -313,6 +314,7 @@ export const useUserStore = defineStore({
                         'Content-Type': 'application/json'
                     }
                 })
+                this.getCurrentUser()
             } catch (error) {
                 console.log(error)
             }

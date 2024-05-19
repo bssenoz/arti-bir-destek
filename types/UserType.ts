@@ -16,7 +16,7 @@ export type DoctorType = {
     email: string;
     profileImageUrl: string | null;
     phoneNumber: string | null;
-    title: string;
+    titleId: string;
     password: string;
     confirmPassword: string;
 };
