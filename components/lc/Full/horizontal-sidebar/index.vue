@@ -6,6 +6,7 @@ const { mdAndUp } = useDisplay();
 
 <template >
     <div v-if="!mdAndUp" class="mobile-menu">
+        <!-- admin için -->
         <LcFullVerticalSidebar />
     </div>
 </template>

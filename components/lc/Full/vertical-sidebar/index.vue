@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue';
 import { useCustomizerStore } from '@/stores/customizer';
-import sidebarItems from '../horizontal-sidebar/horizontalItems';
+import  { horizontalItemsAdmin, horizontalItemsDoctor, horizontalItemsPatient} from '../horizontal-sidebar/horizontalItems';
 const customizer = useCustomizerStore();
-const sidebarMenu = shallowRef(sidebarItems);
+const sidebarMenuAdmin = shallowRef(horizontalItemsAdmin);
+const sidebarMenuDoctor = shallowRef(horizontalItemsDoctor);
+const sidebarMenuPatient = shallowRef(horizontalItemsPatient);
+
 </script>
 
 <template>
@@ -22,7 +25,7 @@ const sidebarMenu = shallowRef(sidebarItems);
         <v-locale-provider v-else>
             <Nuxt to="/">
                 <div class="pt-7 font-mansalva font-weight-bold color-pink-1 text-h4 text-center">
-                    Artı Bir Destek
+                    1Artı Bir Destek
                 </div>
             </Nuxt>
         </v-locale-provider>
@@ -33,7 +36,7 @@ const sidebarMenu = shallowRef(sidebarItems);
         <perfect-scrollbar class="scrollnavbar">
             <v-list class="pa-6" density="compact">
                 <!---Menu Loop -->
-                <template v-for="(item, i) in sidebarMenu">
+                <template v-for="(item, i) in horizontalItemsAdmin">
                     <!---Item Sub Header -->
                     <LcFullVerticalSidebarNavGroup :item="item" v-if="item.header" :key="item.title" />
                     <!---If Has Child -->

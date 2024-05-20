@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watchEffect } from "vue";
-import { format, addDays, getDay } from "date-fns";
+import { format, addDays, getDay, subDays} from "date-fns";
 import { useMeetStore } from "~/stores/meet";
 import { useUserStore } from "~/stores/user";
 import { MakeAppointmentType } from "@/types/MeetType"
@@ -23,6 +23,12 @@ const days = ref(["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cum
 const today = new Date();
 const formattedToday = format(today, 'dd.MM.yyyy');
 selectedDay.value = formattedToday;
+const disabledDates = ref([]);
+
+for (let i = 1; i <= 730; i++) {
+  const date = subDays(today, i);
+  disabledDates.value.push(format(date, 'yyyy-MM-dd'));
+}
 
 watchEffect(() => {
   const today = new Date();
@@ -139,7 +145,7 @@ const handleDateChange = (value) => {
     <v-row>
       <v-col cols="12" lg="3">
         <div class="float-left">
-          <VDatePicker v-model.range="range" :disabled-dates="['*']" />
+          <VDatePicker v-model.range="range" :disabled-dates="disabledDates" />
         </div>
       </v-col>
       <v-col cols="12" lg="7">
