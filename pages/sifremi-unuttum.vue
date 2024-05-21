@@ -6,37 +6,38 @@ definePageMeta({
 
 <template>
     <div class="pa-3">
-        <v-row class="h-100vh mh-100 auth">
-            <v-col
+        <v-row class="h-100vh auth">
+          <v-col
         cols="12"
-        md="7"
+        md="6"
         class="d-none d-md-flex align-center justify-center position-relative"
         style="
           background: linear-gradient(to right, #facae0 50%, transparent 50%);
         "
       >
-        <div class="d-lg-flex ml-12">
-          <p
+        <div class="d-lg-flex justify-center">
+          <!-- <p
             class="text-h1 font-mansalva position-absolute top-12"
             style="color: #db2777"
           >
             Artı Bir Destek
-          </p>
+          </p> -->
           <img
             src="/images/backgrounds/welcome-bg-3.png"
-            class="position-relative d-none d-md-flex w-700 h-100 mt-md-12 mt-xl-0 mt-xl-n16"
+            class="position-relative d-none d-md-flex h-100 mt-md-12 mt-xl-0 mt-xl-n16" style="width:600px"
             alt="login-background"
           />
         </div>
       </v-col>
-            <v-col cols="12" lg="4" xl="4" xxl="3" class="d-flex align-center justify-center">
-                <div class="pa-sm-7 pa-4">
+            <v-col cols="12" md="6" class="d-flex align-center pr-md-8 justify-center text-center">
+              <div class="mt-xl-0 mw-100" style="width:500px">
+                  <img src="/images/backgrounds/adimlar.jpg" style="width: 50px" />
                     <h2 class="text--darken-2 text-h4 font-weight-bold">Parolanızı mı unuttunuz?</h2>
                     <p class="text-subtitle-1 py-4 text-10">
                         Lütfen hesabınızla ilişkili e-posta adresini girin. Şifrenizi sıfırlamanız için size e-postayla bir bağlantı göndereceğiz.
                     </p>
                     <AuthResetForm />
-                    <v-btn size="large" to="/giris-yap" block class="mt-5" flat style="background-color: rgb(221, 154, 194);color:#fff">Giriş Ekranına Dön</v-btn>
+                    <v-btn size="large" to="/giris-yap" block class="mt-5" flat style="color:#db2777;">Giriş Ekranına Dön</v-btn>
                 </div>
             </v-col>
         </v-row>
