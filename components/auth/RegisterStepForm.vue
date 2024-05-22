@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from "vue";
 import { useUserStore } from "@/stores/user";
 import { DoctorType, PatientType } from "@/types/UserType";
 import { useAdminStore } from "@/stores/admin";
-
+import Swal from "sweetalert2";
 const adminStore = useAdminStore();
 const userStore = useUserStore();
 
@@ -74,6 +74,7 @@ const selectUserType = (type: string) => {
 const register = async () => {
   try {
     if (password.value !== passwordConfirm.value) {
+      console.log(password.value + " : " + passwordConfirm.value)
       throw new Error("Şifreler eşleşmiyor");
     }
 
@@ -112,7 +113,13 @@ const register = async () => {
   } catch (error: any) {
     console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
     errorText.value = error.message;
-    dialogError.value = true;
+
+    Swal.fire({
+        title: "Hata!",
+        text: "Kayıt oluşturulamadı!",
+        icon: "warning",
+        confirmButtonText: "Tamam",
+      });
   }
 };
 const validateInputs = computed(() => {
@@ -334,7 +341,7 @@ const allTitleOptions = computed(() => {
             color="primary"
           ></VTextField>
         </v-col>
-        <div v-if="!isFormValid" class="text-h6 text-error ml-4">Şifreler eşleşmiyor!</div>
+        <div v-if="!isFormValid && password && passwordConfirm" class="text-h6 text-error ml-4">Şifreler eşleşmiyor!</div>
       </v-row>
     </div>
 

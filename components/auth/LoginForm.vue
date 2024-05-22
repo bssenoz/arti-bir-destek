@@ -7,7 +7,7 @@ import {
   GoogleSignInButton,
   type CredentialResponse,
 } from "vue3-google-signin";
-
+import Swal from "sweetalert2";
 import FacebookLoginButton from "./FacebookLoginButton.vue";
 const userStore = useUserStore();
 const dialogError = ref(false);
@@ -71,9 +71,13 @@ const login = async () => {
       // Yenileme başarılıysa tekrar login işlemini yap
       await login();
     } else {
-      // Diğer hata durumlarında hata iletişim kutusunu göster
-      errorText.value = error.message;
-      dialogError.value = true;
+      // errorText.value = error.message;
+      Swal.fire({
+        title: "Hatalı Giriş!",
+        text: "Lütfen şifreni doğru girdiğinden emin ol.",
+        icon: "warning",
+        confirmButtonText: "Tamam",
+      });
     }
   }
 };
@@ -157,11 +161,16 @@ const closeDialog = () => {
       >Giriş Yap</v-btn
     >
     <v-dialog v-model="dialogError" width="500">
-      <v-card title="Hata">
+      <v-card
+        title="Hata!"
+        class="d-flex justify-center text-center align-center"
+      >
         <v-card-text>
           {{ errorText }}
         </v-card-text>
-
+        <v-card-text>
+          <img src="/images/backgrounds/error2.png" style="width: 50%" />
+        </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text="Kapat" @click="closeDialog"></v-btn>
