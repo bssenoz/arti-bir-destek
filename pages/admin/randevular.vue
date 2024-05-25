@@ -7,7 +7,7 @@ const breadcrumbs = ref([
   {
     text: 'Admin',
     disabled: false,
-    href: '/admin/'
+    href: '/admin'
   },
   {
     text: 'Danışmanların Takvimi',
@@ -18,12 +18,7 @@ const breadcrumbs = ref([
 
 definePageMeta({
   layout: "default",
-  middleware: [
-    function (to, from) {
-      // Custom inline middleware
-    },
-    'auth',
-  ],
+  middleware: ['auth'],
 });
 </script>
 <template>

@@ -101,6 +101,8 @@ export const useUserStore = defineStore({
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
                 localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
 
+                if(user.email == 'admin@gmail.com') this.userRole =  UserRole.Admin;
+
             } catch (error) {
                 console.error("Kullanıcı giriş yaparken bir hata oluştu:", error);
                 throw new Error("Giriş yapılamadı.");
@@ -162,10 +164,15 @@ export const useUserStore = defineStore({
                 }
 
                 );
-                const newAccessToken = response.data.accessToken;
-                this.accessToken = newAccessToken;
+                console.log("res::: ",response)
 
-                localStorage.setItem('accessToken', newAccessToken);
+                this.accessToken = response.data.accessToken;
+                this.refreshToken = response.data.refreshToken;
+                this.accessTime = response.data.accessTokenTime;
+                localStorage.setItem('accessToken', response.data.accessToken);
+                localStorage.setItem('refreshToken', response.data.refreshToken);
+                localStorage.setItem('accessTime', response.data.accessTokenTime);
+
             } catch (error) {
                 console.error('Token yenileme hatası:', error);
                 this.logout();
@@ -255,6 +262,7 @@ export const useUserStore = defineStore({
                     if (userRole == "Admin") this.userRole = UserRole.Admin;
                     if (userRole == "Doctor") this.userRole = UserRole.Doctor;
                     if (userRole == "Patient") this.userRole = UserRole.Patient;
+                    console.log(this.userRole)
                 } else {
                     console.error('Access token bulunamadı veya null.');
                 }

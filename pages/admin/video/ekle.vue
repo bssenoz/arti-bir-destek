@@ -29,6 +29,11 @@ const errorDialog = ref(false);
 const errorDialog2 = ref(false);
 const file = ref<File | string>("");
 
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
+
 const videoPreview = ref<HTMLVideoElement | null>(null);
 
 const title = ref("");

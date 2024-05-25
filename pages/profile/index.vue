@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useUserStore } from '@/stores/user';
 import ProfileBanner from '@/components/pages/user-profile/ProfileBanner.vue';
 import TimelineDoctor from '@/components/pages/user-profile/TimelineDoctor.vue';
 import TimelinePatient from '~/components/pages/user-profile/TimelinePatient.vue';
-
-import { UserCircleIcon, BellIcon, ArticleIcon, LockIcon, SettingsIcon, ArrowRightIcon } from 'vue-tabler-icons';
-import AccountTab from '@/components/pages/account-settings/AccountTab.vue';
 import Chart from '@/components/video/Chart.vue';
+import { useUserStore } from '@/stores/user';
+import { SettingsIcon, ArrowRightIcon } from 'vue-tabler-icons';
 import { useVideoStore } from '@/stores/video';
 import { useVideoStatisticStore } from '@/stores/videoStatistic';
 
@@ -35,15 +32,9 @@ const videoStatistics: any = computed(() => {
   return videoStatisticStore.currentVideoStatistics;
 });
 
-const page = ref({ title: 'Social Profile' });
-
-
 definePageMeta({
   layout: "randevu",
   middleware: [
-    function (to, from) {
-      // Custom inline middleware
-    },
     'auth',
   ],
 });

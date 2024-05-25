@@ -15,6 +15,10 @@ onMounted(() => {
     meetStore.getUserReport(routeId);
 });
 
+definePageMeta({
+    middleware: ['auth'],
+});
+
 const report: any = computed(() => {
     return meetStore.userReport;
 });
@@ -193,7 +197,5 @@ const downloadPDF2 = () => {
 </template>
 
 <style scoped>
-.active {
-    background-color: #fbcfe8;
-}
+
 </style>

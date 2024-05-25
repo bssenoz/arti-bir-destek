@@ -17,9 +17,6 @@ const userRole = computed(() => {
 definePageMeta({
     layout: "default",
     middleware: [
-        function (to, from) {
-            // Custom inline middleware
-        },
         'auth',
     ],
 });

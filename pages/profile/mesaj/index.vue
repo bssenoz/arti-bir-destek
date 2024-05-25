@@ -14,12 +14,7 @@ const currentUser = ref(null);
 
 definePageMeta({
   layout: "default",
-  middleware: [
-    function (to, from) {
-      // Custom inline middleware
-    },
-    'auth',
-  ],
+  middleware: ['auth'],
 });
 
 onMounted(async () => {

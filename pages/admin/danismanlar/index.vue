@@ -8,7 +8,7 @@ const breadcrumbs = ref([
     {
         text: 'Admin',
         disabled: false,
-        href: '/admin/'
+        href: '/admin'
     },
     {
         text: 'Danışman',
@@ -17,6 +17,10 @@ const breadcrumbs = ref([
     }
 ]);
 
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
 </script>
 <template>
     <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>

@@ -15,9 +15,14 @@ const videoStatistic = useVideoStatisticStore();
 const userStore = useUserStore();
 const id = ref<string>('');
 const router = useRouter();
+
 definePageMeta({
     layout: "randevu",
+    middleware: [
+    'auth',
+  ],
 });
+
 onMounted(() => {
     const { id: routeId } = useRoute().params;
     id.value = routeId;
@@ -28,6 +33,7 @@ onMounted(() => {
 const video: any = computed(() => {
     return videoStore.video;
 });
+
 const videos: any = computed(() => {
     return videoStore.videos;
 });
@@ -46,7 +52,6 @@ const handleMounted = (payload: any, index: number) => {
     const player = payload.player;
 };
 
-
 const handleEvent = (log: any) => {
     // console.log("Basic player event", log);
 };
@@ -57,18 +62,10 @@ const handlePause = async (event: Event, video: any) => {
     if (userStore.userRole == UserRole.Patient) {
         const playerId = `player_1`;
         const player = players.value[playerId];
-        console.log("pause", playerId);
 
         const currentTime = player.player.cache_.currentTime;
         const duration = player.player.cache_.duration;
         const percentageWatched = (currentTime / duration) * 100;
-        console.log("Percentage watched:", percentageWatched.toFixed(2) + "%");
-
-        if (percentageWatched > 90) {
-            console.log("tamamlandı");
-        }
-        console.log("pla: ", percentageWatched.toFixed(2) + "%");
-
 
         const videoStatistics: VideoStatisticsType = {
             videoId: video.id,
@@ -103,10 +100,6 @@ const handlePlay = (event: Event) => {
         }
     }
 };
-
-const videoHeight = computed(() => {
-    return window.innerWidth <= 600 ? 400 : 600;
-});
 </script>
 
 <template>
@@ -147,8 +140,6 @@ const videoHeight = computed(() => {
     </v-container>
 
 </template>
-
-
 
 <style lang="scss" scoped>
 .video-js {

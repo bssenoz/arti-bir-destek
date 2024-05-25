@@ -18,6 +18,11 @@ onMounted(() => {
     videoStore.fetchVideos();
 });
 
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
+
 const videos: any = computed(() => {
     return videoStore.videos;
 });

@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
-import { useMeetStore } from '~/stores/meet';
 import { useVideoStatisticStore } from '~/stores/videoStatistic';
 import Chart from '@/components/video/Chart.vue';
 
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 
-const meetStore = useMeetStore();
 const videoStatisticStore = useVideoStatisticStore();
 
 const id = ref<string>('');
 
-const router = useRouter();
 onMounted(() => {
     const { id: routeId } = useRoute().params;
     id.value = routeId;
     videoStatisticStore.getUserVideoStatistics(routeId);
 });
-
+definePageMeta({
+    middleware: ['auth'],
+});
 const userVideoStatistic: any = computed(() => {
     return videoStatisticStore.userVideoStatistic;
 });
@@ -28,10 +26,10 @@ const userVideoStatistic: any = computed(() => {
 <template>
     <v-container>
         <v-row>
-                    <v-col>
-                        <div class="text-h5 text-primary">| Video İstatistikleri</div>
-                    </v-col>
-                </v-row>
+            <v-col>
+                <div class="text-h5 text-primary">| Video İstatistikleri</div>
+            </v-col>
+        </v-row>
         <v-row>
             <v-col v-for="(i, index) in userVideoStatistic">
                 <v-row>
@@ -47,7 +45,7 @@ const userVideoStatistic: any = computed(() => {
                         </div>
                         <div class="d-inline-block">
                             <span>{{ i.patientName }} {{ i.patientSurname }}</span>
-                        
+
                         </div>
                     </v-col>
 

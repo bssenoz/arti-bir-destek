@@ -6,8 +6,6 @@
       <v-row>
         <v-col cols="12" sm="6" class="d-flex align-center">
           <div class="mt-8 mt-lg-0">
-            <!-- <span class="text-h5 d-flex align-center gap-2" data-aos="fade-up" data-aos-duration="400">
-                            <RocketIcon size="18" class="text-secondary" /> Artı Bir Destek</span> -->
             <h1
               class="bannerTitle pt-5 font-weight-bold"
               data-aos="fade-up"

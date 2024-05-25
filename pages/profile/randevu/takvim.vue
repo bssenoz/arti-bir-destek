@@ -18,7 +18,11 @@ const hours = Array.from({ length: 9 }, (_, i) => [i + 8, i + 9]);
 const selectedHours = ref<Array<Array<boolean>>>(
   Array.from({ length: daysToAdd }, () => Array.from({ length: 10 }, () => false))
 );
-
+definePageMeta({
+    middleware: [
+    'auth',
+  ],
+});
 onMounted(() => {
   meetStore.getDoctorSchedule();
   userStore.getCurrentUser();
@@ -45,7 +49,6 @@ const saveSchedule = () => {
     }
   });
   try {
-    // console.log(JSON.stringify(selectedTimes));
     const data: DoctorIdType = {
       doctorId: currentUser.value.id,
     };

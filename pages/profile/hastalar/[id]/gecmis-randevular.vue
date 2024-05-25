@@ -20,6 +20,9 @@ const dialogVisible = ref(false);
 const success = ref(true);
 const errorMessage = ref('');
 
+definePageMeta({
+    middleware: ['auth'],
+});
 const showDialog = (isSuccess, message = '') => {
     success.value = isSuccess;
     errorMessage.value = message;
@@ -195,9 +198,7 @@ const saveReport = async (appointmentID: any, patientID: any) => {
 
 
 <style scoped>
-.active {
-    background-color: #fbcfe8;
-}
+
 
 .note:hover {
     transform: scale(1.2);

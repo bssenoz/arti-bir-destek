@@ -1,6 +1,5 @@
 // utils/cookies.ts
 
-// İstenilen cookiyi belirli bir isme göre alacak fonksiyon
 export function getCookie(name: string): string {
     const cookieName = name + "=";
     const decodedCookie = decodeURIComponent(document.cookie);

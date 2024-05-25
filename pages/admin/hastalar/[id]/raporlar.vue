@@ -18,6 +18,10 @@ onMounted(() => {
     adminStore.getReportPatient(routeId);
 });
 
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
 const report: any = computed(() => {
     return adminStore.reportPatient;
 });

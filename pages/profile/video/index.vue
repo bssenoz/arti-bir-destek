@@ -10,9 +10,6 @@ import { useRouter } from 'vue-router';
 definePageMeta({
   layout: "randevu",
   middleware: [
-    function (to, from) {
-      // Custom inline middleware
-    },
     'auth',
   ],
 });

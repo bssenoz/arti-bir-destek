@@ -48,7 +48,7 @@ watch(priority, (newPriority) => {
         <Menu2Icon size="20" stroke-width="1.5" />
       </v-btn>
 
-      <div class="hidden-md-and-down" style="margin-left: 14rem">
+      <div class="hidden-md-and-down" style="margin-left: 10rem">
         <LcFullVerticalHeaderNavigations />
       </div>
 

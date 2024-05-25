@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import PatientTable from '@/components/table/PatientTable.vue';
-
+definePageMeta({
+    middleware: ['auth'],
+});
 </script>
 <template>
     <v-card elevation="10">
@@ -9,4 +11,3 @@ import PatientTable from '@/components/table/PatientTable.vue';
         </v-card-text>
     </v-card>
 </template>
-

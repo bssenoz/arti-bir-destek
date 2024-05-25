@@ -1,3 +1,28 @@
+<script setup lang="ts">
+import Chart from '@/components/video/Chart.vue';
+import { useVideoStore } from '@/stores/video';
+import { useVideoStatisticStore } from '@/stores/videoStatistic';
+
+const videoStore = useVideoStore();
+const videoStatisticStore = useVideoStatisticStore();
+
+onMounted(() => {
+    videoStore.fetchVideos();
+    videoStatisticStore.getCurrentUserVideoStatistics();
+});
+
+const videoStatistics: any = computed(() => {
+    return videoStatisticStore.currentVideoStatistics;
+});
+
+definePageMeta({
+    layout: "default",
+    middleware: [
+    'auth',
+  ],
+});
+</script>
+
 <template>
     <v-container>
         <v-row>
@@ -17,36 +42,3 @@
     </v-container>
 </template>
 
-<script setup lang="ts">
-import Chart from '@/components/video/Chart.vue';
-import { useVideoStore } from '@/stores/video';
-import { useVideoStatisticStore } from '@/stores/videoStatistic';
-
-const videoStore = useVideoStore();
-const videoStatisticStore = useVideoStatisticStore();
-onMounted(() => {
-    videoStore.fetchVideos();
-    videoStatisticStore.getCurrentUserVideoStatistics();
-});
-
-const videoStatistics: any = computed(() => {
-    return videoStatisticStore.currentVideoStatistics;
-});
-
-definePageMeta({
-    layout: "default",
-    middleware: [
-        function (to, from) {
-            // Custom inline middleware
-        },
-        'auth',
-    ],
-});
-
-const videoData = [
-    { title: "Video 1", description: "Description 1", watchPercentage: 60 },
-    { title: "Video 2", description: "Description 2", watchPercentage: 25 },
-    { title: "Video 3", description: "Description 3", watchPercentage: 80 },
-    { title: "Video 4", description: "Description 4", watchPercentage: 100 }
-];
-</script>

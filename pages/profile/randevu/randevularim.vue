@@ -5,6 +5,11 @@ import { useUserStore } from '@/stores/user';
 import AppointmentDoctor from '~/components/pages/meet/AppointmentDoctor.vue';
 import AppointmentPatient from '~/components/pages/meet/AppointmentPatient.vue';
 
+definePageMeta({
+    middleware: [
+    'auth',
+  ],
+});
 const userStore = useUserStore();
 
 const userRole = computed(() => {

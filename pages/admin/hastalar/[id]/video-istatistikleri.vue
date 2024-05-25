@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
 import { useAdminStore } from '~/stores/admin';
-import { useVideoStatisticStore } from '~/stores/videoStatistic';
 import Chart from '@/components/video/Chart.vue';
 
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const adminStore = useAdminStore();
-const userStore = useUserStore();
-const videoStatisticStore = useVideoStatisticStore();
 
 const id = ref<string>('');
 
-const router = useRouter();
 onMounted(() => {
     const { id: routeId } = useRoute().params;
     id.value = routeId;
     adminStore.getVideoIstatisticPatient(routeId);
+});
+
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
 });
 
 const userVideoStatistic: any = computed(() => {

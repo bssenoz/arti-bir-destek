@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import user from '/images/profile/user.png';
-import { useMeetStore } from '~/stores/meet';
 import { useAdminStore } from '~/stores/admin';
 import html2pdf from 'html2pdf.js';
 
 import { useRoute } from 'vue-router';
 
-const meetStore = useMeetStore();
 const adminStore = useAdminStore();
 const dialogReport = ref(false);
 
@@ -19,15 +16,17 @@ onMounted(() => {
     adminStore.getReportDoctor(routeId);
 });
 
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
+
 const report: any = computed(() => {
     return adminStore.reportDoctor;
 });
+
 const selectedStatistic = ref(null);
 const selectReport = ref(null);
-
-const getUser: any = computed(() => {
-    return meetStore.getUser;
-});
 
 const openDialog = (statistic: any) => {
     selectReport.value = statistic;
@@ -181,7 +180,5 @@ const downloadPDF2 = () => {
 </template>
 
 <style scoped>
-.active {
-    background-color: #fbcfe8;
-}
+
 </style>

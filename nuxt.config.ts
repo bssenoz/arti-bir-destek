@@ -5,7 +5,6 @@ const { resolve } = createResolver(import.meta.url);
 
 require('dotenv').config();
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   ssr: false,
   typescript: {

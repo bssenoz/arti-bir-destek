@@ -1,3 +1,45 @@
+<script setup lang="ts">
+import { useVideoStore } from '@/stores/video';
+import { useVideoStatisticStore } from '@/stores/videoStatistic';
+import user from '/images/profile/user.png';
+import Chart from '@/components/video/Chart.vue';
+import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+
+const videoStore = useVideoStore();
+const videoStatisticStore = useVideoStatisticStore();
+const page = ref({ title: 'Videolar' });
+const breadcrumbs = ref([
+    {
+        text: 'Admin',
+        disabled: false,
+        href: '/admin'
+    },
+    {
+        text: 'Video İstatistikleri',
+        disabled: true,
+        href: '#'
+    }
+]);
+onMounted(() => {
+    videoStore.fetchVideos();
+    videoStatisticStore.getVideoStatistics();
+});
+
+const videoStatistics: any = computed(() => {
+    return videoStatisticStore.videoStatistics;
+});
+
+definePageMeta({
+    layout: "default",
+    middleware: ['auth'],
+});
+
+const getTotalClicks = (videoStatistics: any[]) => {
+    return videoStatistics.reduce((total, stat) => total + stat.videoClicksNumber, 0);
+};
+
+</script>
+
 <template>
         <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
         <v-row>
@@ -36,58 +78,3 @@
         </v-row>
 </template>
 
-<script setup lang="ts">
-import { useVideoStore } from '@/stores/video';
-import { useVideoStatisticStore } from '@/stores/videoStatistic';
-import user from '/images/profile/user.png';
-import Chart from '@/components/video/Chart.vue';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-
-const videoStore = useVideoStore();
-const videoStatisticStore = useVideoStatisticStore();
-const page = ref({ title: 'Videolar' });
-const breadcrumbs = ref([
-    {
-        text: 'Admin',
-        disabled: false,
-        href: '/admin/'
-    },
-    {
-        text: 'Video İstatistikleri',
-        disabled: true,
-        href: '#'
-    }
-]);
-onMounted(() => {
-    videoStore.fetchVideos();
-    videoStatisticStore.getVideoStatistics();
-});
-
-const videos: any = computed(() => {
-    return videoStore.videos;
-});
-const videoStatistics: any = computed(() => {
-    return videoStatisticStore.videoStatistics;
-});
-
-definePageMeta({
-    layout: "default",
-    middleware: [
-        function (to, from) {
-            // Custom inline middleware
-        },
-        'auth',
-    ],
-});
-
-const getTotalClicks = (videoStatistics: any[]) => {
-    return videoStatistics.reduce((total, stat) => total + stat.videoClicksNumber, 0);
-};
-
-const videoData = [
-    { title: "Video 1", description: "Description 1", watchPercentage: 60 },
-    { title: "Video 2", description: "Description 2", watchPercentage: 25 },
-    { title: "Video 3", description: "Description 3", watchPercentage: 80 },
-    { title: "Video 4", description: "Description 4", watchPercentage: 100 }
-];
-</script>

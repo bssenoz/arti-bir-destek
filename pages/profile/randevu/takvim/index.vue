@@ -37,7 +37,9 @@ const hours = Array.from({ length: 11 }, (_, i) => `${i + 8}:00`);
 const selectedHours = ref<Array<Array<boolean>>>(
   Array.from({ length: 7 }, () => Array.from({ length: 11 }, () => false))
 );
-
+definePageMeta({
+  middleware: ['auth'],
+});
 const appointments = ref<Array<Appointment>>([
   { dayId: 0, times: [] },
   { dayId: 1, times: [] },
