@@ -25,7 +25,7 @@ watchEffect(() => {
 });
 
 onMounted(async () => {
-  // await userStore.getCurrentUser();
+  await userStore.getCurrentUser();
   if (currentUser.value) chatStore.fetchMessageInfo(userStore.currentUser.id);
   meetStore.fetchPatientDoctors();
 });

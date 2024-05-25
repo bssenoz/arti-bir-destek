@@ -4,23 +4,16 @@ import { useVideoStore } from '@/stores/video';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import Swal from 'sweetalert2';
 
 const videoStore = useVideoStore();
 const videoDialog = ref(false);
 const editDialog = ref(false);
 const editedItem = ref<{ title?: string; description?: string; url?: string }>({});
-const errorDialog = ref(false);
-const successDialog = ref(false);
 let deletingVideoId: number | null = null;
-const deleteDialog = ref(false);
 
 onMounted(() => {
     videoStore.fetchVideos();
-});
-
-definePageMeta({
-    layout: "default",
-    middleware: ['auth'],
 });
 
 const videos: any = computed(() => {
@@ -29,19 +22,41 @@ const videos: any = computed(() => {
 
 const deleteVideo = (id: number) => {
     deletingVideoId = id;
-    deleteDialog.value = true;
+    Swal.fire({
+        title: 'Video Silme',
+        text: 'Videoyu silmek istediğinizden emin misiniz?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            confirmDelete()
+        }
+    });
 }
 
 const confirmDelete = () => {
     if (deletingVideoId !== null) {
         const success = videoStore.deleteVideo(deletingVideoId);
         if (!success) {
-            errorDialog.value = true;
+            Swal.fire({
+                title: "Hata!",
+                text: "Video silinemedi.",
+                icon: "error",
+                confirmButtonText: "Tamam",
+            });
         }
         deletingVideoId = null;
     }
-    deleteDialog.value = false;
-    successDialog.value = true;
+    Swal.fire({
+        title: "Başarılı!",
+        text: "Video başarıyla silindi.",
+        icon: "success",
+        confirmButtonText: "Tamam",
+    });
 }
 const showVideoDialog = (item: any) => {
     editedItem.value = Object.assign({}, item);
@@ -58,10 +73,20 @@ const saveEdit = async () => {
     try {
         await videoStore.editVideo(editedItem.value);
         editDialog.value = false;
-        successDialog.value = true;
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Video bilgileri başarıyla güncellendi.",
+            icon: "success",
+            confirmButtonText: "Tamam",
+        });
     } catch (error) {
         editDialog.value = false;
-        errorDialog.value = true;
+        Swal.fire({
+            title: "Hata!",
+            text: "Video bilgileri değiştirilirken bir hatayla karşılaşıldı.",
+            icon: "error",
+            confirmButtonText: "Tamam",
+        });
     }
 }
 
@@ -101,7 +126,8 @@ const headers = ref([
                         <td class="text-subtitle-1"> {{ item.columns.id }}</td>
                         <td class="text-subtitle-1"> {{ item.columns.title }}</td>
                         <td class="text-subtitle-1">
-                            <div style="max-height: 90px; overflow-y: auto;scrollbar-width: thin;" v-html="item.columns.description">
+                            <div style="max-height: 90px; overflow-y: auto;scrollbar-width: thin;"
+                                v-html="item.columns.description">
                             </div>
                         </td>
 
@@ -116,7 +142,6 @@ const headers = ref([
             </v-data-table>
         </v-col>
     </v-row>
-
 
     <!-- Video Dialog -->
     <v-dialog v-model="videoDialog" max-width="1200">
@@ -157,42 +182,6 @@ const headers = ref([
         </v-card>
     </v-dialog>
 
-    <!-- Delete Confirmation Dialog -->
-    <v-dialog v-model="deleteDialog" max-width="500">
-        <v-card>
-            <v-card-title>Silmek İstediğinizden Emin Misiniz?</v-card-title>
-            <v-card-actions>
-                <v-btn color="primary" @click="confirmDelete">Evet</v-btn>
-                <v-btn @click="deleteDialog = false">Hayır</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-
-    <!-- Error Dialog -->
-    <v-dialog v-model="errorDialog" max-width="500">
-        <v-card>
-            <v-card-title>Hata</v-card-title>
-            <v-card-text>
-                Düzenleme işlemi başarısız oldu.
-            </v-card-text>
-            <v-card-actions>
-                <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
-
-    <!-- Success Dialog -->
-    <v-dialog v-model="successDialog" max-width="500">
-        <v-card>
-            <v-card-title>Başarılı</v-card-title>
-            <v-card-text>
-                İşlem başarılı oldu.
-            </v-card-text>
-            <v-card-actions>
-                <v-btn color="primary" @click="successDialog = false">Tamam</v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
 </template>
 
 <style scoped>
@@ -200,6 +189,7 @@ const headers = ref([
     background-color: #db2777;
     color: #fff;
 }
+
 ::v-deep(.ql-toolbar.ql-snow) {
     border-top-left-radius: 7px;
     border-top-right-radius: 7px;
@@ -210,6 +200,7 @@ const headers = ref([
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
 }
+
 ::v-deep(v-table__wrapper) {
     scrollbar-width: thin;
 }

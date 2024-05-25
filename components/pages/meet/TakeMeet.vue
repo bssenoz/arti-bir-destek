@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watchEffect } from "vue";
-import { format, addDays, getDay, subDays} from "date-fns";
+import { format, addDays, getDay, subDays } from "date-fns";
 import { useMeetStore } from "~/stores/meet";
 import { useUserStore } from "~/stores/user";
 import { MakeAppointmentType } from "@/types/MeetType"
+import Swal from "sweetalert2";
 
 const meetStore = useMeetStore();
 const userStore = useUserStore();
@@ -12,9 +13,6 @@ const text = ref(`Randevu dolu!`);
 const timeout = ref(2000);
 const range = ref([]);
 const selectedDay = ref('');
-const appointments = ref([]);
-const dialog = ref(false);
-const successDialog = ref(false);
 const activeAccordion = ref(null);
 const selectedAppointment = ref(null);
 const weeklyDates = ref([]);
@@ -82,7 +80,7 @@ const updateWeeklyDates = (start: string | number | Date, end: string | number |
   }
 
   weeklyDates.value.splice(0, weeklyDates.value.length);
-  
+
   updatedDates.forEach(date => {
     weeklyDates.value.push(date);
   });
@@ -99,23 +97,6 @@ const selectDay = (index) => {
   }
 };
 
-const handleAppointmentClick = (timeObj: { selected: any; timeRange: number; }, appointment: { doctorID: any; doctorTitle: any; doctorName: any; doctorSurname: any; }) => {
-  console.log(timeObj)
-  console.log(appointment)
-  if (!timeObj.selected) {
-    selectedAppointment.value = {
-      doctorId: appointment.doctorID,
-      timeRange: timeObj.timeRange,
-      doctor: `${appointment.doctorTitle} ${appointment.doctorName} ${appointment.doctorSurname}`,
-      timeObj: `${timeObj.timeRange}.00 - ${timeObj.timeRange + 1}.00`,
-      day: selectedDay.value,
-    };
-    dialog.value = true;
-  } else {
-    snackbar.value = true;
-  }
-};
-
 const confirmAppointment = (selectedAppointment: any) => {
   console.log(selectedAppointment)
   const newAppointment: MakeAppointmentType = {
@@ -125,8 +106,12 @@ const confirmAppointment = (selectedAppointment: any) => {
   };
   console.log(newAppointment)
   meetStore.makeAppointment(newAppointment)
-  dialog.value = false;
-  successDialog.value = true;
+  Swal.fire({
+    title: "Başarılı!",
+    text: "Randevu alındı.",
+    icon: "success",
+    confirmButtonText: "Tamam",
+  });
 };
 
 const toggleAccordion = (index) => {
@@ -136,6 +121,47 @@ const toggleAccordion = (index) => {
 const handleDateChange = (value) => {
   console.log("Başlangıç Tarihi:", format(value.start, "dd.MM.yyyy"));
   console.log("Bitiş Tarihi:", format(value.end, "dd.MM.yyyy"));
+};
+const handleAppointmentClick = (timeObj: { status: any; timeRange: number; }, appointment: { doctorID: any; doctorTitle: any; doctorName: any; doctorSurname: any; }) => {
+  console.log(timeObj)
+  console.log(appointment)
+  if (!timeObj.status) {
+    selectedAppointment.value = {
+      doctorId: appointment.doctorID,
+      timeRange: timeObj.timeRange,
+      doctor: `${appointment.doctorTitle} ${appointment.doctorName} ${appointment.doctorSurname}`,
+      timeObj: `${timeObj.timeRange}.00 - ${timeObj.timeRange + 1}.00`,
+      day: selectedDay.value,
+    };
+    showConfirmationDialog();
+  } else {
+    showSnackbar();
+  }
+};
+const showSnackbar = () => {
+  snackbar.value = true;
+};
+
+const showConfirmationDialog = () => {
+  Swal.fire({
+    title: 'Randevu Detayı',
+    html: `
+      <p>Doktor: ${selectedAppointment.value.doctor}</p>
+      <p>Gün: ${selectedAppointment.value.day}</p>
+      <p>Saat: ${selectedAppointment.value.timeObj}</p>
+      <p>Randevunuzu onaylıyor musunuz?</p>
+    `,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Onayla',
+    cancelButtonText: 'İptal'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      confirmAppointment(selectedAppointment.value);
+    }
+  });
 };
 
 </script>
@@ -188,43 +214,6 @@ const handleDateChange = (value) => {
           <div v-else>
             <div class="d-flex justify-center align-center mt-16">Bu Tarihte Randevu Bulunamadı!</div>
           </div>
-          <v-dialog v-model="dialog" max-width="600">
-            <v-card>
-              <v-card-title>Randevu Detayı</v-card-title>
-              <v-card-text>
-                <v-row>
-                  <v-col>
-                    <p>Doktor: {{ selectedAppointment.doctor }}</p>
-                    <p>Gün: {{ selectedAppointment.day }}</p>
-                    <p>Saat: {{ selectedAppointment.timeObj }}</p>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col>
-                    <p>Randevunuzu onaylıyor musunuz?</p>
-                  </v-col>
-                </v-row>
-              </v-card-text>
-              <v-card-actions class="justify-end">
-                <v-btn color="primary" text @click="confirmAppointment(selectedAppointment)">Onayla</v-btn>
-                <v-btn color="error" text @click="dialog = false">İptal</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-
-          <v-dialog v-model="successDialog" max-width="600">
-            <v-card>
-              <v-card-title>Randevu alınmıştır.</v-card-title>
-              <v-card-text>
-                <p>Doktor: {{ selectedAppointment.doctor }}</p>
-                <p>Gün: {{ selectedAppointment.day }}</p>
-                <p>Saat: {{ selectedAppointment.timeObj }}</p>
-              </v-card-text>
-              <v-card-actions class="justify-end">
-                <v-btn color="error" text @click="successDialog = false">Kapat</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
 
           <v-snackbar v-model="snackbar" :timeout="timeout">
             {{ text }}

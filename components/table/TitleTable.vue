@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { useAdminStore } from '@/stores/admin';
 import { TrashIcon } from 'vue-tabler-icons';
+import Swal from 'sweetalert2';
 
 const adminStore = useAdminStore();
 
@@ -23,9 +24,26 @@ const filteredTitle = computed(() => {
     return allTitle.value.filter(item => item.title.toLowerCase().includes(keyword));
 });
 
-const deleteTitle = async(item: any) => {
-    console.log("iteee: ", item);
-    await adminStore.deleteTitle(item.id);
+const deleteTitle = async (item: any) => {
+    const confirmed = await Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Bu ünvanı silmek istediğinizden emin misiniz?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, sil!',
+        cancelButtonText: 'İptal'
+    });
+
+    if (confirmed.isConfirmed) {
+        await adminStore.deleteTitle(item.id);
+        Swal.fire(
+            'Silindi!',
+            'Ünvan başarıyla silindi.',
+            'success'
+        );
+    }
 };
 
 const showDialog = ref(false);
@@ -40,9 +58,25 @@ const closeDialog = () => {
     showDialog.value = false;
 };
 
-const addTitle = async() => {
-    await adminStore.addTitle({ title: newTitle.value });
-    closeDialog();
+const addTitle = async () => {
+    try {
+        await adminStore.addTitle({ title: newTitle.value });
+        closeDialog();
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Ünvan başarıyla eklendi.",
+            icon: "success",
+            confirmButtonText: "Tamam",
+        });
+
+    } catch (error) {
+        Swal.fire({
+            title: "Hata!",
+            text: "Ünvan eklenirken bir hatayla karşılaşıldı.",
+            icon: "error",
+            confirmButtonText: "Tamam",
+        });
+    }
 };
 </script>
 
@@ -67,7 +101,7 @@ const addTitle = async() => {
             <v-card-text>
                 <v-text-field v-model="newTitle" label="Yeni Ünvan" outlined></v-text-field>
             </v-card-text>
-            <v-card-actions >
+            <v-card-actions>
                 <v-btn color="primary" @click="addTitle">Ekle</v-btn>
                 <v-btn @click="closeDialog">İptal</v-btn>
             </v-card-actions>

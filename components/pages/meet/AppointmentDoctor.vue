@@ -6,6 +6,7 @@ import 'v-calendar/dist/style.css';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { VCalendarAttribute } from 'v-calendar/dist/types';
 import { CancelDoctorAppointment } from '@/types/MeetType';
+import Swal from 'sweetalert2';
 
 const meetStore = useMeetStore();
 const userStore = useUserStore();
@@ -86,14 +87,40 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
 };
 
 const cancelAppointment = (i: any) => {
-    const cancelInfo: CancelDoctorAppointment = {
-        day: i.day,
-        timeRange: i.timeRange,
-        doctorId: i.doctorId,
-    }
-
-    meetStore.cancelPatientAppointment(cancelInfo)
+    Swal.fire({
+        title: 'Randevu İptali',
+        text: 'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, İptal Et',
+        cancelButtonText: 'Vazgeç'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try {
+                const cancelInfo: CancelDoctorAppointment = {
+                    day: i.day,
+                    timeRange: i.timeRange,
+                    doctorId: i.doctorId,
+                }
+                meetStore.cancelDoctorAppointment(cancelInfo)
+                Swal.fire(
+                    'Başarılı!',
+                    'Randevunuz iptal edildi.',
+                    'success'
+                );
+            } catch (error) {
+                Swal.fire(
+                    'Hata!',
+                    'Bir hata oluştu. Randevunuz iptal edilemedi. Lütfen tekrar deneyiniz.',
+                    'error'
+                );
+            }
+        }
+    });
 }
+
 </script>
 
 <template>

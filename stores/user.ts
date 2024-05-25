@@ -377,16 +377,13 @@ export const useUserStore = defineStore({
             }
         },
         async changePassword(newPass: any) {
-            try {
                 const config = {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     }
                 };
                 await axios.patch('http://localhost:5261/api/User/ChangePassword', newPass, config)
-            } catch (error) {
-                console.log(error)
-            }
+      
         },
         async uploadProfileImage(file: any) {
             try {

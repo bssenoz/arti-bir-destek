@@ -6,6 +6,7 @@ import 'v-calendar/dist/style.css';
 import UiParentCard from '@/components/shared/UiParentCard.vue';
 import { VCalendarAttribute } from 'v-calendar/dist/types';
 import { CancelPatientAppointment } from '@/types/MeetType';
+import Swal from 'sweetalert2';
 
 const meetStore = useMeetStore();
 const userStore = useUserStore();
@@ -88,14 +89,41 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
 };
 
 const cancelAppointment = (i: any) => {
-    const cancelInfo: CancelPatientAppointment = {
-        day: i.day,
-        timeRange: i.timeRange,
-        doctorId: i.doctorId,
-    }
-
-    meetStore.cancelPatientAppointment(cancelInfo)
+    Swal.fire({
+        title: 'Randevu İptali',
+        text: 'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, İptal Et',
+        cancelButtonText: 'Vazgeç'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            try {
+                const cancelInfo: CancelPatientAppointment = {
+                    day: i.day,
+                    timeRange: i.timeRange,
+                    doctorId: i.doctorId,
+                }
+                meetStore.cancelPatientAppointment(cancelInfo)
+                Swal.fire(
+                    'Başarılı!',
+                    'Randevunuz iptal edildi.',
+                    'success'
+                );
+           
+            } catch (error) {
+                Swal.fire(
+                    'Hata!',
+                    'Bir hata oluştu. Randevunuz iptal edilemedi. Lütfen tekrar deneyiniz.',
+                    'error'
+                );
+            }
+        }
+    });
 }
+
 </script>
 
 <template>
@@ -152,7 +180,7 @@ const cancelAppointment = (i: any) => {
                                     i.doctorSurname }}</span></div>
                                 <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
                                     :disabled="isPastAppointment(i.day, i.timeRange)">Randevuya Katıl</v-btn>
-                                <v-btn :href="i.appointmentURL" target="_blank" color="warning" class="mt-3 ml-4"
+                                <v-btn target="_blank" color="warning" class="mt-3 ml-4"
                                     :class="{ 'd-none': isPastAppointment(i.day, i.timeRange) }"
                                     @click="cancelAppointment(i)">İptal Et</v-btn>
 

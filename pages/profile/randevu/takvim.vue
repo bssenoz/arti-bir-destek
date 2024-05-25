@@ -1,11 +1,9 @@
 <script setup lang="ts">
+import Swal from "sweetalert2";
 import { ref, onMounted, computed, watchEffect } from "vue";
 import { useMeetStore } from "~/stores/meet";
 import { useUserStore } from "~/stores/user";
 import { DoctorIdType } from '~/types/UserType';
-
-const succesDialog = ref(false);
-const errorDialog = ref(false);
 
 const daysToAdd = 15;
 const today = new Date();
@@ -19,7 +17,7 @@ const selectedHours = ref<Array<Array<boolean>>>(
   Array.from({ length: daysToAdd }, () => Array.from({ length: 10 }, () => false))
 );
 definePageMeta({
-    middleware: [
+  middleware: [
     'auth',
   ],
 });
@@ -53,10 +51,19 @@ const saveSchedule = () => {
       doctorId: currentUser.value.id,
     };
     meetStore.postCalendar(JSON.stringify(selectedTimes), data)
-    succesDialog.value = true;
+    Swal.fire({
+      title: "Başarılı!",
+      text: "Randevu takviminiz başarıyla güncellendi",
+      icon: "success",
+      confirmButtonText: "Tamam",
+    });
   } catch (err) {
-    console.log(err)
-    errorDialog.value = true;
+    Swal.fire({
+      title: "Hata!",
+      text: "Bir hata oluştu. Daha sonra tekrar deneyiniz.",
+      icon: "error",
+      confirmButtonText: "Tamam",
+    });
   }
 };
 
@@ -148,28 +155,6 @@ const formatDate = (date: Date) => {
           <v-btn color="primary" size="large" class="float-right" @click="saveSchedule">Kaydet</v-btn>
         </v-col>
       </v-row>
-      <v-dialog v-model="errorDialog" max-width="500">
-        <v-card>
-          <v-card-title>HATA!</v-card-title>
-          <v-card-text>
-            Bir hatayla karşılaşıldı :(
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="succesDialog" max-width="500">
-        <v-card>
-          <v-card-title>Başarılı!</v-card-title>
-          <v-card-text>
-            Randevu takvimi güncellendi.
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="succesDialog = false">Tamam</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-container>
   </div>
 </template>

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import userProfile from '/images/profile/user.png';
 import { ChangePassword, UpdateDoctor, UpdatePatient } from '@/types/UserType';
+import Swal from 'sweetalert2';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -37,43 +38,106 @@ const handleFile = (file: File) => {
 };
 
 const currentDelete = () => {
-    try {
-        userStore.deleteCurrentUser();
-        router.push({ path: '/' });
-    } catch (error) {
-        console.log(error)
-    }
-}
+    Swal.fire({
+        title: 'Hesabını Sil',
+        text: 'Bu işlem geri alınamaz! Hesabını silmek istediğinden emin misin?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, Sil',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            userStore.deleteCurrentUser().then(() => {
+                userStore.logout()
+                router.push({ path: '/' });
+            }).catch((error) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Kullanıcıyı silerken bir hata oluştu.',
+                    confirmButtonColor: '#3085d6',
+                });
+            });
+        }
+    });
+};
 
-const changePassword = () => {
-    const newPassword: ChangePassword = {
-        oldPassword: currentPass.value,
-        newPassword: newPass.value,
-        confirmPassword: confirmPass.value,
-    };
-    userStore.changePassword(newPassword)
+const changePassword = async () => {
+    try {
+        const newPassword: ChangePassword = {
+            oldPassword: currentPass.value,
+            newPassword: newPass.value,
+            confirmPassword: confirmPass.value,
+        };
+        await userStore.changePassword(newPassword)
+
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Şifreniz başarıyla değiştirildi.",
+            icon: "success",
+            confirmButtonText: "Tamam",
+        });
+    } catch (error) {
+        Swal.fire({
+            title: "Hata!",
+            text: "Lütfen doğru bilgileri girdiğinizden emin olunuz.",
+            icon: "error",
+            confirmButtonText: "Tamam",
+        });
+    }
 }
 
 const deleteProfileImage = () => {
-    userStore.deleteProfileImage()
+    Swal.fire({
+        title: 'Resmi Sıfırla',
+        text: 'Profil resmini sıfırlamak istediğinden emin misin?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, Sıfırla',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            userStore.deleteProfileImage();
+        }
+    });
 }
-const updateUser = () => {
-    if (props.userRole == 'Doctor') {
-        const userInfo: UpdateDoctor = {
-            name: props.user.name,
-            surname: props.user.surname,
-            phoneNumber: props.user.phoneNumber,
-            title: props.user.title,
+const updateUser = async () => {
+    try {
+        if (props.userRole == 'Doctor') {
+            const userInfo: UpdateDoctor = {
+                name: props.user.name,
+                surname: props.user.surname,
+                phoneNumber: props.user.phoneNumber,
+                title: props.user.title,
+            }
+            await userStore.updateDoctor(userInfo)
+
         }
-        userStore.updateDoctor(userInfo)
-    }
-    if (props.userRole == 'Patient') {
-        const userInfo: UpdatePatient = {
-            name: props.user.name,
-            surname: props.user.surname,
-            phoneNumber: props.user.phoneNumber,
+        if (props.userRole == 'Patient') {
+            const userInfo: UpdatePatient = {
+                name: props.user.name,
+                surname: props.user.surname,
+                phoneNumber: props.user.phoneNumber,
+            }
+            await userStore.updatePatient(userInfo)
         }
-        userStore.updatePatient(userInfo)
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Bilgileriniz başarıyla değiştirildi.",
+            icon: "success",
+            confirmButtonText: "Tamam",
+        });
+    } catch (error) {
+        Swal.fire({
+            title: "Hata!",
+            text: "Bilgilerinizi değiştirilirken bir hatayla karşılaşıldı. Lütfen tekrar deneyiniz.",
+            icon: "error",
+            confirmButtonText: "Tamam",
+        });
     }
 }
 </script>
@@ -102,8 +166,9 @@ const updateUser = () => {
                         </div>
                         <v-btn color="error" class="mx-2" variant="outlined" @click="deleteProfileImage">Sıfırla</v-btn>
                     </div>
-                    <div class="text-subtitle-1 text-medium-emphasis text-center my-sm-8 my-6">Lütfen sadece JPG, GIF ya da
-                            PNG yükleyin.</div>
+                    <div class="text-subtitle-1 text-medium-emphasis text-center my-sm-8 my-6">Lütfen sadece JPG, GIF ya
+                        da
+                        PNG yükleyin.</div>
 
                 </v-card-item>
             </v-card>
@@ -129,8 +194,7 @@ const updateUser = () => {
                             variant="outlined" :type="show3 ? 'text' : 'password'"
                             :append-inner-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
                             @click:append-inner="show3 = !show3" />
-                        <v-btn  color="primary" class="mt-4 float-right"
-                            @click="changePassword">Kaydet</v-btn>
+                        <v-btn color="primary" class="mt-4 float-right" @click="changePassword">Kaydet</v-btn>
                     </div>
                 </v-card-item>
             </v-card>
@@ -172,7 +236,7 @@ const updateUser = () => {
                         </v-row>
                     </div>
                     <div class="d-flex justify-end mt-5">
-                        <v-btn  color="primary" class="mr-4" @click="updateUser">Kaydet</v-btn>
+                        <v-btn color="primary" class="mr-4" @click="updateUser">Kaydet</v-btn>
                     </div>
                 </v-card-item>
             </v-card>
@@ -180,26 +244,9 @@ const updateUser = () => {
         <v-col cols="12">
             <v-card elevation="10">
                 <v-card-item>
-                    <v-dialog max-width="500">
-                        <template v-slot:activator="{ props: activatorProps }">
-                            <v-btn v-bind="activatorProps" text="Hesabımı Sil" size="large"
-                                class="bg-lighterror text-error" flat></v-btn>
-                        </template>
+                    <v-btn text="Hesabımı Sil" size="large" @click="currentDelete" class="bg-lighterror text-error"
+                        flat></v-btn>
 
-                        <template v-slot:default="{ isActive }">
-                            <v-card title="Bu işlem geri alınamaz!">
-                                <v-card-text>
-                                    Hesabını silmek istediğinden emin misin?
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn text="İptal" @click="isActive.value = false"></v-btn>
-                                    <v-btn text="Hesabımı Sil" @click="currentDelete"
-                                        class="bg-lighterror text-error"></v-btn>
-                                </v-card-actions>
-                            </v-card>
-                        </template>
-                    </v-dialog>
                 </v-card-item>
             </v-card>
         </v-col>
@@ -208,7 +255,6 @@ const updateUser = () => {
 </template>
 
 <style scoped>
-
 .input-file-button {
     padding: 6px 15px;
     background-color: #db2777;
@@ -229,5 +275,4 @@ const updateUser = () => {
 .input-file-button label .file-label-text {
     font-size: 14px;
 }
-
 </style>
