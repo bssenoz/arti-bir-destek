@@ -78,13 +78,13 @@ const register = async () => {
       throw new Error("Şifreler eşleşmiyor");
     }
 
-    if (stepItem.value == 5) {
+    if (userType.value == 'doctor') {
       const newUser: DoctorType = {
         id: "",
         name: firstName.value,
         surname: lastName.value,
         email: email.value,
-        titleId: title.value,
+        doctorTitleId: title.value,
         phoneNumber: phoneNumber.value,
         password: password.value,
         confirmPassword: passwordConfirm.value,
@@ -92,10 +92,16 @@ const register = async () => {
       };
 
       await userStore.registerDoctor(newUser);
-      dialogVisible.value = true;
+      Swal.fire({
+        title: "Başarılı!",
+        text: "Kaydınız onaya gönderildi! E-mail yoluyla bilgilendirileceksiniz.",
+        icon: "success",
+        confirmButtonText: "Tamam",
+      });
+      router.push('/')
     }
 
-    if (stepItem.value == 4) {
+    if (userType.value == 'patient') {
       const newUser: PatientType = {
         id: "",
         name: firstName.value,
@@ -108,7 +114,13 @@ const register = async () => {
       };
 
       await userStore.registerPatient(newUser);
-      dialogVisible.value = true;
+      Swal.fire({
+        title: "Başarılı!",
+        text: "Kaydınız başarıyla oluşturuldu!",
+        icon: "success",
+        confirmButtonText: "Tamam",
+      });
+      router.push('/giris-yap')
     }
   } catch (error: any) {
     console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);

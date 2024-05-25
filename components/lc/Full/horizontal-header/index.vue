@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useCustomizerStore } from "@/stores/customizer";
-import { Menu2Icon } from "vue-tabler-icons";
+import { ref, onMounted, computed } from 'vue';
+import { useCustomizerStore } from '@/stores/customizer';
+import { Menu2Icon } from 'vue-tabler-icons';
 import { useUserStore } from '@/stores/user';
+import { getUserRoleFromToken } from '@/utils/role';
+
 const customizer = useCustomizerStore();
 const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
-import jwt_decode from 'jwt-decode';
 
 const userStore = useUserStore();
 
@@ -14,20 +15,12 @@ const isAdmin = ref(false);
 
 onMounted(() => {
   userStore.getCurrentUser()
- 
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (accessToken) {
-    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-
-    const userRole = decodedToken.role as string | undefined;
-
-    if (userRole == "Admin") isAdmin.value = true;
-
-  } else {
-    console.error('Access token bulunamadı veya null.');
+  const role = getUserRoleFromToken();
+  if (role === 'Admin') {
+    isAdmin.value = true;
   }
-})
+});
+
 const user = computed(() => {
   return userStore.currentUser;
 });
@@ -43,14 +36,10 @@ watch(priority, (newPriority) => {
       : 'v-toolbar__content px-6'
       ">
       <NuxtLink to="/" class="text-decoration-none" v-if="!isAdmin">
-        <!-- <div class="hidden-md-and-down mr-3 font-mansalva font-weight-bold color-pink-1 text-h4">
-          Artı Bir Destek
-        </div> -->
         <div class="hidden-md-and-down mr-3 font-mansalva font-weight-bold color-pink-1 text-h4 align-center d-lg-flex">
           <img src="/images/backgrounds/adimlar.jpg" style="width: 50px" />
-            <span class="font-mansalva color-pink-1 font-weight-bold text-h4">
-              1Artı Bir Destek</span
-            >
+          <span class="font-mansalva color-pink-1 font-weight-bold text-h4">
+            Artı Bir Destek</span>
         </div>
       </NuxtLink>
 
@@ -68,14 +57,14 @@ watch(priority, (newPriority) => {
       <!-- ---------------------------------------------- -->
       <!-- Notification -->
       <!-- ---------------------------------------------- -->
-<!-- 
+      <!-- 
       <LcFullVerticalHeaderNotificationDD /> -->
 
       <!-- ---------------------------------------------- -->
       <!-- User Profile -->
       <!-- ---------------------------------------------- -->
       <div class="ml-3 mr-sm-0 mr-3">
-        <LcFullVerticalHeaderProfileDD :isAdmin="isAdmin" :currentUser="user"/>
+        <LcFullVerticalHeaderProfileDD :isAdmin="isAdmin" :currentUser="user" />
       </div>
     </div>
   </v-app-bar>

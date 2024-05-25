@@ -127,8 +127,8 @@
 }
 @media (max-width: 1601px) {
   .mesg-text {
-    margin-left: -10rem;
-    margin-top: 0;
+    margin-left: -6rem;
+    margin-top: 2rem;
   }
 }
 @media (max-width: 1501px) {

@@ -5,16 +5,24 @@
         </video>
         <div class="content">
             <v-row class="text-center d-flex justify-center">
-                <v-card elevation="10" width="450" class="text-center top-24">
+                <v-card elevation="10" width="450" class="text-center top-card">
                     <v-col cols="12" class="profile-image">
                         <div class="avatar-border">
                             <v-avatar size="120" class="userImage">
-                                <img :src="userPng" width="120" alt="User Profile" />
+
+                                <div v-if="user.profileImageUrl">
+                                    <v-img :src="user.profileImageUrl" width="120"
+                                        class="rounded-circle img-fluid"></v-img>
+                                </div>
+                                <div v-else>
+                                    <v-img :src="userPng" width="120" />
+                                </div>
                             </v-avatar>
+
                         </div>
                     </v-col>
                     <v-col cols="12">
-                        <div class="profile-details mb-4">
+                        <div class="profile-details ">
                             <div class="text-h3">{{ user.name }} {{ user.surname }}</div>
                             <p class="email text-h5 font-weight-regular">{{ user.email }}</p>
                             <p class="phone text-h5 font-weight-regular">{{ user.phoneNumber }}</p>
@@ -106,10 +114,13 @@ const user = computed(() => {
     position: relative;
     z-index: 1;
 }
-@media (max-width: 700px) {
-  .v-card {
-    width: 320px !important;
-  }
-}
 
+@media (max-width: 700px) {
+    .v-card {
+        width: 320px !important;
+    }
+}
+.top-card {
+    top: 15vh;
+}
 </style>

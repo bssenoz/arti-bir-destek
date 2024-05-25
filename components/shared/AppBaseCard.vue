@@ -18,7 +18,7 @@ const sDrawer = ref(false);
         <div class="right-part">
             <!---Toggle Button For mobile-->
             <v-btn block @click="sDrawer = !sDrawer" variant="text" class="d-lg-none d-md-flex d-sm-flex">
-                <Menu2Icon size="20" class="mr-2" /> Menu
+                <Menu2Icon size="20" class="mr-2" /> Menü
             </v-btn>
             <v-divider class="d-lg-none d-block" />
             <slot name="rightpart"></slot>

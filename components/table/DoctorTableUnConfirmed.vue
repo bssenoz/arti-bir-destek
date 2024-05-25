@@ -1,24 +1,21 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/user';
 import { useAdminStore } from '@/stores/admin';
 
 import user from '/images/profile/user.png';
-import { NoteIcon } from 'vue-tabler-icons';
 import { useRouter, useRoute } from 'vue-router';
 import Swal from 'sweetalert2';
 
-const userStore = useUserStore();
 const adminStore = useAdminStore();
 
 const router = useRouter();
 
 onMounted(() => {
-    adminStore.fetchAllDoctors();
+    adminStore.fetchUnConfirmedDoctor();
 });
 
 const doctors: any = computed(() => {
-    return adminStore.alldoctors;
+    return adminStore.allUnConfirmed;
 });
 
 const search = ref('');
@@ -31,7 +28,7 @@ const filteredList = computed(() => {
 });
 
 const deleteItem = async (item: any) => {
-    console.log("iteee: ", item)
+    console.log("iteee: ", item);
     const result = await Swal.fire({
         icon: 'question',
         title: 'Silme',
@@ -43,21 +40,58 @@ const deleteItem = async (item: any) => {
         cancelButtonText: 'İptal',
     });
 
-    adminStore.deleteUser(item.id)
-}
-const navigateToNots = (doctorSlug: any) => {
-    router.push(`/admin/danismanlar/${doctorSlug}/raporlar`);
+    if (result.isConfirmed) {
+        try {
+            await adminStore.deleteUser(item.id);
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı',
+                text: 'Danışman başarıyla silindi.',
+            });
+        } catch (error) {
+            console.error('Error occurred while deleting user:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata',
+                text: 'Danışman silinirken bir hata oluştu.',
+            });
+        }
+    }
 };
 
+const confirmDoctor = async (doctor: any) => {
+    const result = await Swal.fire({
+        icon: 'question',
+        title: 'Onaylama',
+        text: 'Bu danışmanı onaylamak istediğinizden emin misiniz?',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Evet, onayla',
+        cancelButtonText: 'İptal',
+    });
+
+    if (result.isConfirmed) {
+        try {
+            await adminStore.confirmDoctor(doctor.userName);
+            Swal.fire({
+                icon: 'success',
+                title: 'Başarılı',
+                text: 'Danışman başarıyla onaylandı.',
+            });
+        } catch (error) {
+            console.error('Error occurred while confirming doctor:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata',
+                text: 'Danışman onaylanırken bir hata oluştu.',
+            });
+        }
+    }
+};
 </script>
 
 <template>
-    <v-row>
-        <v-col cols="12">
-            <v-btn color="primary" class="float-right" href="/admin/danismanlar/onay-bekleyenler">Onay
-                Bekleyenler</v-btn>
-        </v-col>
-    </v-row>
     <v-row>
         <v-col cols="12" lg="4" md="6">
             <v-text-field density="compact" v-model="search" label="Danışman Ara" hide-details
@@ -97,8 +131,13 @@ const navigateToNots = (doctorSlug: any) => {
                 </td>
                 <td>
                     <div class="d-flex align-center">
-                        <v-btn class="text-primary" @click="navigateToNots(item.userName)">Raporlar</v-btn>
-                        <v-tooltip text="Danışmanı Sil">
+                        <v-tooltip text="Onayla">
+                            <template v-slot:activator="{ props }">
+                                <v-btn icon flat v-bind="props" class="ml-2" @click="confirmDoctor(item)"> <v-icon
+                                        color="primary">mdi-check-circle</v-icon></v-btn>
+                            </template>
+                        </v-tooltip>
+                        <v-tooltip text="Sil">
                             <template v-slot:activator="{ props }">
                                 <v-btn icon flat @click="deleteItem(item)" v-bind="props" class="ml-2">
                                     <TrashIcon stroke-width="1.5" size="20" class="text-error" />

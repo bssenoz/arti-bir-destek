@@ -8,31 +8,12 @@ const appsdrawer = ref(false);
 const priority = ref(customizer.setHorizontalLayout ? 0 : 0);
 
 const userStore = useUserStore();
-const isAdmin = ref(false);
 
 watch(priority, (newPriority) => {
-    // yes, console.log() is a side effect
     priority.value = newPriority;
 });
 onMounted(() => {
   userStore.getCurrentUser()
-  const accessToken = localStorage.getItem('accessToken');
-
-  if (accessToken) {
-    const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-
-    const userRole = decodedToken.role as string | undefined;
-
-    if (userRole == "Admin") isAdmin.value = true;
-
-
-  } else {
-    console.error('Access token bulunamadı veya null.');
-  }
-});
-
-const user = computed(() => {
-  return userStore.currentUser;
 });
 
 </script>

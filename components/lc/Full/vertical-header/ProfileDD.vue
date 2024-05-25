@@ -44,10 +44,10 @@ const logout = async () => {
 
           <div class="ml-3">
             <h6 class="text-h6 mb-n1">{{ currentUser.name }} {{ currentUser.surname }}</h6>
-            <span class="text-subtitle-1 font-weight-regular textSecondary">{{ currentUser.title }}</span>
+            <span class="text-subtitle-1 font-weight-regular textSecondary truncate"  style="width:190px">{{ currentUser.title }}</span>
             <div class="d-flex align-center mt-1">
               <MailIcon size="18" stroke-width="1.5" />
-              <span class="text-subtitle-1 font-weight-regular textSecondary ml-2">{{ currentUser.email }}</span>
+              <span class="text-subtitle-1 font-weight-regular textSecondary ml-2 truncate" style="width:190px">{{ currentUser.email }}</span>
             </div>
           </div>
         </div>

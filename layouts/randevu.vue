@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { useCustomizerStore } from '@/stores/customizer';
-import { pl, zhHans } from 'vuetify/locale'
 const customizer = useCustomizerStore();
 const title = ref("Artı Bir Destek");
 useHead({

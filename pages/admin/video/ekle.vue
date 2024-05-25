@@ -4,6 +4,7 @@ import BaseBreadcrumb from "@/components/shared/BaseBreadcrumb.vue";
 import axios from "axios";
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
+import Swal from "sweetalert2";
 
 const page = ref({ title: "Video Yükle" });
 const breadcrumbs = ref([
@@ -69,13 +70,29 @@ const submitFile = () => {
           title.value = "";
           description.value = "";
           file.value = "";
+          Swal.fire({
+            title: "Başarılı!",
+            text: "Video başarıyla eklendi!",
+            icon: "success",
+            confirmButtonText: "Tamam",
+          });
         })
         .catch(() => {
-          errorDialog2.value = true;
+          Swal.fire({
+            title: "Hata!",
+            text: "Video eklenemedi!",
+            icon: "error",
+            confirmButtonText: "Tamam",
+          });
         });
 
     } else {
-      errorDialog.value = true;
+      Swal.fire({
+        title: "Hata!",
+        text: "Video eklenemedi!",
+        icon: "error",
+        confirmButtonText: "Tamam",
+      });
     }
   }
 };
@@ -137,13 +154,17 @@ const submitFile = () => {
 
 <style scoped>
 ::v-deep(.ql-toolbar.ql-snow) {
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 ::v-deep(.ql-container.ql-snow) {
-    height: 400px;
-    border-bottom-left-radius: 7px;
-    border-bottom-right-radius: 7px;
+  height: 400px;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
+}
+
+video {
+  width: 40%;
 }
 </style>

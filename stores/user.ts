@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
 import { DoctorType, PatientType, CurrentUserType } from '@/types/UserType';
 import jwt_decode from 'jwt-decode';
+import Crypto from 'crypto-js';
 
 export enum UserRole {
     Doctor = 'Doctor',
@@ -18,6 +19,32 @@ export interface UserType {
     accessTime: string | null;
     doctors: Array<DoctorType>
     patients: Array<PatientType>
+    currentUserCookie: any
+}
+function setCookie(name: string, value: string, expireDays: number) {
+    const d = new Date();
+    d.setTime(d.getTime() + (expireDays * 24 * 60 * 60 * 1000));
+    const expires = "expires=" + d.toUTCString();
+    // const secureFlag = "secure"; // Sadece HTTPS üzerinde çalışır
+    // const httpOnlyFlag = "httponly"; // JavaScript'ten erişimi engeller
+    // document.cookie = name + "=" + value + ";" + expires + ";path=/;" + secureFlag + ";" + httpOnlyFlag;
+    document.cookie = name + "=" + value + ";" + expires + ";path=/;";
+}
+
+function getCookie(name: string): string {
+    const cookieName = name + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i];
+        while (cookie.charAt(0) === ' ') {
+            cookie = cookie.substring(1);
+        }
+        if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+        }
+    }
+    return "";
 }
 
 export const useUserStore = defineStore({
@@ -39,6 +66,7 @@ export const useUserStore = defineStore({
         accessTime: localStorage.getItem('accessTime'),
         doctors: [],
         patients: [],
+        currentUserCookie: {}
     }),
     actions: {
         async registerPatient(newUser: any) {
@@ -68,19 +96,10 @@ export const useUserStore = defineStore({
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
                 this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
-                // console.log("tihs: ",this.accessTime)
-                // // localStorage'a tokenları kaydet
+
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
                 localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
-
-                // console.log("ref: ", this.refreshToken)
-                // console.log("acc: ", this.accessToken)
-
-                // // Access token süresi dolarsa refresh token kullanarak yeni bir access token al
-                // setTimeout(() => {
-                //     this.refreshAccessToken();
-                // }, (response.data.jwtTokenDTO.accessTokenExpirationTime * 1000) - Date.now()); // Access token'ın süresi dolduktan sonra refresh token kullanarak otomatik olarak yenile
 
             } catch (error) {
                 console.error("Kullanıcı giriş yaparken bir hata oluştu:", error);
@@ -89,25 +108,25 @@ export const useUserStore = defineStore({
         },
         async loginWithGoogle(userToken: string) {
             console.log("token:: ", userToken);
-            try {
-                const response = await axios.post(
-                    'http://localhost:5261/api/Authentication/LoginViaGoogle',
-                    JSON.stringify(userToken),
-                    {
-                        headers: {
-                            'Content-Type': 'application/json'
-                        }
-                    }
-                );
-                console.log("res: ", response.data);
-                this.accessToken = response.data.jwtTokenDTO.accessToken;
-                this.refreshToken = response.data.jwtTokenDTO.refreshToken;
 
-                localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
-                localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
-            } catch (error) {
-                console.error("Error occurred: ", error);
-            }
+            const response = await axios.post(
+                'http://localhost:5261/api/Authentication/LoginViaGoogle',
+                JSON.stringify(userToken),
+                {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+            );
+            console.log("res: ", response.data);
+            this.accessToken = response.data.jwtTokenDTO.accessToken;
+            this.refreshToken = response.data.jwtTokenDTO.refreshToken;
+            this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
+
+            localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
+            localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+            localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
+
         },
         async loginWithFacebook(userToken: string) {
             console.log("token:: ", userToken);
@@ -124,9 +143,10 @@ export const useUserStore = defineStore({
                 console.log("res: ", response.data);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
-
+                this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
                 localStorage.setItem('accessToken', response.data.jwtTokenDTO.accessToken);
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
+                localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
             } catch (error) {
                 console.error("Error occurred: ", error);
             }
@@ -154,19 +174,31 @@ export const useUserStore = defineStore({
         },
         async logout() {
             try {
+                // Çerezleri silme işlemlerini buraya ekleyelim
+                this.clearCookies();
+        
+                // Diğer işlemler devam ediyor...
                 this.refreshToken = null;
                 this.accessToken = null;
                 this.accessTime = null;
-
+        
                 localStorage.removeItem('refreshToken');
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('accessTime');
-
-
+        
             } catch (error) {
                 console.error('Oturum kapatma hatası:', error);
                 throw new Error('Oturum kapatılamadı.');
             }
+        },
+        clearCookies() {
+            // Silinecek tüm çerezlerin adlarını buraya ekleyin
+            const cookiesToClear = ['role', 'userId', 'userName', 'userEmail', 'profileImageUrl'];
+        
+            // Her bir çerezi döngüyle temizleyelim
+            cookiesToClear.forEach(cookieName => {
+                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+            });
         },
         async fetchUserDoctor() {
             const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors', {
@@ -186,7 +218,6 @@ export const useUserStore = defineStore({
             })
             this.patients = response.data
         },
-
         async getCurrentUser() {
             try {
                 const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', {
@@ -195,19 +226,35 @@ export const useUserStore = defineStore({
                         'Content-Type': 'application/json'
                     }
                 });
-                this.currentUser = response.data
+        
+                // const encryptedUserId = Crypto.AES.encrypt(response.data.id.toString(), 'mySecretKey123').toString();
+                // setCookie('userId', encryptedUserId, 2);
+        
+                // const encryptedUserName = Crypto.AES.encrypt(`${response.data.name} ${response.data.surname}`, 'mySecretKey123').toString();
+                // setCookie('userName', encryptedUserName, 2);
+        
+                // const encryptedEmail = Crypto.AES.encrypt(response.data.email, 'mySecretKey123').toString();
+                // setCookie('userEmail', encryptedEmail, 2);
+        
+                // const encryptedProfileImageUrl = Crypto.AES.encrypt(response.data.profileImageUrl, 'mySecretKey123').toString();
+                // setCookie('profileImageUrl', encryptedProfileImageUrl, 2);
+        
+                this.currentUser = response.data;
+                console.log(this.currentUser);
                 const accessToken = localStorage.getItem('accessToken');
-
+        
                 if (accessToken) {
                     const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-
+        
                     const userRole = decodedToken.role as string | undefined;
-
+        
+                    const encryptedRole = Crypto.AES.encrypt(userRole, 'mySecretKey123').toString();
+                    setCookie('role', encryptedRole, 2);
+        
                     console.log('Kullanıcı rolü:', userRole);
                     if (userRole == "Admin") this.userRole = UserRole.Admin;
                     if (userRole == "Doctor") this.userRole = UserRole.Doctor;
                     if (userRole == "Patient") this.userRole = UserRole.Patient;
-
                 } else {
                     console.error('Access token bulunamadı veya null.');
                 }
@@ -216,6 +263,60 @@ export const useUserStore = defineStore({
                 throw new Error('Failed to fetch current user.');
             }
         },
+        async getCurrentUserCookie() {
+            const accessToken = localStorage.getItem('accessToken');
+        
+            if (accessToken) {
+                const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
+        
+                const userRole = decodedToken.role as string | undefined;
+        
+                const encryptedRole = Crypto.AES.encrypt(userRole, 'mySecretKey123').toString();
+                setCookie('role', encryptedRole, 2);
+        
+                console.log('Kullanıcı rolü:', userRole);
+                if (userRole == "Admin") this.userRole = UserRole.Admin;
+                if (userRole == "Doctor") this.userRole = UserRole.Doctor;
+                if (userRole == "Patient") this.userRole = UserRole.Patient;
+                const encryptedRole1 = getCookie('role');
+        
+                const bytes = Crypto.AES.decrypt(encryptedRole1, 'mySecretKey123');
+                const decryptedRole = bytes.toString(Crypto.enc.Utf8);
+        
+                console.log('Çözülen rol:', decryptedRole);
+        
+                const encryptedUserIdFromCookie = getCookie('userId');
+                const decryptedUserId = Crypto.AES.decrypt(encryptedUserIdFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
+        
+                const encryptedUserNameFromCookie = getCookie('userName');
+                const decryptedUserName = Crypto.AES.decrypt(encryptedUserNameFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
+        
+                console.log('Çözülen userId:', decryptedUserId);
+                console.log('Çözülen userName:', decryptedUserName);
+        
+                const encryptedEmailFromCookie = getCookie('userEmail');
+                const decryptedEmail = Crypto.AES.decrypt(encryptedEmailFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
+        
+                const encryptedProfileImageUrlFromCookie = getCookie('profileImageUrl');
+                const decryptedProfileImageUrl = Crypto.AES.decrypt(encryptedProfileImageUrlFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
+        
+                console.log('Çözülen userEmail:', decryptedEmail);
+                console.log('Çözülen profileImageUrl:', decryptedProfileImageUrl);
+        
+                const currentCookie = {
+                    role: decryptedRole,
+                    userId: decryptedUserId,
+                    userName: decryptedUserName,
+                    userEmail: decryptedEmail,
+                    profileImageUrl: decryptedProfileImageUrl
+                };
+        
+                this.currentUserCookie = currentCookie;
+            } else {
+                console.error('Access token bulunamadı veya null.');
+            }
+        },
+
         async getUserId(id: string) {
             try {
                 const response = await axios.get(`http://localhost:5261/api/User/GetUserById?userID=${id}`, {
@@ -228,19 +329,6 @@ export const useUserStore = defineStore({
             } catch (error) {
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');
-            }
-        },
-        async deleteUser(userId?: any) {
-            try {
-                await axios.delete('http://localhost:5261/api/User/DeleteUser', {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: JSON.stringify(userId)
-                });
-
-            } catch (error) {
-                console.error('Delete request failed:', error);
             }
         },
         async deleteCurrentUser() {

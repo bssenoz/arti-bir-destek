@@ -129,7 +129,7 @@ const formatDate = (date: Date) => {
             <v-card class="px-6 py-6 elevation-6">
               <h3 class="mb-4">{{ formatDate(date) }}</h3>
               <v-row align="center">
-                <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="12" md="4" lg="2">
+                <v-col v-for="(hour, hourIndex) in hours" :key="hourIndex" cols="6" md="3" lg="2">
                   <v-btn :color="selectedHours[index][hourIndex] ? 'primary' : 'grey200'" dense
                     @click="handleButtonClick(index, hourIndex)">
                     <span>{{ `${hour[0]}:00 - ${hour[1]}:00` }}</span>

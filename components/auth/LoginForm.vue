@@ -26,16 +26,19 @@ const emailRules = ref([
 
 const handleLoginSuccess = async (response: CredentialResponse) => {
   const { credential } = response;
-
-  try {
-    if (typeof credential === "string") {
-      await userStore.loginWithGoogle(credential);
-      router.push({ path: "/profile" });
-    } else {
-      throw new Error("Credential is undefined or not a string.");
+  if (typeof credential === "string") {
+    try {
+        await userStore.loginWithGoogle(credential);
+        router.push({ path: "/profile" });
+    } catch (error) {
+      Swal.fire({
+        title: "Hatalı Giriş!",
+        text: "Lütfen kaydınızın olduğundan emin olun.",
+        icon: "warning",
+        confirmButtonText: "Tamam",
+      });
     }
-  } catch (error) {
-    console.log(error);
+
   }
 };
 
@@ -169,7 +172,7 @@ const closeDialog = () => {
           {{ errorText }}
         </v-card-text>
         <v-card-text>
-          <img src="/images/backgrounds/error2.png" style="width: 50%" />
+  
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

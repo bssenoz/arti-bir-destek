@@ -14,7 +14,7 @@ const userStore = useUserStore();
 const meetStore = useMeetStore();
 
 onMounted(async () => {
-    await userStore.getCurrentUser();
+    // await userStore.getCurrentUser();
     meetStore.fetchPatientDoctors();
 });
 

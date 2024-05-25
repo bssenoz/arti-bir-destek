@@ -31,29 +31,25 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import jwt_decode from 'jwt-decode';
+import { getUserRoleFromToken } from '@/utils/role'; 
 
 const isAdmin = ref(false);
 const isPatient = ref(false);
 const isDoctor = ref(false);
 
-const accessToken = localStorage.getItem('accessToken');
+const userRole = getUserRoleFromToken(); 
 
-if (accessToken) {
-  const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-
-  const userRole = decodedToken.role as string | undefined;
-
+if (userRole) {
   console.log('Kullanıcı rolü:', userRole);
-  if (userRole == "Admin") isAdmin.value = true;
-  if (userRole == "Doctor") isDoctor.value = true;
-  if (userRole == "Patient") isPatient.value = true;
-
+  if (userRole === "Admin") isAdmin.value = true;
+  if (userRole === "Doctor") isDoctor.value = true;
+  if (userRole === "Patient") isPatient.value = true;
 } else {
   console.error('Access token bulunamadı veya null.');
 }
 
 </script>
+
 
 <style>
 .underline {

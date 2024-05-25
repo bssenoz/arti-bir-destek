@@ -112,16 +112,14 @@ const videoHeight = computed(() => {
 <template>
     <v-container class="mt-8" style="max-width: 1500px;">
         <v-row>
-            <v-col cols="10">
+            <v-col cols="12" lg="10">
                 <v-row>
                     <v-col>
-                        <div class="video-container">
-                            <video-player class="video-player vjs-big-play-centered" :src="video.url" crossorigin="anonymous" playsinline controls :volume="0.6"
+                            <video-player class="video-player vjs-big-play-centered player-big" :src="video.url" crossorigin="anonymous" playsinline controls :volume="0.6"
                                 :id="'player_1'" :playback-rates="[0.7, 1.0, 1.5, 2.0]" @mounted="handleMounted" @ready="handleEvent"
                                 @play="handlePlay" @pause="handlePause($event, video)" @ended="handleEvent" @loadeddata="handleEvent"
                                 @waiting="handleEvent" @playing="handleEvent" @canplay="handleEvent"
                                 @canplaythrough="handleEvent" @timeupdate="handleTimeUpdate" />
-                        </div>
                     </v-col>
                 </v-row>
                 <v-row>
@@ -130,17 +128,17 @@ const videoHeight = computed(() => {
                             <p class="text-h4">
                                 {{ video.title }}
                             </p>
-                            <p class="text-h5 font-weight-thin mt-2" v-html="video.description">
+                            <p class="text-h5 font-weight-thin mt-2 img-100" v-html="video.description">
                             </p>
                         </div>
                     </v-col>
                 </v-row>
 
             </v-col>
-            <v-col cols="2">
+            <v-col cols="12" lg="2">
                 <div v-for="(i, index) in shuffledVideos" class="mb-4">
                     <v-card @click="navigateToVideo(i.videoSlug)" elevation="2">
-                        <video-player class="video-player vjs-big-play-centered" :src="i.url" :height="200" crossorigin="anonymous" />
+                        <video-player class="video-player vjs-big-play-centered player-small" :src="i.url" :height="200" crossorigin="anonymous" />
                         <p class="px-2 py-2 text-h6 font-weight-thin ">{{ i.title }}</p>
                     </v-card>
                 </div>
@@ -166,5 +164,18 @@ const videoHeight = computed(() => {
 
 ::deep(.v-container) {
     padding-bottom: 0 !important;
+}
+
+.img-100 img{
+    width:100% !important;
+}
+.video-container{
+    width: 80%;
+}
+.player-big {
+    height: 80vh;
+}
+.player-small {
+    height: 20vh;
 }
 </style>

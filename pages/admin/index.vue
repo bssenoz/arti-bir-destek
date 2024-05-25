@@ -2,8 +2,11 @@
 import { ref } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Cards from "@/components/cards/Cards.vue";
+import { useUserStore } from '@/stores/user';
 
 const page = ref({ title: 'Admin Paneli' });
+const userStore = useUserStore();
+
 definePageMeta({
     layout: "default",
 });

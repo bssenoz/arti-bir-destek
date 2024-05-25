@@ -10,7 +10,8 @@ export interface UserType {
     reportPatient: any;
     reportDoctor: any
     allSchedule: any;
-    allTitle:any;
+    allTitle: any;
+    allUnConfirmed:any;
 }
 
 export const useAdminStore = defineStore({
@@ -23,7 +24,8 @@ export const useAdminStore = defineStore({
         reportPatient: [],
         reportDoctor: [],
         allSchedule: [],
-        allTitle: []
+        allTitle: [],
+        allUnConfirmed: []
     }),
     actions: {
 
@@ -137,7 +139,39 @@ export const useAdminStore = defineStore({
             } catch (error) {
                 console.error('Silme işlemi sırasında bir hata oluştu:', error);
             }
-        }
+        },
+        async fetchUnConfirmedDoctor() {
+           const response =  await axios.get('http://localhost:5261/api/Admin/GetAllUnConfirmedDoctor', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            this.allUnConfirmed = response.data;
+        },
+        async confirmDoctor(slug: string) {
+            await axios.patch(`http://localhost:5261/api/Admin/ConfirmDoctor?doctorUserName=${slug}`, null,{
+                 headers: {
+                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                     'Content-Type': 'application/json'
+                 },
+             })
+             this.fetchUnConfirmedDoctor()
+         },
+         async deleteUser(userId?: any) {
+            try {
+                await axios.delete('http://localhost:5261/api/Admin/DeleteUser', {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                    data: JSON.stringify(userId)
+                });
+
+            } catch (error) {
+                console.error('Delete request failed:', error);
+            }
+        },
         
     }
 });
