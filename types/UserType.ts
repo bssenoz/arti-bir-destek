@@ -53,3 +53,9 @@ export type UpdatePatient = {
     surname: string | null;
     phoneNumber: string | null;
 }
+
+export type ResetPassword = {
+    email: string | null;
+    newPassword: string | null;
+    confirmPassword: string | null;
+}
