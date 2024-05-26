@@ -16,12 +16,6 @@ definePageMeta({
         "
       >
         <div class="d-lg-flex justify-center">
-          <!-- <p
-            class="text-h1 font-mansalva position-absolute top-12"
-            style="color: #db2777"
-          >
-            Artı Bir Destek
-          </p> -->
           <img
             src="/images/backgrounds/welcome-bg-3.png"
             class="position-relative d-none d-md-flex h-100 mt-md-12 mt-xl-0 mt-xl-n16" style="width:600px"

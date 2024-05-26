@@ -414,6 +414,9 @@ export const useUserStore = defineStore({
         },
         async resetPassword(password: any, token: string) {
             await axios.post(`http://localhost:5261/api/Authentication/ResetPassword?token=${token}`,password)
+        },
+        async forgotPassword(email: string) {
+            await axios.post(`http://localhost:5261/api/Authentication/ForgotPassword?email=${email}`)
         }
     }
 });
