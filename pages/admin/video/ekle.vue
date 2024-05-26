@@ -25,8 +25,6 @@ const breadcrumbs = ref([
   },
 ]);
 
-const errorDialog = ref(false);
-const errorDialog2 = ref(false);
 const file = ref<File | string>("");
 
 definePageMeta({
@@ -131,29 +129,7 @@ const submitFile = () => {
       </div>
     </v-col>
 
-    <v-dialog v-model="errorDialog" max-width="500">
-      <v-card>
-        <v-card-title>Karakter Sınırı Aşıldı!</v-card-title>
-        <v-card-text>
-          Başlık en fazla 100 karakter olabilir. Lütfen kontrol ediniz.
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="errorDialog = false">Tamam</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
 
-    <v-dialog v-model="errorDialog2" max-width="500">
-      <v-card>
-        <v-card-title>HATA!</v-card-title>
-        <v-card-text>
-          Video yüklenemedi. Lütfen tekrar deneyiniz.
-        </v-card-text>
-        <v-card-actions>
-          <v-btn color="primary" @click="errorDialog2 = false">Tamam</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-row>
 </template>
 

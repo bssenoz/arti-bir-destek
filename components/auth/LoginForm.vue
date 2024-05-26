@@ -10,8 +10,6 @@ import {
 import Swal from "sweetalert2";
 import FacebookLoginButton from "./FacebookLoginButton.vue";
 const userStore = useUserStore();
-const dialogError = ref(false);
-const errorText = ref("");
 const router = useRouter();
 const checkbox = ref(false);
 const show2 = ref(false);
@@ -67,14 +65,10 @@ const login = async () => {
       else router.push({ path: "/profile" });
     }
   } catch (error) {
-    console.error("login error: ", error);
     if (error.response && error.response.status === 401) {
-      // Eğer hata 401 ise refreshToken kullanarak oturumu yenile
       await userStore.refreshAccessToken();
-      // Yenileme başarılıysa tekrar login işlemini yap
       await login();
     } else {
-      // errorText.value = error.message;
       Swal.fire({
         title: "Hatalı Giriş!",
         text: "Lütfen şifreni doğru girdiğinden emin ol.",
@@ -84,9 +78,7 @@ const login = async () => {
     }
   }
 };
-const closeDialog = () => {
-  dialogError.value = false;
-};
+
 </script>
 
 <template>
@@ -163,22 +155,6 @@ const closeDialog = () => {
       @click="login"
       >Giriş Yap</v-btn
     >
-    <v-dialog v-model="dialogError" width="500">
-      <v-card
-        title="Hata!"
-        class="d-flex justify-center text-center align-center"
-      >
-        <v-card-text>
-          {{ errorText }}
-        </v-card-text>
-        <v-card-text>
-  
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn text="Kapat" @click="closeDialog"></v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+
   </div>
 </template>

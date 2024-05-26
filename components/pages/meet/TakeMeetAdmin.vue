@@ -18,7 +18,6 @@ const range = ref([]);
 const selectedDay = ref('');
 const appointments = ref([]);
 const dialog = ref(false);
-const successDialog = ref(false);
 const activeAccordion = ref(null);
 const selectedAppointment = ref(null);
 const weeklyDates = ref([]);

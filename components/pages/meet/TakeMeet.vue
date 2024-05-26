@@ -97,21 +97,31 @@ const selectDay = (index) => {
   }
 };
 
-const confirmAppointment = (selectedAppointment: any) => {
+const confirmAppointment = async (selectedAppointment: any) => {
   console.log(selectedAppointment)
-  const newAppointment: MakeAppointmentType = {
-    doctorId: selectedAppointment.doctorId,
-    day: selectedAppointment.day,
-    timeRange: selectedAppointment.timeRange,
-  };
-  console.log(newAppointment)
-  meetStore.makeAppointment(newAppointment)
-  Swal.fire({
-    title: "Başarılı!",
-    text: "Randevu alındı.",
-    icon: "success",
-    confirmButtonText: "Tamam",
-  });
+  try {
+    const newAppointment: MakeAppointmentType = {
+      doctorId: selectedAppointment.doctorId,
+      day: selectedAppointment.day,
+      timeRange: selectedAppointment.timeRange,
+    };
+    console.log(newAppointment)
+    await meetStore.makeAppointment(newAppointment)
+    Swal.fire({
+      title: "Başarılı!",
+      text: "Randevu alındı.",
+      icon: "success",
+      confirmButtonText: "Tamam",
+    });
+
+  } catch(error) {
+    Swal.fire({
+      title: "Hata!",
+      text: "Randevu alınamadı.",
+      icon: "error",
+      confirmButtonText: "Tamam",
+    });
+  }
 };
 
 const toggleAccordion = (index) => {

@@ -6,10 +6,12 @@ import { useAdminStore } from "@/stores/admin";
 import Swal from "sweetalert2";
 const adminStore = useAdminStore();
 const userStore = useUserStore();
-
+const kvkkAccepted = ref(false);
+const kvkkAccepted2 = ref(false);
+const KVKKDialog = ref(false);
 const router = useRouter();
 const step = ref(1);
-const stepItem = ref(4);
+const stepItem = ref(5);
 const userType = ref("patient");
 const errorText = ref("");
 const password = ref("");
@@ -21,8 +23,6 @@ const firstName = ref("");
 const lastName = ref("");
 const show1 = ref(false);
 const show2 = ref(false);
-const dialogVisible = ref(false);
-const dialogError = ref(false);
 
 const isPasswordValid = computed(() => {
   return passwordRules.every((rule) => rule(password.value) === true);
@@ -35,7 +35,13 @@ const isPasswordConfirmValid = computed(() => {
 const isFormValid = computed(() => {
   return isPasswordValid.value && isPasswordConfirmValid.value;
 });
+const openKVKKDialog = () => {
+  KVKKDialog.value = true
+};
 
+const isKvkk = computed(() => {
+  return kvkkAccepted.value && kvkkAccepted2.value;
+})
 const passwordRules = [
   (v: string) => !!v || "Şifre gerekli!",
   (v: string) => v.length >= 6 || "Şifre en az 6 karakter olmalıdır!",
@@ -66,8 +72,8 @@ const filterNumbers = (event: Event) => {
   phoneNumber.value = input.value;
 };
 const selectUserType = (type: string) => {
-  if (type === "patient") stepItem.value = 4;
-  if (type === "doctor") stepItem.value = 4;
+  if (type === "patient") stepItem.value = 5;
+  if (type === "doctor") stepItem.value = 5;
   userType.value = type;
 };
 
@@ -127,11 +133,11 @@ const register = async () => {
     errorText.value = error.message;
 
     Swal.fire({
-        title: "Hata!",
-        text: "Kayıt oluşturulamadı!",
-        icon: "warning",
-        confirmButtonText: "Tamam",
-      });
+      title: "Hata!",
+      text: "Kayıt oluşturulamadı!",
+      icon: "warning",
+      confirmButtonText: "Tamam",
+    });
   }
 };
 const validateInputs = computed(() => {
@@ -162,14 +168,6 @@ const stepperProgress = computed(() => {
   return `${(100 / (stepItem.value - 1)) * (step.value - 1)}%`;
 });
 
-const closeDialogAndRedirect = () => {
-  dialogVisible.value = false;
-  router.push({ path: "/giris-yap" });
-};
-
-const closeDialog = () => {
-  dialogError.value = false;
-};
 onMounted(() => {
   adminStore.fetchTitle();
 });
@@ -190,24 +188,14 @@ const allTitleOptions = computed(() => {
   <div class="wrapper-stepper text-start">
     <div class="stepper">
       <div class="stepper-progress">
-        <div
-          class="stepper-progress-bar"
-          :style="'width:' + stepperProgress"
-        ></div>
+        <div class="stepper-progress-bar" :style="'width:' + stepperProgress"></div>
       </div>
 
-      <div
-        class="stepper-item"
-        :class="{ current: step == item, success: step > item }"
-        v-for="item in stepItem"
-        :key="item"
-      >
+      <div class="stepper-item" :class="{ current: step == item, success: step > item }" v-for="item in stepItem"
+        :key="item">
         <div class="stepper-item-counter">
-          <img
-            class="icon-success"
-            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png"
-            alt=""
-          />
+          <img class="icon-success"
+            src="https://www.seekpng.com/png/full/1-10353_check-mark-green-png-green-check-mark-svg.png" alt="" />
           <span class="number">{{ item }}</span>
         </div>
         <span class="stepper-item-title">Adım {{ item }}</span>
@@ -217,193 +205,180 @@ const allTitleOptions = computed(() => {
     <div class="stepper-pane" v-if="step == 1">
       <v-row class="d-flex my-2 mx-2">
         <v-col cols="12" sm="6">
-          <v-btn
-            :class="{ 'selected-button': userType === 'patient' }"
-            variant="outlined"
-            size="large"
-            class="border text-subtitle-1"
-            block
-            @click="selectUserType('patient')"
-          >
+          <v-btn :class="{ 'selected-button': userType === 'patient' }" variant="outlined" size="large"
+            class="border text-subtitle-1" block @click="selectUserType('patient')">
             <span class="d-sm-flex mr-1">Hasta Kaydı</span>
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6">
-          <v-btn
-            :class="{ 'selected-button': userType === 'doctor' }"
-            variant="outlined"
-            size="large"
-            class="border text-subtitle-1"
-            block
-            @click="selectUserType('doctor')"
-          >
+          <v-btn :class="{ 'selected-button': userType === 'doctor' }" variant="outlined" size="large"
+            class="border text-subtitle-1" block @click="selectUserType('doctor')">
             <span class="d-sm-flex mr-1">Danışman Kaydı</span>
           </v-btn>
         </v-col>
       </v-row>
     </div>
-    <div
-      class="stepper-pane"
-      v-if="
-        (userType === 'doctor' && step === 2) ||
-        (userType === 'patient' && step === 2)
-      "
-    >
+    <div class="stepper-pane" v-if="
+      (userType === 'doctor' && step === 2) ||
+      (userType === 'patient' && step === 2)
+    ">
       <v-row>
         <v-col cols="12" v-if="userType === 'doctor'">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Ünvan</v-label
-          >
-          <v-select
-            v-model="title"
-            :items="allTitleOptions"
-            item-value="id"
-            item-text="title"
-            outlined
-          ></v-select>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Ünvan</v-label>
+          <v-select v-model="title" :items="allTitleOptions" item-value="id" item-text="title" outlined></v-select>
         </v-col>
         <v-col cols="12">
           <v-label class="text-subtitle-1 font-weight-medium pb-2">Ad</v-label>
-          <VTextField
-            v-model="firstName"
-            :rules="nameRules"
-            required
-          ></VTextField>
+          <VTextField v-model="firstName" :rules="nameRules" required></VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Soyad</v-label
-          >
-          <VTextField
-            v-model="lastName"
-            :rules="surnameRules"
-            required
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Soyad</v-label>
+          <VTextField v-model="lastName" :rules="surnameRules" required></VTextField>
         </v-col>
       </v-row>
     </div>
-    <div
-      class="stepper-pane"
-      v-if="
-        (userType === 'doctor' && step === 3) ||
-        (userType === 'patient' && step === 3)
-      "
-    >
+    <div class="stepper-pane" v-if="
+      (userType === 'doctor' && step === 3) ||
+      (userType === 'patient' && step === 3)
+    ">
       <v-row>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Email</v-label
-          >
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Email</v-label>
           <VTextField v-model="email" :rules="emailRules" required></VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Telefon Numarası</v-label
-          >
-          <VTextField
-            v-model="phoneNumber"
-            :rules="phoneRules"
-            maxlength="11"
-            @input="filterNumbers"
-            required
-            placeholder="05........."
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Telefon Numarası</v-label>
+          <VTextField v-model="phoneNumber" :rules="phoneRules" maxlength="11" @input="filterNumbers" required
+            placeholder="05........."></VTextField>
         </v-col>
       </v-row>
     </div>
-    <div
-      class="stepper-pane"
-      v-if="
-        (userType === 'doctor' && step === 4) ||
-        (userType === 'patient' && step === 4)
-      "
-    >
+    <div class="stepper-pane" v-if="
+      (userType === 'doctor' && step === 4) ||
+      (userType === 'patient' && step === 4)
+    ">
       <v-row>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Şifre</v-label
-          >
-          <VTextField
-            v-model="password"
-            :counter="6"
-            :rules="passwordRules"
-            required
-            variant="outlined"
-            hide-details="auto"
-            :type="show1 ? 'text' : 'password'"
-            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append-inner="show1 = !show1"
-            color="primary"
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre</v-label>
+          <VTextField v-model="password" :counter="6" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show1 ? 'text' : 'password'"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show1 = !show1" color="primary">
+          </VTextField>
         </v-col>
         <v-col cols="12">
-          <v-label class="text-subtitle-1 font-weight-medium pb-2"
-            >Şifre Tekrar</v-label
-          >
-          <VTextField
-            v-model="passwordConfirm"
-            :counter="6"
-            :rules="passwordRules"
-            required
-            variant="outlined"
-            hide-details="auto"
-            :type="show2 ? 'text' : 'password'"
-            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append-inner="show2 = !show2"
-            color="primary"
-          ></VTextField>
+          <v-label class="text-subtitle-1 font-weight-medium pb-2">Şifre Tekrar</v-label>
+          <VTextField v-model="passwordConfirm" :counter="6" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show2 ? 'text' : 'password'"
+            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show2 = !show2" color="primary">
+          </VTextField>
         </v-col>
-        <div v-if="!isFormValid && password && passwordConfirm" class="text-h6 text-error ml-4">Şifreler eşleşmiyor!</div>
+        <div v-if="!isFormValid && password && passwordConfirm" class="text-h6 text-error ml-4">Şifreler eşleşmiyor!
+        </div>
       </v-row>
     </div>
-
+    <div class="stepper-pane" v-if="step === 5">
+      <div>
+        <p>
+          <input type="checkbox" v-model="kvkkAccepted" />
+          <span class="ml-2">
+            <span class="text-primary cursor-pointer" @click="openKVKKDialog">KVKK Aydınlatma Metni</span>'ni okudum,
+            onaylıyorum.
+          </span>
+        </p>
+        <p class="mt-2">
+          <input type="checkbox" v-model="kvkkAccepted2" />
+          <span class="ml-2">
+            Bu sitede yer alan bilgi/kayıtların <span class="font-weight-bold">yasaların öngördüğü şekilde</span>
+            araştırmacılar tarafından toplanarak <span class="font-weight-bold">bilimsel amaçlı kullanılmasını</span>
+            kabul ediyorum.
+          </span>
+        </p>
+      </div>
+    </div>
     <div class="controls">
       <button class="btn" @click="step--" :disabled="step == 1">Geri</button>
-      <button
-        class="btn btn--pink-1"
-        @click="nextStep"
-        :disabled="
-          !validateInputs ||
-          (step === 3 && phoneNumber.length !== 11) ||
-          step === stepItem ||
-          (step === 3 && !isEmailValid)
-        "
-        v-if="step !== stepItem"
-      >
+      <button class="btn btn--pink-1" @click="nextStep" :disabled="!validateInputs ||
+        (step === 3 && phoneNumber.length !== 11) || step === stepItem ||  (step === 3 && !isEmailValid) ||(step === 4  && !isFormValid)" v-if="step !== stepItem">
         İleri
       </button>
-
-      <button
-        class="btn btn--pink-1 elevation-15"
-        v-if="step == stepItem"
-        @click="register"
-        :disabled="!isFormValid"
-      >
+      <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem" @click="register" :disabled="!isKvkk">
         KAYIT OL
       </button>
 
-      <v-dialog v-model="dialogVisible" width="500">
-        <v-card title="Kayıt Başarılı">
-          <v-card-text> Kaydınız başarıyla tamamlandı. </v-card-text>
-
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text="Kapat" @click="closeDialogAndRedirect"></v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="dialogError" width="500">
-        <v-card title="Hata">
+      <v-dialog v-model="KVKKDialog" width="600">
+        <v-card title="Kişisel Verilerin Korunması Hakkında Bilgilendirme Metni">
           <v-card-text>
-            {{ errorText }}
+            <p>Sayın Ziyaretçi,</p>
+            <p>
+              Web sitemizi ziyaret ettiğiniz için teşekkür ederiz. Bizim için kişisel verilerinizi korumak ve
+              gizliliğinizi sağlamak son derece önemlidir. Bu nedenle, Kişisel Verilerin Korunması Kanunu (KVKK)
+              çerçevesinde, kişisel verilerinizin işlenmesi ve korunması ile ilgili olarak sizleri bilgilendirmek
+              istiyoruz.
+            </p>
+            <p>1. Veri Sorumlusu</p>
+            <p>
+              Artı Bir Destek Sistemi olarak, kişisel verilerinizin işlenmesinden sorumluyuz ve bu verilerin yasalara
+              uygun bir
+              şekilde işlenmesini sağlamak için gerekli önlemleri almaktayız.
+            </p>
+            <p>2. Kişisel Verilerin İşlenme Amaçları</p>
+            <p>Kişisel verileriniz, aşağıdaki amaçlarla işlenebilir:</p>
+            <li>Web sitemizi kullanmanızı sağlamak ve sunulan hizmetleri iyileştirmek.</li>
+            <li>Size özel teklifler ve bilgiler sunmak.</li>
+            <li>Taleplerinizi işlemek ve size destek sağlamak.</li>
+            <li>İlgili yasal düzenlemelere uyum sağlamak.</li>
+            <p>3. Toplanan Kişisel Veriler</p>
+            <p> Web sitemizi ziyaret ettiğinizde, aşağıdaki kişisel verileriniz toplanabilir:</p>
+            <li>Adınız, soyadınız</li>
+            <li>E-posta adresiniz</li>
+            <li>İletişim bilgileriniz</li>
+            <li>İnternet Protokol (IP) adresiniz</li>
+            <p>Kullanıcı etkileşim verileri</p>
+            <p>4. Kişisel Verilerin İşlenmesi ve Korunması</p>
+            <p>
+              Kişisel verileriniz, yalnızca yasalara uygun bir şekilde işlenecek ve gerekli güvenlik önlemleri alınarak
+              korunacaktır. Verilerinizin izinsiz erişim, değiştirme veya silinmesini önlemek için teknik ve
+              organizasyonel önlemler alıyoruz.
+            </p>
+            <p>5. Kişisel Verilerin İlgili Taraflarla Paylaşılması</p>
+            <p>
+              Kişisel verileriniz, yasal gereklilikler ve işbu metinde belirtilen amaçlar doğrultusunda, hizmet
+              sağlayıcılarımız ve iş ortaklarımızla paylaşılabilecektir. Ancak, kişisel verileriniz üçüncü taraflarla
+              paylaşılmadan önce gizlilik politikamız gereğince korunacaktır.
+            </p>
+            <p>
+              6. Kişisel Veri Sahiplerinin Hakları
+            </p>
+            <p>
+              KVKK kapsamında, kişisel veri sahiplerine bazı haklar tanınmaktadır. Bu haklar arasında, kişisel
+              verilerinize erişim, düzeltme, silme ve işleme itiraz etme hakkı bulunmaktadır. Bu haklarınızı kullanmak
+              istemeniz durumunda, lütfen bize ulaşın.
+            </p>
+            <p> 7. Değişiklikler</p>
+            <p>
+              Bu metin, yasal düzenlemelerdeki değişikliklere uygun olarak güncellenebilir. Güncellenmiş bir sürüm
+              yayınlandığında, web sitemizde yayınlayarak sizleri bilgilendireceğiz.
+            </p>
+            <p>
+              Herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçin.
+            </p>
+            <p>
+              Saygılarımızla,
+            </p>
+            <p>
+              Artı Bir Destek
+            </p>
+
+
           </v-card-text>
 
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn text="Kapat" @click="closeDialog"></v-btn>
+            <v-btn text="Kapat" @click="KVKKDialog = false"></v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
+
     </div>
   </div>
 </template>
@@ -590,5 +565,9 @@ $transiton: all 500ms ease;
     color: #fff;
     margin-left: auto;
   }
+}
+
+p {
+  margin-top: 1rem;
 }
 </style>
