@@ -44,16 +44,16 @@ export const useMeetStore = defineStore({
             }
         },
         async postCalendar(time: any, data: any) {
-    
-                await axios.post('http://localhost:5261/api/DoctorSchedule/AddDoctorSchedule', time, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                        'Content-Type': 'application/json'
-                    },
-                })
-                // this.addAppointmentSchedule(data)
 
-      
+            await axios.post('http://localhost:5261/api/DoctorSchedule/AddDoctorSchedule', time, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            // this.addAppointmentSchedule(data)
+
+
         },
         async updateCalendar(time: any) {
             await axios.put('http://localhost:5261/api/DoctorSchedule/UpdateDoctorSchedule', time, {
@@ -87,7 +87,7 @@ export const useMeetStore = defineStore({
                     },
                 });
                 this.allSchedule = response.data;
-                console.log("al: ",this.allSchedule)
+                console.log("al: ", this.allSchedule)
             } catch (error) {
                 console.error(error);
                 this.allSchedule = '';
@@ -96,7 +96,7 @@ export const useMeetStore = defineStore({
         async makeAppointment(newAppointment: any) {
             try {
                 console.log(newAppointment)
-                const response = await axios.patch('http://localhost:5261/api/PatientAppointment/MakeAppointment',newAppointment, {
+                const response = await axios.patch('http://localhost:5261/api/PatientAppointment/MakeAppointment', newAppointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -132,7 +132,7 @@ export const useMeetStore = defineStore({
                     },
                 });
                 this.doctorAppointment = response.data.reverse()
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         },
@@ -145,7 +145,7 @@ export const useMeetStore = defineStore({
                     },
                 });
                 this.allPatients = response.data.reverse()
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         },
@@ -160,8 +160,8 @@ export const useMeetStore = defineStore({
                 response.data[0].appointmentStatistics.reverse()
                 this.userReport = response.data;
 
-            } catch(error) {
-                this.userReport =  ""
+            } catch (error) {
+                this.userReport = ""
                 this.getUserSlug(userSlug)
                 console.log(error)
             }
@@ -181,20 +181,20 @@ export const useMeetStore = defineStore({
                 this.getUser(patientSlug)
             }
         },
-        async addAppointmentReport(report:any) {
+        async addAppointmentReport(report: any) {
             try {
-                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics',report, {
+                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics', report, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     }
                 });
-                return response.data; 
-            } catch(error) {
+                return response.data;
+            } catch (error) {
                 throw error;
             }
         },
-        
+
         async getUserSlug(userSlug: string) {
             const response = await axios.get(`http://localhost:5261/api/User/GetUserBySlug?userSlug=${userSlug}`, {
                 headers: {
@@ -213,7 +213,7 @@ export const useMeetStore = defineStore({
             })
             this.patientDoctors = response.data;
         },
-        async cancelPatientAppointment(appointment:any) {
+        async cancelPatientAppointment(appointment: any) {
             try {
                 await axios.patch('http://localhost:5261/api/PatientAppointment/CancelPatientAppointment', appointment, {
                     headers: {
@@ -221,11 +221,11 @@ export const useMeetStore = defineStore({
                         'Content-Type': 'application/json'
                     }
                 })
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
         },
-        async cancelDoctorAppointment(appointment:any) {
+        async cancelDoctorAppointment(appointment: any) {
             try {
                 await axios.patch('http://localhost:5261/api/DoctorAppointment/CancelDoctorAppointment', appointment, {
                     headers: {
@@ -233,9 +233,17 @@ export const useMeetStore = defineStore({
                         'Content-Type': 'application/json'
                     }
                 })
-            } catch(error) {
+            } catch (error) {
                 console.log(error)
             }
+        },
+        async createAppointmentByDoctor(appointment: any) {
+            await axios.patch('http://localhost:5261/api/DoctorAppointment/CreateAppointmentForPatient', appointment, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                }
+            })
         }
     }
 });

@@ -30,3 +30,9 @@ export type CancelDoctorAppointment = {
     day: string;
     timeRange: number;
 }
+
+export type CreateAppointmentByDoctor = {
+    patientUserName: string,
+    day: string,
+    timeRange: number
+}

@@ -28,7 +28,6 @@ const filteredList = computed(() => {
 });
 
 const deleteItem = async (item: any) => {
-    console.log("iteee: ", item);
     const result = await Swal.fire({
         icon: 'question',
         title: 'Silme',
