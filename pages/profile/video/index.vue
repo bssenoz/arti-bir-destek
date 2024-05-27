@@ -82,7 +82,7 @@ export default defineComponent({
         </v-row>
 
         <v-row class="mt-8">
-          <v-col cols="12" md="6" lg="4" v-for="(video, index) in filteredVideos" :key="index">
+          <v-col cols="12" sm="6" md="4" v-for="(video, index) in filteredVideos" :key="index">
             <v-card class="mb-6" elevation="2">
               <div @click="navigateToVideo(video.videoSlug)" class="cursor-pointer">
                 <video-player class="video-player vjs-big-play-centered" :src="video.url" :id="'player_' + index"
@@ -105,6 +105,10 @@ export default defineComponent({
   width: 100%;
 }
 
+::v-deep(.video-js .vjs-tech) {
+  object-fit: cover;
+}
+
 .background-image {
   // background-image: url("/images/backgrounds/Cover1.png");
   background-size: cover;
@@ -113,5 +117,9 @@ export default defineComponent({
 
 ::deep(.v-container) {
   padding-bottom: 0 !important;
+}
+
+.v-card:hover {
+  box-shadow: 0px 7px 8px -4px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 12px 17px 2px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 5px 22px 4px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12)) !important;
 }
 </style>
