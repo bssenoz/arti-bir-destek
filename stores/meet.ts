@@ -94,8 +94,7 @@ export const useMeetStore = defineStore({
             }
         },
         async makeAppointment(newAppointment: any) {
-            try {
-                console.log(newAppointment)
+
                 const response = await axios.patch('http://localhost:5261/api/PatientAppointment/MakeAppointment', newAppointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -103,9 +102,7 @@ export const useMeetStore = defineStore({
                     },
                 });
                 this.getAllAppointmentSchedule(newAppointment.day)
-            } catch (error) {
-                console.error(error);
-            }
+    
         },
         async fetchPatientAppointments() {
             try {
@@ -178,7 +175,7 @@ export const useMeetStore = defineStore({
 
             } catch {
                 this.pastAppointment = ""
-                this.getUser(patientSlug)
+                this.getUserSlug(patientSlug)
             }
         },
         async addAppointmentReport(report: any) {
@@ -214,28 +211,22 @@ export const useMeetStore = defineStore({
             this.patientDoctors = response.data;
         },
         async cancelPatientAppointment(appointment: any) {
-            try {
                 await axios.patch('http://localhost:5261/api/PatientAppointment/CancelPatientAppointment', appointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     }
                 })
-            } catch (error) {
-                console.log(error)
-            }
         },
         async cancelDoctorAppointment(appointment: any) {
-            try {
+          
                 await axios.patch('http://localhost:5261/api/DoctorAppointment/CancelDoctorAppointment', appointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     }
                 })
-            } catch (error) {
-                console.log(error)
-            }
+        
         },
         async createAppointmentByDoctor(appointment: any) {
             await axios.patch('http://localhost:5261/api/DoctorAppointment/CreateAppointmentForPatient', appointment, {

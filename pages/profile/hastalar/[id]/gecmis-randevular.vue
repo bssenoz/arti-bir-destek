@@ -7,6 +7,7 @@ import { NoteIcon } from 'vue-tabler-icons';
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import { AppointmentReportType } from '@/types/MeetType';
+import Swal from 'sweetalert2';
 
 const meetStore = useMeetStore();
 
@@ -29,10 +30,10 @@ const showDialog = (isSuccess, message = '') => {
     dialogVisible.value = true;
 };
 
-onMounted(() => {
+onMounted(async () => {
     const { id: routeId } = useRoute().params;
     id.value = routeId;
-    meetStore.fetchPastDoctorAppointment(routeId);
+    await meetStore.fetchPastDoctorAppointment(routeId);
 });
 
 const pastAppointment: any = computed(() => {
@@ -59,11 +60,19 @@ const saveReport = async (appointmentID: any, patientID: any) => {
             patientId: patientID
         };
         await meetStore.addAppointmentReport(newReport);
-        showDialog(true);
-        dialogReport.value = false;
+        Swal.fire({
+            title: "Başarılı!",
+            text: "Rapor eklendi",
+            icon: "success",
+            confirmButtonText: "Tamam",
+        });
     } catch (error) {
-        console.log(error);
-        showDialog(false, 'İşlem başarısız oldu. Lütfen tekrar deneyin.');
+        Swal.fire({
+            title: "Hata!",
+            text: "Rapor ekleme işlemi başarısız oldu.",
+            icon: "warning",
+            confirmButtonText: "Tamam",
+        });
     }
 };
 
@@ -181,7 +190,7 @@ const saveReport = async (appointmentID: any, patientID: any) => {
                     </v-col>
                 </v-row>
             </v-col>
-            <v-dialog v-model="dialogVisible" max-width="400">
+            <!-- <v-dialog v-model="dialogVisible" max-width="400">
                 <v-card>
                     <v-card-title>{{ success ? 'Başarılı' : 'Hata' }}</v-card-title>
                     <v-card-text>
@@ -191,15 +200,13 @@ const saveReport = async (appointmentID: any, patientID: any) => {
                         <v-btn color="primary" @click="dialogVisible = false">Tamam</v-btn>
                     </v-card-actions>
                 </v-card>
-            </v-dialog>
+            </v-dialog> -->
         </v-row>
     </v-container>
 </template>
 
 
 <style scoped>
-
-
 .note:hover {
     transform: scale(1.2);
     transition: transform 2s all;

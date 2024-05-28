@@ -186,7 +186,7 @@ const handlePlay = (event: Event) => {
 }
 
 .player-big {
-    height: 80vh;
+    height: 75vh;
 }
 
 .player-small {

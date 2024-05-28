@@ -2,7 +2,8 @@
 const props = defineProps({
     title: String,
     isUpcoming: Boolean, 
-    isPast: Boolean 
+    isPast: Boolean,
+    isActive: Boolean,
 });
 </script>
 
@@ -11,7 +12,8 @@ const props = defineProps({
         <v-card-item class="py-4 px-6">
             <div class="d-sm-flex align-center justify-space-between">
                 <v-card-title class="text-h5">
-                    <v-badge v-if="isUpcoming" class="d-block" dot color="success"> </v-badge>
+                    <v-badge v-if="isUpcoming" class="d-block" dot color="secondary"> </v-badge>
+                    <v-badge v-else-if="isActive" class="d-block" dot color="success"> </v-badge>
                     <v-badge v-else-if="isPast" class="d-block" dot color="error"> </v-badge>
                     <span class="ml-4">{{ title }}</span> 
                 </v-card-title>

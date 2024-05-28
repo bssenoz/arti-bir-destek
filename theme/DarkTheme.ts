@@ -29,7 +29,7 @@ const DARK_BLUE_THEME: ThemeTypes = {
         surface: '#2a3447',
         'on-surface-variant': '#2a3447',
         grey100: '#333F55',
-        grey200: '#465670'
+        grey200: '#465670',
     }
 };
 

@@ -5,7 +5,8 @@ import {
     UserCheckIcon,
     PercentageIcon,
     CalendarTimeIcon,
-    Message2Icon
+    Message2Icon,
+    BookIcon
 } from 'vue-tabler-icons';
 
 export interface Menu {
@@ -46,6 +47,11 @@ const horizontalItemsAdmin: Menu[] = [
         title: 'Danışman Ünvanları',
         icon: UserCheckIcon,
         to: '/admin/unvan',
+    },
+    {
+        title: 'Kullanım Kılavuzu',
+        icon: BookIcon,
+        to: '/admin/kilavuz',
     },
 ];
 

@@ -44,7 +44,7 @@ watch(appointments, (newAppointments) => {
                 },
                 dates: appointmentDateTime,
                 popover: {
-                    label: `${i.doctorName} ${i.doctorSurname}, ${i.timeRange}.00`,
+                    label: `${i.doctorTitle} ${i.doctorName} ${i.doctorSurname}, ${i.timeRange}.00`,
                 },
             });
         });
@@ -76,6 +76,29 @@ const isPastAppointment = (date: string | number | Date, timeRange: number) => {
     appointmentDateTime.setHours(timeRange, 0, 0, 0);
     const now = new Date();
     return appointmentDateTime < now;
+};
+
+const isAppointmentTime = (date: string | number | Date, timeRange: number) => {
+    const appointmentDateTime = new Date(date);
+    if (typeof date === 'string') {
+        const [day, month, year] = date.split('.').map(Number);
+        appointmentDateTime.setFullYear(year, month - 1, day);
+    }
+    const now = new Date();
+    const appointmentHour = appointmentDateTime.getHours();
+    return appointmentDateTime.toDateString() === now.toDateString() && appointmentHour === timeRange;
+};
+const isCurrentAppointment = (date: string | number | Date, timeRange: number) => {
+    const appointmentDateTime = new Date(date);
+    if (typeof date === 'string') {
+        const [day, month, year] = date.split('.').map(Number);
+        appointmentDateTime.setFullYear(year, month - 1, day);
+    }
+    const now = new Date();
+    const appointmentHour = timeRange; 
+    const appointmentEndHour = appointmentHour + 1;
+    return appointmentDateTime.toDateString() === now.toDateString() &&
+        now.getHours() >= appointmentHour && now.getHours() < appointmentEndHour;
 };
 
 const getCardTitle = (date: string | number | Date, timeRange: number) => {
@@ -112,7 +135,7 @@ const cancelAppointment = (i: any) => {
                     'Randevunuz iptal edildi.',
                     'success'
                 );
-           
+
             } catch (error) {
                 Swal.fire(
                     'Hata!',
@@ -172,14 +195,19 @@ const cancelAppointment = (i: any) => {
                         <div v-for="(i, index) in appointment.appointments" :key="index">
                             <UiParentCard :title="getCardTitle(i.day, i.timeRange)"
                                 :isUpcoming="isAppointmentSoon(i.day, i.timeRange)"
-                                :isPast="isPastAppointment(i.day, i.timeRange)" class="mt-2">
+                                :isPast="isPastAppointment(i.day, i.timeRange)"
+                                :isActive="isCurrentAppointment(i.day, i.timeRange)"
+                                 class="mt-2">
                                 <div class="text-h6">Tarih: <span class="font-weight-thin">{{ i.day }}</span></div>
                                 <div class="text-h6 mt-1">Saat: <span class="font-weight-thin">{{ i.timeRange
                                         }}.00</span></div>
-                                <div class="text-h6 mt-1">Doktor: <span class="font-weight-thin">{{ i.doctorName }} {{
+                                <div class="text-h6 mt-1">Danışman: <span class="font-weight-thin">{{i.doctorTitle}} {{ i.doctorName }} {{
                                     i.doctorSurname }}</span></div>
                                 <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
-                                    :disabled="isPastAppointment(i.day, i.timeRange)">Randevuya Katıl</v-btn>
+                                    :disabled="!isAppointmentTime(i.day, i.timeRange) || isPastAppointment(i.day, i.timeRange)">
+                                    Randevuya Katıl
+                                </v-btn>
+
                                 <v-btn target="_blank" color="warning" class="mt-3 ml-4"
                                     :class="{ 'd-none': isPastAppointment(i.day, i.timeRange) }"
                                     @click="cancelAppointment(i)">İptal Et</v-btn>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import { useMeetStore } from '@/stores/meet';
 import { useUserStore } from '@/stores/user';
 import 'v-calendar/dist/style.css';
@@ -60,9 +60,9 @@ const isAppointmentSoon = (date: string | number | Date, timeRange: number) => {
     }
     appointmentDateTime.setHours(timeRange, 0, 0, 0);
     const now = new Date();
-    const oneDay = 24 * 60 * 60 * 1000;
+    const oneHour = 60 * 60 * 1000;
     const timeDiff = appointmentDateTime.getTime() - now.getTime();
-    return timeDiff > 0 && timeDiff < oneDay;
+    return timeDiff > 0 && timeDiff < oneHour;
 };
 
 const isPastAppointment = (date: string | number | Date, timeRange: number) => {
@@ -75,10 +75,24 @@ const isPastAppointment = (date: string | number | Date, timeRange: number) => {
     const now = new Date();
     return appointmentDateTime < now;
 };
+const isCurrentAppointment = (date: string | number | Date, timeRange: number) => {
+    const appointmentDateTime = new Date(date);
+    if (typeof date === 'string') {
+        const [day, month, year] = date.split('.').map(Number);
+        appointmentDateTime.setFullYear(year, month - 1, day);
+    }
+    const now = new Date();
+    const appointmentHour = timeRange; 
+    const appointmentEndHour = appointmentHour + 1;
+    return appointmentDateTime.toDateString() === now.toDateString() &&
+        now.getHours() >= appointmentHour && now.getHours() < appointmentEndHour;
+};
 
 const getCardTitle = (date: string | number | Date, timeRange: number) => {
     if (isAppointmentSoon(date, timeRange)) {
         return 'Yaklaşan Randevu';
+    } else if (isCurrentAppointment(date, timeRange)) {
+        return 'Randevu Zamanı !';
     } else if (isPastAppointment(date, timeRange)) {
         return 'Geçmiş Randevu';
     } else {
@@ -86,30 +100,35 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
     }
 };
 
-const cancelAppointment = (i: any) => {
-    Swal.fire({
-        title: 'Randevu İptali',
-        text: 'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Evet, İptal Et',
-        cancelButtonText: 'Vazgeç'
-    }).then((result) => {
+const cancelAppointment = async (i: any) => {
+    try {
+        const result = await Swal.fire({
+            title: 'Randevu İptali',
+            text: 'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, İptal Et',
+            cancelButtonText: 'Vazgeç'
+        });
+
         if (result.isConfirmed) {
+            const cancelInfo: CancelDoctorAppointment = {
+                day: i.day,
+                timeRange: i.timeRange,
+                doctorId: i.doctorId,
+            };
+
             try {
-                const cancelInfo: CancelDoctorAppointment = {
-                    day: i.day,
-                    timeRange: i.timeRange,
-                    doctorId: i.doctorId,
-                }
-                meetStore.cancelDoctorAppointment(cancelInfo)
+                await meetStore.cancelDoctorAppointment(cancelInfo);
+
                 Swal.fire(
                     'Başarılı!',
                     'Randevunuz iptal edildi.',
                     'success'
                 );
+
             } catch (error) {
                 Swal.fire(
                     'Hata!',
@@ -118,8 +137,14 @@ const cancelAppointment = (i: any) => {
                 );
             }
         }
-    });
-}
+    } catch (error) {
+        Swal.fire(
+            'Hata!',
+            'Bir hata oluştu. Randevunuz iptal edilemedi. Lütfen tekrar deneyiniz.',
+            'error'
+        );
+    }
+};
 
 </script>
 
@@ -167,6 +192,7 @@ const cancelAppointment = (i: any) => {
                             <UiParentCard :title="getCardTitle(appointment.appointmentDay, i.appointmentTimeRange)"
                                 :isUpcoming="isAppointmentSoon(appointment.appointmentDay, i.appointmentTimeRange)"
                                 :isPast="isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange)"
+                                :isActive="isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange)"
                                 class="mt-2">
                                 <div class="text-h6">Tarih: <span class="font-weight-thin">{{ appointment.appointmentDay
                                         }}</span></div>
@@ -174,12 +200,26 @@ const cancelAppointment = (i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Hasta: <span class="font-weight-thin">{{ i.patientName }} {{
                                     i.patientSurname }}</span></div>
-                                <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
-                                    :disabled="isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange)">Randevuya
-                                    Katıl</v-btn>
-                                <v-btn :href="i.appointmentURL" target="_blank" color="warning" class="mt-3 ml-4"
+                                <v-btn
+                                    :href="i.appointmentURL"
+                                    target="_blank"
+                                    color="primary"
+                                    class="mt-3"
+                                    :disabled="isCurrentAppointment(i.day, i.timeRange)"
+                                >
+                                    Randevuya Katıl
+                                </v-btn>
+
+                                <v-btn
+                                    :href="i.appointmentURL"
+                                    target="_blank"
+                                    color="warning"
+                                    class="mt-3 ml-4"
                                     :class="{ 'd-none': isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) }"
-                                    @click="cancelAppointment(i)">İptal Et</v-btn>
+                                    @click="cancelAppointment(i)"
+                                >
+                                    İptal Et
+                                </v-btn>
                             </UiParentCard>
                         </div>
                     </v-col>

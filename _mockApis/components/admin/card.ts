@@ -25,6 +25,10 @@ const cards: homeCard[] = [
         title: "Danışman Ünvanları",
         href:  "/admin/unvan",
     },
+    {
+        title: "Kullanım Kılavuzu",
+        href:  "/admin/kilavuz",
+    },
 ];
 
 export { cards }
