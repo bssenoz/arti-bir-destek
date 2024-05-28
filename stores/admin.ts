@@ -172,6 +172,23 @@ export const useAdminStore = defineStore({
                 console.error('Delete request failed:', error);
             }
         },
+        async createAIModel(file: File)  {
+            const formData = new FormData();
+            formData.append('DataSetFile', file);
+    
+            try {
+                await axios.post('http://localhost:5261/api/Admin/CreateMLModel', formData, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+                console.log('Dosya başarıyla yüklendi.');
+            } catch (error) {
+                console.error('Dosya yüklenirken bir hata oluştu:', error);
+            }
+        }
+    
         
     }
 });

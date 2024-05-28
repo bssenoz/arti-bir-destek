@@ -16,8 +16,6 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                     </v-col>
                 </v-row>
 
-
-
             </v-expansion-panel-title>
             <v-divider></v-divider>
             <v-expansion-panel-content>
@@ -28,15 +26,16 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Hastalar sayfasında kayıtlı olan tüm hastaların iletişim bilgilerine erişebilirsiniz. Hastaların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. </p>
+                                    <p>Hastalar sayfasında kayıtlı olan tüm hastaların iletişim bilgilerine erişebilirsiniz. Hastaların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. Duygu analizi butonuna tıklayarak ilgili hastanın son gün, son ay ve tüm mesajlarından yola çıkarak duygu analizi sonuçlarına ulaşabilirsiniz. </p>
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col cols="12" >
                                     <img src="/images/faq/ra1.png" />
-
                                 </v-col>
-              
+                                <v-col cols="12" >
+                                    <img src="/images/faq/ad1.png" />
+                                </v-col>
                             </v-row>
 
                         </v-container>
@@ -85,6 +84,16 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                                     <img src="/images/faq/ai2.png" />
                                 </v-col>
 
+                            </v-row>
+
+                        </v-container>
+                    </div>
+                    <div v-if="item.id == 6">
+                        <v-container>
+                            <v-row>
+                                <v-col>
+                                    <p>Yapay Zeka sayfasında <span class="font-weigt-bold">"csv"</span> uzantılı veri setini yükleyerek modeli eğitebilirsiniz. Veri seti yüklemeden önce lütfen örnek içeriği kontrol ediniz.</p>
+                                </v-col>
                             </v-row>
 
                         </v-container>

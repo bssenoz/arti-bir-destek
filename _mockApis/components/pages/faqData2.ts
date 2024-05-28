@@ -23,7 +23,9 @@ const faqPageDoctor: faqPageType2[] = [
             { text: 'video istatistikleri', color: 'info' },
             { text: 'raporlar', color: '' },
             { text: 'geçmiş randevular', color: 'accent' },
-            { text: 'randevu oluşturma', color: 'primary' }
+            { text: 'randevu oluşturma', color: 'primary' },
+            { text: 'duygu analizi', color: 'success' }
+
         ]
     },
     {
@@ -94,7 +96,7 @@ const faqPageAdmin: faqPageType2[] = [
             { text: 'video istatistikleri', color: 'info' },
             { text: 'raporlar', color: 'primary' },
             { text: 'pdf indirme', color: 'warning' },
-
+            { text: 'duygu analizi', color: 'success' },
         ]
     },
     {
@@ -127,6 +129,14 @@ const faqPageAdmin: faqPageType2[] = [
             { text: 'video silme', color: 'info' },
             { text: 'video düzenleme', color: 'primary' },
             { text: 'video ekleme', color: 'secondary' }
+
+        ]
+    },
+    {
+        id: 6,
+        question: 'Yapay Zeka',
+        chip: [
+            { text: 'model eğitme', color: 'success' },
 
         ]
     },

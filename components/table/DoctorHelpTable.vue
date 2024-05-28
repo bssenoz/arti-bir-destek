@@ -12,7 +12,7 @@ import img3 from "/images/profile/user-6.jpg";
                     <v-col cols="12" lg="2">
                         {{ item.question }}
                     </v-col>
-                    <v-col cols="12" lg="6">
+                    <v-col cols="12" lg="8">
                         <v-chip v-for="(chip, index) in item.chip" :key="index" :color="chip.color" size="small" label>
                             {{ chip.text }}
                         </v-chip>
@@ -31,7 +31,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Randevu sayfasından randevularınızı görüntüleyebilir ve bunları iptal
+                                    <p class="text-h6">Randevu sayfasından randevularınızı görüntüleyebilir ve bunları iptal
                                         edebilirsiniz. Randevunuzu iptal etmeniz durumunda hastanıza bilgilendirme
                                         e-postası gönderilecektir.</p>
                                 </v-col>
@@ -54,7 +54,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Takvim sayfasında müsait olduğunuz günleri baz alarak 15 günlük randevu
+                                    <p class="text-h6">Takvim sayfasında müsait olduğunuz günleri baz alarak 15 günlük randevu
                                         açabilirsiniz. Bu takvimi daha sonradan tekrardan güncelleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>
@@ -72,23 +72,33 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Hastalarım sayfasında hastalarınızı ve bilgilerini görüntüleyebilirsiniz.</p>
+                                    <p class="text-h6">Hastalarım sayfasında hastalarınızı ve bilgilerini görüntüleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>
                             <v-row>
-                                <v-col cols="12">
-                                    <img src="/images/faq/h1.png" />
+                                <v-col cols="12" lg="8">
+                                    <img src="/images/faq/h11.png" />
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col>
-                                    <p>Hastanıza randevu oluşturabilirsiniz. Girilen tarih ve saatlerin türlerine dikkat
+                                    <p class="text-h6">Hastanıza randevu oluşturabilirsiniz. Girilen tarih ve saatlerin türlerine dikkat
                                         ediniz. </p>
                                 </v-col>
                             </v-row>
                             <v-row>
                                 <v-col cols="12" lg="6">
                                     <img src="/images/faq/h2.png" />
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col>
+                                    <p class="text-h6">Duygu analizi sayfasından danışanın son gün, son ay ve tüm mesajlarından yola çıkarak hazırlanan duygu analizi sonuçlarını görüntüleyebilirsiniz. </p>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="12" lg="6">
+                                    <img src="/images/faq/h22.png" />
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -98,7 +108,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Hastanız ile olan geçmiş randevularınızı görüntüleyebilir ve rapor
+                                    <p class="text-h6">Hastanız ile olan geçmiş randevularınızı görüntüleyebilir ve rapor
                                         ekleyebilirsiniz. Her bir görüşme için yalnızca 1 rapor ekleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>
@@ -107,7 +117,7 @@ import img3 from "/images/profile/user-6.jpg";
                                     <img src="/images/faq/g1.png" />
                                 </v-col>
                                 <v-col cols="12" lg="6">
-                                    <img src="/images/faq/g2.png" />
+                                    <img src="/images/faq/h33.png" />
                                 </v-col>
                             </v-row>
 
@@ -118,7 +128,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Raporlarınızı görüntüleyebilir ve raporunuzu pdf olarak indirebilirsiniz.</p>
+                                    <p class="text-h6">Raporlarınızı görüntüleyebilir ve raporunuzu pdf olarak indirebilirsiniz.</p>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -135,7 +145,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Ayarlar sayfasından kullanıcı bilgilerinizi güncelleyebilir, profil resmi
+                                    <p class="text-h6">Ayarlar sayfasından kullanıcı bilgilerinizi güncelleyebilir, profil resmi
                                         ekleyebilir ya da kaldırabilirsiniz.</p>
                                 </v-col>
                             </v-row>

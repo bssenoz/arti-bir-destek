@@ -8,7 +8,6 @@ import { useRouter, useRoute } from 'vue-router';
 const userStore = useUserStore();
 const adminStore = useAdminStore();
 
-
 const router = useRouter();
 onMounted(() => {
     adminStore.fetchUserPatient();
@@ -33,6 +32,9 @@ const navigateToStatistic = (patientSlug: any) => {
 const navigateToNots = (patientSlug: any) => {
     router.push(`/admin/hastalar/${patientSlug}/raporlar`);
 };
+const navigateToEmotion = (patientSlug: any) => {
+    router.push(`/admin/hastalar/${patientSlug}/duygu-analizi`);
+};
 </script>
 <template>
     <v-row>
@@ -47,7 +49,7 @@ const navigateToNots = (patientSlug: any) => {
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">#</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">İşlem</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap pl-8">İşlem</th>
             </tr>
         </thead>
         <tbody>
@@ -71,7 +73,9 @@ const navigateToNots = (patientSlug: any) => {
                 <td class="text-subtitle-1 text-no-wrap">{{ item.phoneNumber }}</td>
                 <td class="text-subtitle-1 text-no-wrap">
                     <v-btn @click="navigateToNots(item.userName)" class="text-primary">Raporlar</v-btn>
-                    <v-btn @click="navigateToStatistic(item.userName)" class="text-error ml-2">Video İstatistikleri</v-btn> 
+                    <v-btn @click="navigateToStatistic(item.userName)" class="ml-2">Video İstatistikleri</v-btn> 
+                    <v-btn @click="navigateToEmotion(item.userName)" class="text-info ml-2">Duygu Analizi</v-btn>
+
                 </td>
 
             </tr>

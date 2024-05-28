@@ -13,7 +13,9 @@ interface chatType {
     fromUserId: string;
     senderID: string;
     connection: any;
-    currentUser: any
+    currentUser: any;
+    patientEmotion: any;
+ 
 }
 
 export const useChatStore = defineStore({
@@ -26,7 +28,9 @@ export const useChatStore = defineStore({
         fromUserId: '',
         senderID: '',
         connection: {},
-        currentUser: {}
+        currentUser: {},
+        patientEmotion: {},
+      
     }),
     getters: {
 
@@ -146,6 +150,33 @@ export const useChatStore = defineStore({
 
             this.fetchMessageInfo(chatUsers.receiverId)
         },
+        async getPatientLastDayMessageEmotions(userSlug: string) {
+            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientLastDayMessageEmotions?patientUserName=${userSlug}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            this.patientEmotion = response.data;
+        },
+        async getPatientLastMonthMessageEmotions(userSlug: string) {
+            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientLastMonthMessageEmotions?patientUserName=${userSlug}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            this.patientEmotion = response.data;
+        },
+        async getPatientAllMessageEmotions(userSlug: string) {
+            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientAllMessageEmotions?patientUserName=${userSlug}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            this.patientEmotion = response.data;
+        }
 
     }
 });

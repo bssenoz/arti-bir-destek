@@ -5,7 +5,7 @@ import user from '/images/profile/user.png';
 import { useMeetStore } from '~/stores/meet';
 import { useRouter, useRoute } from 'vue-router';
 import { CreateAppointmentByDoctor } from '@/types/MeetType';
-import { NoteIcon, VideoIcon, CalendarTimeIcon, CalendarPlusIcon } from 'vue-tabler-icons';
+import { NoteIcon, VideoIcon, CalendarTimeIcon, CalendarPlusIcon,MoodEmptyIcon } from 'vue-tabler-icons';
 import Swal from "sweetalert2";
 
 const meetStore = useMeetStore();
@@ -40,6 +40,11 @@ const navigateToNots = (patientSlug: any) => {
 const navigateToPast = (patientSlug: any) => {
     router.push(`/profile/hastalar/${patientSlug}/gecmis-randevular`);
 };
+
+const navigateToEmotion = (patientSlug: any) => {
+    router.push(`/profile/hastalar/${patientSlug}/duygu-analizi`);
+};
+
 const saveAppointment = async (slug: any) => {
     try {
         const appointment: CreateAppointmentByDoctor = {
@@ -133,7 +138,14 @@ const saveAppointment = async (slug: any) => {
                             </v-btn>
                         </template>
                     </v-tooltip>
-            
+                    <v-tooltip text="Duygu Analizi">
+                        <template v-slot:activator="{ props }">
+                            <v-btn icon flat  @click="navigateToEmotion(item.userName)" v-bind="props" class="ml-2">
+                                <MoodEmptyIcon class="text-info"/>
+                            </v-btn>
+                        </template>
+                    </v-tooltip>
+                    
         
                 </td>
                 <v-dialog v-model="appointmentDialog" max-width="600px">

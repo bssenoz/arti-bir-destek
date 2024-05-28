@@ -6,7 +6,8 @@ import {
     PercentageIcon,
     CalendarTimeIcon,
     Message2Icon,
-    BookIcon
+    BookIcon,
+    CodeIcon
 } from 'vue-tabler-icons';
 
 export interface Menu {
@@ -47,6 +48,11 @@ const horizontalItemsAdmin: Menu[] = [
         title: 'Danışman Ünvanları',
         icon: UserCheckIcon,
         to: '/admin/unvan',
+    },
+    {
+        title: 'Yapay Zeka',
+        icon: CodeIcon,
+        to: '/admin/yapay-zeka',
     },
     {
         title: 'Kullanım Kılavuzu',

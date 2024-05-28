@@ -26,6 +26,10 @@ const cards: homeCard[] = [
         href:  "/admin/unvan",
     },
     {
+        title: "Yapay Zeka",
+        href:  "/admin/yapay-zeka",
+    },
+    {
         title: "Kullanım Kılavuzu",
         href:  "/admin/kilavuz",
     },
