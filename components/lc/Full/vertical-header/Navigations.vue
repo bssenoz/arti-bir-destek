@@ -3,9 +3,9 @@
     <v-btn variant="text" color="primary" class="text-h5"
       :class="{ 'underline': $route.path === '/profile' }">Profil</v-btn>
   </NuxtLink>
-  <NuxtLink to="/profile/hastalar" class="text-decoration-none" v-if="isDoctor">
+  <NuxtLink to="/profile/danisanlar" class="text-decoration-none" v-if="isDoctor">
     <v-btn variant="text" color="primary" class="text-h5"
-      :class="{ 'underline': $route.path === '/profile/hastalar' }">Hastalarım</v-btn>
+      :class="{ 'underline': $route.path === '/profile/danisanlar' }">Danışanlar</v-btn>
   </NuxtLink>
   <NuxtLink to="/profile/mesaj" class="text-decoration-none" v-if="!isAdmin">
     <v-btn variant="text" color="primary" class="text-h5"

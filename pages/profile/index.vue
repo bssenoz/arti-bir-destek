@@ -2,15 +2,9 @@
 import ProfileBanner from '@/components/pages/user-profile/ProfileBanner.vue';
 import TimelineDoctor from '@/components/pages/user-profile/TimelineDoctor.vue';
 import TimelinePatient from '~/components/pages/user-profile/TimelinePatient.vue';
-import Chart from '@/components/video/Chart.vue';
 import { useUserStore } from '@/stores/user';
-import { SettingsIcon, ArrowRightIcon } from 'vue-tabler-icons';
-import { useVideoStore } from '@/stores/video';
-import { useVideoStatisticStore } from '@/stores/videoStatistic';
 
 const userStore = useUserStore();
-const videoStore = useVideoStore();
-const videoStatisticStore = useVideoStatisticStore();
 
 onMounted(() => {
   userStore.getCurrentUser()
@@ -22,15 +16,6 @@ const user = computed(() => {
 const userRole = computed(() => {
   return userStore.userRole;
 })
-watchEffect(() => {
-  if (user) {
-      videoStore.fetchVideos();
-      videoStatisticStore.getCurrentUserVideoStatistics();
-  }
-});
-const videoStatistics: any = computed(() => {
-  return videoStatisticStore.currentVideoStatistics;
-});
 
 definePageMeta({
   layout: "randevu",
@@ -46,42 +31,54 @@ definePageMeta({
     <v-row class="mt-8">
       <v-col cols="12" md="8">
         <v-row>
-          <v-col cols="12" class="text-center mb-4">
-            <v-btn href="/profile/ayarlar">
-              <SettingsIcon />
-              <v-tooltip activator="parent" location="top">Ayarlar</v-tooltip>
-            </v-btn>
-
-            <v-btn href="/profile/mesaj">
-              <Message2Icon />
-              <v-tooltip activator="parent" location="top">Mesajlar</v-tooltip>
-            </v-btn>
-
-            <v-btn href="/profile/randevu/randevu-al" v-if="userRole == 'Patient'">
-              <CalendarPlusIcon />
-              <v-tooltip activator="parent" location="top">Randevu Al</v-tooltip>
-            </v-btn>
-
-            <v-btn href="/profile/randevu/takvim" v-if="userRole == 'Doctor'">
-              <CalendarIcon />
-              <v-tooltip activator="parent" location="top">Randevu Takvimi</v-tooltip>
-            </v-btn>
-
+          <v-col cols="6" lg="4">
+            <v-card class="py-3" elevation="4" href="/profile/ayarlar">
+              <v-card-title>
+                 <SettingsIcon />Kullanıcı Ayarları
+              </v-card-title>
+            </v-card>
           </v-col>
-          <v-col cols="12" md="4" v-for="(video, index) in videoStatistics.slice(0, 3)" :key="index"
-            v-if="userRole == 'Patient'">
-            <Chart :title="video.videoTitle" :clickNumber="video.videoStatistics[0].videoClicksNumber"
-              :watchPercentage="video.videoStatistics[0].videoViewingRate" image="none"
-              v-if="video.videoStatistics[0]" />
-            <Chart :title="video.videoTitle" :clickNumber="0" :watchPercentage="0" v-if="video.videoStatistics == ''"
-              image="none" />
+          <v-col cols="6" lg="4">
+            <v-card class="py-3" elevation="4" href="/profile/mesaj">
+              <v-card-title>
+                <Message2Icon />Mesajlar
+              </v-card-title>
+            </v-card>
           </v-col>
-          <v-col cols="12" v-if="userRole == 'Patient'">
-            <v-btn color="primary" class="mt-4 mb-10 float-right right-0 rounded-md text-h6 font-weight-thin"
-              href="/profile/video/istatistikler">Tüm
-              istatistikleri Görüntüle
-              <ArrowRightIcon />
-            </v-btn>
+          <v-col cols="6" lg="4" v-if="userRole == 'Doctor'">
+            <v-card class="py-3" elevation="4" href="/profile/danisanlar">
+              <v-card-title>
+                <UsersIcon /> Danışanlarım
+              </v-card-title>
+            </v-card>
+          </v-col>
+          <v-col cols="6" lg="4" v-if="userRole == 'Doctor'">
+            <v-card class="py-3" elevation="4" href="/profile/randevu/takvim">
+              <v-card-title>
+                <CalendarIcon /> Takvim
+              </v-card-title>
+            </v-card>
+          </v-col>
+          <v-col cols="6" lg="4">
+            <v-card class="py-3" elevation="4" href="/profile/randevu/randevularim">
+              <v-card-title>
+                <CalendarPlusIcon /> Randevular
+              </v-card-title>
+            </v-card>
+          </v-col>
+          <v-col cols="6" lg="4" >
+            <v-card class="py-3" elevation="4" href="/profile/video">
+              <v-card-title>
+                <VideoIcon /> Videolar
+              </v-card-title>
+            </v-card>
+          </v-col>
+          <v-col cols="6" lg="4" v-if="userRole == 'Patient'">
+            <v-card class="py-3" elevation="4" href="/profile/video/istatistikler">
+              <v-card-title>
+                <PercentageIcon /> Video İstatistikleri
+              </v-card-title>
+            </v-card>
           </v-col>
         </v-row>
       </v-col>
@@ -103,5 +100,9 @@ definePageMeta({
   border: 1px solid #db2777;
   background-color: #db2777;
   color: #fff;
+}
+
+.v-card:hover {
+    box-shadow: 0px 7px 8px -4px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)), 0px 12px 17px 2px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)), 0px 5px 22px 4px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12)) !important;
 }
 </style>

@@ -72,7 +72,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p class="text-h6">Hastalarım sayfasında hastalarınızı ve bilgilerini görüntüleyebilirsiniz.</p>
+                                    <p class="text-h6">Danışanlar sayfasında danışanlarınızı ve bilgilerini görüntüleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>
                             <v-row>

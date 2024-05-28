@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { useUserStore } from '@/stores/user';
 import user from '/images/profile/user.png';
 import { useAdminStore } from '~/stores/admin';
 import { useRouter, useRoute } from 'vue-router';
 
-const userStore = useUserStore();
 const adminStore = useAdminStore();
 
 const router = useRouter();
@@ -27,13 +25,13 @@ const filteredList = computed(() => {
 });
 
 const navigateToStatistic = (patientSlug: any) => {
-    router.push(`/admin/hastalar/${patientSlug}/video-istatistikleri`);
+    router.push(`/admin/danisanlar/${patientSlug}/video-istatistikleri`);
 };
 const navigateToNots = (patientSlug: any) => {
-    router.push(`/admin/hastalar/${patientSlug}/raporlar`);
+    router.push(`/admin/danisanlar/${patientSlug}/raporlar`);
 };
 const navigateToEmotion = (patientSlug: any) => {
-    router.push(`/admin/hastalar/${patientSlug}/duygu-analizi`);
+    router.push(`/admin/danisanlar/${patientSlug}/duygu-analizi`);
 };
 </script>
 <template>
@@ -47,7 +45,7 @@ const navigateToEmotion = (patientSlug: any) => {
         <thead>
             <tr>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">#</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Danışan Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap pl-8">İşlem</th>
             </tr>

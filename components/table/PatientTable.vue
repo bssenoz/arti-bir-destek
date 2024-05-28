@@ -32,17 +32,17 @@ const filteredList = computed(() => {
 });
 
 const navigateToStatistic = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/video-istatistikleri`);
+    router.push(`/profile/danisanlar/${patientSlug}/video-istatistikleri`);
 };
 const navigateToNots = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/raporlar`);
+    router.push(`/profile/danisanlar/${patientSlug}/raporlar`);
 };
 const navigateToPast = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/gecmis-randevular`);
+    router.push(`/profile/danisanlar/${patientSlug}/gecmis-randevular`);
 };
 
 const navigateToEmotion = (patientSlug: any) => {
-    router.push(`/profile/hastalar/${patientSlug}/duygu-analizi`);
+    router.push(`/profile/danisanlar/${patientSlug}/duygu-analizi`);
 };
 
 const saveAppointment = async (slug: any) => {
@@ -85,7 +85,7 @@ const saveAppointment = async (slug: any) => {
         <thead>
             <tr>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">#</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Hasta Bilgileri</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Danışan Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap pl-8">İşlem</th>
             </tr>

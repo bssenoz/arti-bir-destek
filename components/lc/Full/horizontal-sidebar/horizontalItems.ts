@@ -20,9 +20,9 @@ export interface Menu {
 
 const horizontalItemsAdmin: Menu[] = [
     {
-        title: 'Hastalar',
+        title: 'Danışanlar',
         icon: UsersIcon,
-        to: '/admin/hastalar'
+        to: '/admin/danisanlar'
     },
     {
         title: 'Danışmanlar',
@@ -68,9 +68,9 @@ const horizontalItemsDoctor: Menu[] = [
         to: '/profile'
     },
     {
-        title: 'Hastalarım',
+        title: 'Danışanlar',
         icon: UsersIcon,
-        to: '/profile/hastalar'
+        to: '/profile/danisanlar'
     },
     {
         title: 'Mesaj',

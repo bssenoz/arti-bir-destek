@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import PatientTableAdmin from '~/components/table/PatientTableAdmin.vue';
-const page = ref({ title: 'Hastalar' });
+const page = ref({ title: 'Danışanlar' });
 const breadcrumbs = ref([
     {
         text: 'Admin',

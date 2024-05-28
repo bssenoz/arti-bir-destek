@@ -2,8 +2,8 @@ import type { homeCard } from '@/types/components/admin/card';
 
 const cards: homeCard[] = [
     {
-        title: "Hastalar",
-        href:  "/admin/hastalar",
+        title: "Danışanlar",
+        href:  "/admin/danisanlar",
     },
     {
         title: "Danışmanlar",

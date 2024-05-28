@@ -11,7 +11,8 @@ export interface UserType {
     reportDoctor: any
     allSchedule: any;
     allTitle: any;
-    allUnConfirmed:any;
+    allUnConfirmed: any;
+    appointmentDoctor: any;
 }
 
 export const useAdminStore = defineStore({
@@ -25,7 +26,8 @@ export const useAdminStore = defineStore({
         reportDoctor: [],
         allSchedule: [],
         allTitle: [],
-        allUnConfirmed: []
+        allUnConfirmed: [],
+        appointmentDoctor: []
     }),
     actions: {
 
@@ -141,7 +143,7 @@ export const useAdminStore = defineStore({
             }
         },
         async fetchUnConfirmedDoctor() {
-           const response =  await axios.get('http://localhost:5261/api/Admin/GetAllUnConfirmedDoctor', {
+            const response = await axios.get('http://localhost:5261/api/Admin/GetAllUnConfirmedDoctor', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -150,15 +152,15 @@ export const useAdminStore = defineStore({
             this.allUnConfirmed = response.data;
         },
         async confirmDoctor(slug: string) {
-            await axios.patch(`http://localhost:5261/api/Admin/ConfirmDoctor?doctorUserName=${slug}`, null,{
-                 headers: {
-                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
-                     'Content-Type': 'application/json'
-                 },
-             })
-             this.fetchUnConfirmedDoctor()
-         },
-         async deleteUser(userId?: any) {
+            await axios.patch(`http://localhost:5261/api/Admin/ConfirmDoctor?doctorUserName=${slug}`, null, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                    'Content-Type': 'application/json'
+                },
+            })
+            this.fetchUnConfirmedDoctor()
+        },
+        async deleteUser(userId?: any) {
             try {
                 await axios.delete('http://localhost:5261/api/Admin/DeleteUser', {
                     headers: {
@@ -172,10 +174,23 @@ export const useAdminStore = defineStore({
                 console.error('Delete request failed:', error);
             }
         },
-        async createAIModel(file: File)  {
+        async fetchDoctorAppointment(id: string, day: string, time: number) {
+                const response = await axios.get(`http://localhost:5261/api/Admin/GetDoctorAppointmentByDateAndTimeRange?doctorId=${id}&day=${day}&timeRange=${time}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
+                this.appointmentDoctor = response.data;
+
+            // } catch (error) {
+            //     this.appointmentDoctor = ''
+            // }
+        },
+        async createAIModel(file: File) {
             const formData = new FormData();
             formData.append('DataSetFile', file);
-    
+
             try {
                 await axios.post('http://localhost:5261/api/Admin/CreateMLModel', formData, {
                     headers: {
@@ -188,7 +203,7 @@ export const useAdminStore = defineStore({
                 console.error('Dosya yüklenirken bir hata oluştu:', error);
             }
         }
-    
-        
+
+
     }
 });

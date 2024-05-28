@@ -29,7 +29,7 @@ import { faqPagePatient} from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Randevu Al sayfasıdan danışmanınızdan müsait olduğunuz güne randevu alabilirsiniz. Bir sonraki randevunuzu <span class="font-weight-bold">15 gün sonra</span> alabilirsiniz. Eğer danışmanınız uygun görürse size randevu oluşturabilir.</p>
+                                    <p class="text-h6">Randevu Al sayfasıdan danışmanınızdan müsait olduğunuz güne randevu alabilirsiniz. Bir sonraki randevunuzu <span class="font-weight-bold">15 gün sonra</span> alabilirsiniz. Eğer danışmanınız uygun görürse size randevu oluşturabilir.</p>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -45,7 +45,7 @@ import { faqPagePatient} from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Randevu sayfasından randevularınızı görüntüleyebilir ve bunları iptal
+                                    <p class="text-h6">Randevu sayfasından randevularınızı görüntüleyebilir ve bunları iptal
                                         edebilirsiniz. Randevunuzu iptal etmeniz durumunda danışmanınıza bilgilendirme
                                         e-postası gönderilecektir. İptal ettikten sonra tekrardan randevu alabilirsiniz. Randevu saatiniz geldiğinde aktif olan <span class="font-weight-bold">"Randevuya Katıl"</span> butonuna tıklayarak görüşmenize katılabilirsiniz.</p>
                                 </v-col>
@@ -67,7 +67,7 @@ import { faqPagePatient} from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Mesaj sayfasında <span class="font-weight-bold">"Danışman Seç"</span> butonuna tıklayarak, açılan pencereden randevu aldığınız danışmanı seçerek onunla iletişime geçebilirsiniz. Randevu almadan herhangi bir danışmana mesaj atamazsınız.</p>
+                                    <p class="text-h6">Mesaj sayfasında <span class="font-weight-bold">"Danışman Seç"</span> butonuna tıklayarak, açılan pencereden randevu aldığınız danışmanı seçerek onunla iletişime geçebilirsiniz. Randevu almadan herhangi bir danışmana mesaj atamazsınız.</p>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -84,7 +84,7 @@ import { faqPagePatient} from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Videolar sayfasından izlemek istediğiniz eğitim videosuna tıklayarak onu izleyebilir ve onunla ilgili yazılan bilgilendirme metinlerini okuyabilirsiniz. Video izlemeleriniz kayıt altına alınacaktır. Bu kayıtlara <span class="font-weight-bold">"İstatistiklerim"</span> sayfasından ulaşabilirsiniz.</p>
+                                    <p class="text-h6">Videolar sayfasından izlemek istediğiniz eğitim videosuna tıklayarak onu izleyebilir ve onunla ilgili yazılan bilgilendirme metinlerini okuyabilirsiniz. Video izlemeleriniz kayıt altına alınacaktır. Bu kayıtlara <span class="font-weight-bold">"İstatistiklerim"</span> sayfasından ulaşabilirsiniz.</p>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -94,7 +94,7 @@ import { faqPagePatient} from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Ayarlar sayfasından kullanıcı bilgilerinizi güncelleyebilir, profil resmi
+                                    <p class="text-h6">Ayarlar sayfasından kullanıcı bilgilerinizi güncelleyebilir, profil resmi
                                         ekleyebilir ya da kaldırabilirsiniz.</p>
                                 </v-col>
                             </v-row>

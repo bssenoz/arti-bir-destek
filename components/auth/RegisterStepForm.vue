@@ -207,7 +207,7 @@ const allTitleOptions = computed(() => {
         <v-col cols="12" sm="6">
           <v-btn :class="{ 'selected-button': userType === 'patient' }" variant="outlined" size="large"
             class="border text-subtitle-1" block @click="selectUserType('patient')">
-            <span class="d-sm-flex mr-1">Hasta Kaydı</span>
+            <span class="d-sm-flex mr-1">Danışan Kaydı</span>
           </v-btn>
         </v-col>
         <v-col cols="12" sm="6">

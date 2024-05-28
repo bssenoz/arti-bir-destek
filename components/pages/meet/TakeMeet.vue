@@ -56,13 +56,14 @@ const allAppointmentsDay = computed(() => {
   return meetStore.allSchedule;
 });
 
-// burası sonra düzenlenecek
 watchEffect(() => {
   const start = range.value.start;
   const end = range.value.end;
   if (start && end) {
     console.log("Seçilen tarih aralığı:", start, " | ", end);
     updateWeeklyDates(start, end);
+    const formattedDate = format(start, 'dd.MM.yyyy');
+    meetStore.getAllAppointmentSchedule(formattedDate);
   }
 });
 
@@ -128,10 +129,6 @@ const toggleAccordion = (index) => {
   activeAccordion.value = activeAccordion.value === index ? null : index;
 };
 
-const handleDateChange = (value) => {
-  console.log("Başlangıç Tarihi:", format(value.start, "dd.MM.yyyy"));
-  console.log("Bitiş Tarihi:", format(value.end, "dd.MM.yyyy"));
-};
 const handleAppointmentClick = (timeObj: { status: any; timeRange: number; }, appointment: { doctorID: any; doctorTitle: any; doctorName: any; doctorSurname: any; }) => {
   console.log(timeObj)
   console.log(appointment)
@@ -210,7 +207,7 @@ const showConfirmationDialog = () => {
                     <v-row>
                       <v-col v-for="(timeObj, i) in appointment.appointments" :key="i" cols="12" sm="3" md="3">
                         <v-btn :color="timeObj.status ? 'grey200' : 'primary'" class="ma-1" outlined
-                          @click="handleAppointmentClick(timeObj, appointment)">
+                          @click.stop="handleAppointmentClick(timeObj, appointment)">
                           <p>{{ timeObj.timeRange < 10 ? '0' + timeObj.timeRange : timeObj.timeRange }}.00 - {{
                             timeObj.timeRange < 9 ? '0' + (timeObj.timeRange + 1) : timeObj.timeRange + 1 }}.00</p>
                         </v-btn>

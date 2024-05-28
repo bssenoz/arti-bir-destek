@@ -128,15 +128,6 @@ const login = async () => {
     </VTextField>
 
     <div class="d-flex flex-wrap align-center my-3 ml-n2">
-      <v-checkbox
-        v-model="checkbox"
-        :rules="[(v: any) => !!v || 'You must agree to continue!']"
-        required
-        hide-details
-        color="primary"
-      >
-        <template v-slot:label class="">Beni hatırla</template>
-      </v-checkbox>
       <div class="ml-sm-auto">
         <NuxtLink
           to="/sifremi-unuttum"

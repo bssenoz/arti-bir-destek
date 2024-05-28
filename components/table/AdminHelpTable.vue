@@ -26,7 +26,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Hastalar sayfasında kayıtlı olan tüm hastaların iletişim bilgilerine erişebilirsiniz. Hastaların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. Duygu analizi butonuna tıklayarak ilgili hastanın son gün, son ay ve tüm mesajlarından yola çıkarak duygu analizi sonuçlarına ulaşabilirsiniz. </p>
+                                    <p class="text-h6">Danışanlar sayfasında kayıtlı olan tüm danışanların iletişim bilgilerine erişebilirsiniz. Danışanların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. Duygu analizi butonuna tıklayarak ilgili hastanın son gün, son ay ve tüm mesajlarından yola çıkarak duygu analizi sonuçlarına ulaşabilirsiniz. </p>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -44,7 +44,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Danışmanlar sayfasında danışmanların hastalarla olan görüşmelerinden sonra yazdıkları raporları görüntüleyebilir onları pdf olarak indirebilirsiniz. İhtiyaç halinde <span class="font-weight-bold">danışmanın hesabını silme yetkisi</span> de bulunmaktadır. </p>
+                                    <p class="text-h6">Danışmanlar sayfasında danışmanların danışanlarla olan görüşmelerinden sonra yazdıkları raporları görüntüleyebilir onları pdf olarak indirebilirsiniz. İhtiyaç halinde <span class="font-weight-bold">danışmanın hesabını silme yetkisi</span> de bulunmaktadır. </p>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -53,7 +53,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Danışman Ünvanları sayfasında ünvan ekleyip silebilirsiniz.</p>
+                                    <p class="text-h6">Danışman Ünvanları sayfasında ünvan ekleyip silebilirsiniz.</p>
                                 </v-col>
                             </v-row>
 
@@ -64,10 +64,14 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                          eklenecek
+                        Randevu sayfasında açılan tüm randevuları ve bu randevuyu kimin aldığını görüntüleyebilirsiniz. Pembe butonlar danışmanın o saatte müsait olduğu zamanı belirtir. Pembe butona basarak randevunun dolu olup olmadığını öğrenebilirsiniz.
                                 </v-col>
                             </v-row>
-   
+   <v-row>
+    <v-col>
+        <img src="/images/faq/ar4.png" />
+    </v-col>
+   </v-row>
 
                         </v-container>
                     </div>
@@ -76,7 +80,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Videolar sayfasından videoları görüntüleyebilir, düzenleyebilir ve silebilirsiniz. <span class="font-weight-bold">"Video Yükle"</span> butonuna basarak video ekleme sayfasına gidebilir ve video yükleyebilirsiniz. Videolara metin bilgisi eklerken yazı boyutu, kalınlığı gibi stiller de ekleyebilirsiniz. Video İstatistikleri sayfasında videoların hangi kullanıcı tarafından kaç kere ve yüzde kaç izlendiğini görüntüleyebilirsiniz.</p>
+                                    <p class="text-h6">Videolar sayfasından videoları görüntüleyebilir, düzenleyebilir ve silebilirsiniz. <span class="font-weight-bold">"Video Yükle"</span> butonuna basarak video ekleme sayfasına gidebilir ve video yükleyebilirsiniz. Videolara metin bilgisi eklerken yazı boyutu, kalınlığı gibi stiller de ekleyebilirsiniz. Video İstatistikleri sayfasında videoların hangi kullanıcı tarafından kaç kere ve yüzde kaç izlendiğini görüntüleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -92,7 +96,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p>Yapay Zeka sayfasında <span class="font-weigt-bold">"csv"</span> uzantılı veri setini yükleyerek modeli eğitebilirsiniz. Veri seti yüklemeden önce lütfen örnek içeriği kontrol ediniz.</p>
+                                    <p class="text-h6">Yapay Zeka sayfasında <span class="font-weigt-bold">"csv"</span> uzantılı veri setini yükleyerek modeli eğitebilirsiniz. Veri seti yüklemeden önce lütfen örnek içeriği kontrol ediniz.</p>
                                 </v-col>
                             </v-row>
 

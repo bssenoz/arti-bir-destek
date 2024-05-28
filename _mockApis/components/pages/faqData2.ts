@@ -18,7 +18,7 @@ const faqPageDoctor: faqPageType2[] = [
     },
     {
         id: 3,
-        question: 'Hastalarım',
+        question: 'Danışanlar',
         chip: [
             { text: 'video istatistikleri', color: 'info' },
             { text: 'raporlar', color: '' },
@@ -91,7 +91,7 @@ const faqPagePatient: faqPageType2[] = [
 const faqPageAdmin: faqPageType2[] = [
     {
         id: 1,
-        question: 'Hastalar',
+        question: 'Danışanlar',
         chip: [
             { text: 'video istatistikleri', color: 'info' },
             { text: 'raporlar', color: 'primary' },
@@ -118,8 +118,8 @@ const faqPageAdmin: faqPageType2[] = [
         id: 4,
         question: 'Randevu',
         chip: [
-            { text: 'burası değişecek', color: 'error' },
-            { text: 'burası değişecek', color: 'purple' }
+            { text: 'takvim', color: 'error' },
+            { text: 'randevu', color: 'purple' }
         ]
     },
     {
