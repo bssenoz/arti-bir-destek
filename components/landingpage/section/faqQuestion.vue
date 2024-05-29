@@ -22,7 +22,7 @@ import img3 from "/images/profile/user-6.jpg";
             }}</v-expansion-panel-title>
             <v-divider></v-divider>
             <v-expansion-panel-text
-              class="text-subtitle-1 text-10 text-medium-emphasis pt-3 pb-2"
+              class="text-h6 text-10 text-medium-emphasis pt-3 pb-2"
             >
               {{ item.answer }}
             </v-expansion-panel-text>

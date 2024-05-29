@@ -203,12 +203,12 @@ const cancelAppointment = (i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Danışman: <span class="font-weight-thin">{{i.doctorTitle}} {{ i.doctorName }} {{
                                     i.doctorSurname }}</span></div>
-                                <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
+                                <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3" v-if="(isPastAppointment(i.day, i.timeRange) && isCurrentAppointment(i.day, i.timeRange))"
                                     :disabled="!isAppointmentTime(i.day, i.timeRange) || isPastAppointment(i.day, i.timeRange)">
                                     Randevuya Katıl
                                 </v-btn>
 
-                                <v-btn target="_blank" color="warning" class="mt-3 ml-4"
+                                <v-btn target="_blank" color="warning" class="mt-3"
                                     :class="{ 'd-none': isPastAppointment(i.day, i.timeRange) }"
                                     @click="cancelAppointment(i)">İptal Et</v-btn>
 

@@ -70,7 +70,7 @@ const navigateToNots = (doctorSlug: any) => {
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Danışman Bilgileri</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Telefon</th>
                 <th class="text-subtitle-1 font-weight-semibold text-no-wrap">Ünvan</th>
-                <th class="text-subtitle-1 font-weight-semibold text-no-wrap">İşlem</th>
+                <th class="text-subtitle-1 font-weight-semibold text-no-wrap pl-8">İşlem</th>
             </tr>
         </thead>
         <tbody>

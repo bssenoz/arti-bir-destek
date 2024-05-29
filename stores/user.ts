@@ -120,7 +120,6 @@ export const useUserStore = defineStore({
                     }
                 }
             );
-            console.log("res: ", response.data);
             this.accessToken = response.data.jwtTokenDTO.accessToken;
             this.refreshToken = response.data.jwtTokenDTO.refreshToken;
             this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
@@ -181,10 +180,7 @@ export const useUserStore = defineStore({
         },
         async logout() {
             try {
-                // Çerezleri silme işlemlerini buraya ekleyelim
-                this.clearCookies();
         
-                // Diğer işlemler devam ediyor...
                 this.refreshToken = null;
                 this.accessToken = null;
                 this.accessTime = null;
@@ -197,15 +193,6 @@ export const useUserStore = defineStore({
                 console.error('Oturum kapatma hatası:', error);
                 throw new Error('Oturum kapatılamadı.');
             }
-        },
-        clearCookies() {
-            // Silinecek tüm çerezlerin adlarını buraya ekleyin
-            const cookiesToClear = ['role', 'userId', 'userName', 'userEmail', 'profileImageUrl'];
-        
-            // Her bir çerezi döngüyle temizleyelim
-            cookiesToClear.forEach(cookieName => {
-                document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-            });
         },
         async fetchUserDoctor() {
             const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors', {
@@ -234,20 +221,7 @@ export const useUserStore = defineStore({
                     }
                 });
         
-                // const encryptedUserId = Crypto.AES.encrypt(response.data.id.toString(), 'mySecretKey123').toString();
-                // setCookie('userId', encryptedUserId, 2);
-        
-                // const encryptedUserName = Crypto.AES.encrypt(`${response.data.name} ${response.data.surname}`, 'mySecretKey123').toString();
-                // setCookie('userName', encryptedUserName, 2);
-        
-                // const encryptedEmail = Crypto.AES.encrypt(response.data.email, 'mySecretKey123').toString();
-                // setCookie('userEmail', encryptedEmail, 2);
-        
-                // const encryptedProfileImageUrl = Crypto.AES.encrypt(response.data.profileImageUrl, 'mySecretKey123').toString();
-                // setCookie('profileImageUrl', encryptedProfileImageUrl, 2);
-        
                 this.currentUser = response.data;
-                console.log(this.currentUser);
                 const accessToken = localStorage.getItem('accessToken');
         
                 if (accessToken) {
@@ -255,73 +229,15 @@ export const useUserStore = defineStore({
         
                     const userRole = decodedToken.role as string | undefined;
         
-                    const encryptedRole = Crypto.AES.encrypt(userRole, 'mySecretKey123').toString();
-                    setCookie('role', encryptedRole, 2);
-        
-                    console.log('Kullanıcı rolü:', userRole);
                     if (userRole == "Admin") this.userRole = UserRole.Admin;
                     if (userRole == "Doctor") this.userRole = UserRole.Doctor;
                     if (userRole == "Patient") this.userRole = UserRole.Patient;
-                    console.log(this.userRole)
                 } else {
                     console.error('Access token bulunamadı veya null.');
                 }
             } catch (error) {
                 console.error('Error while fetching current user:', error);
                 throw new Error('Failed to fetch current user.');
-            }
-        },
-        async getCurrentUserCookie() {
-            const accessToken = localStorage.getItem('accessToken');
-        
-            if (accessToken) {
-                const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-        
-                const userRole = decodedToken.role as string | undefined;
-        
-                const encryptedRole = Crypto.AES.encrypt(userRole, 'mySecretKey123').toString();
-                setCookie('role', encryptedRole, 2);
-        
-                console.log('Kullanıcı rolü:', userRole);
-                if (userRole == "Admin") this.userRole = UserRole.Admin;
-                if (userRole == "Doctor") this.userRole = UserRole.Doctor;
-                if (userRole == "Patient") this.userRole = UserRole.Patient;
-                const encryptedRole1 = getCookie('role');
-        
-                const bytes = Crypto.AES.decrypt(encryptedRole1, 'mySecretKey123');
-                const decryptedRole = bytes.toString(Crypto.enc.Utf8);
-        
-                console.log('Çözülen rol:', decryptedRole);
-        
-                const encryptedUserIdFromCookie = getCookie('userId');
-                const decryptedUserId = Crypto.AES.decrypt(encryptedUserIdFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
-        
-                const encryptedUserNameFromCookie = getCookie('userName');
-                const decryptedUserName = Crypto.AES.decrypt(encryptedUserNameFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
-        
-                console.log('Çözülen userId:', decryptedUserId);
-                console.log('Çözülen userName:', decryptedUserName);
-        
-                const encryptedEmailFromCookie = getCookie('userEmail');
-                const decryptedEmail = Crypto.AES.decrypt(encryptedEmailFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
-        
-                const encryptedProfileImageUrlFromCookie = getCookie('profileImageUrl');
-                const decryptedProfileImageUrl = Crypto.AES.decrypt(encryptedProfileImageUrlFromCookie, 'mySecretKey123').toString(Crypto.enc.Utf8);
-        
-                console.log('Çözülen userEmail:', decryptedEmail);
-                console.log('Çözülen profileImageUrl:', decryptedProfileImageUrl);
-        
-                const currentCookie = {
-                    role: decryptedRole,
-                    userId: decryptedUserId,
-                    userName: decryptedUserName,
-                    userEmail: decryptedEmail,
-                    profileImageUrl: decryptedProfileImageUrl
-                };
-        
-                this.currentUserCookie = currentCookie;
-            } else {
-                console.error('Access token bulunamadı veya null.');
             }
         },
 

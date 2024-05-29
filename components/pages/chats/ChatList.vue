@@ -160,7 +160,7 @@ const transformChatItem = (item: any): ChatsUserType => {
         <v-card-title class="text-h4">Danışman Seç</v-card-title>
         <v-card-text>
           <v-row justify="center" class="mb-4">
-            <v-col v-for="doctor in displayedDoctors" :key="doctor.id" cols="4" >
+            <v-col v-for="doctor in displayedDoctors" :key="doctor.id" cols="6" sm="4" >
               <v-card @click="selectUser(doctor.id)" class="pa-2 text-center elevation-1" style="height:100%">
                 <v-img :src="doctor.profileImageUrl" width="100" height="100" v-if="doctor.profileImageUrl" class="ml-8"
                   style="margin: auto;border-radius: 50%"></v-img>

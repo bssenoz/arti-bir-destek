@@ -24,10 +24,10 @@ const logout = async () => {
           icon
           rounded="md"
           color="primary"
-          to="/giris-yap"
+          to="/giris-yap" @click="logout"
         >
           <PowerIcon />
-          <v-tooltip activator="parent" location="top" @click="logout">Logout</v-tooltip>
+          <v-tooltip activator="parent" location="top" >Çıkış Yap</v-tooltip>
         </v-btn>
       </div>
     </div>

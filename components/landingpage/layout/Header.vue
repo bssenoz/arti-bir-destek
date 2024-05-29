@@ -33,7 +33,7 @@ const user = computed(() => {
     <v-toolbar class="d-flex align-center">
       <!-- Logo -->
       <img src="/images/backgrounds/adimlar.jpg" style="width: 50px" />
-      <span class="font-mansalva color-pink-1 font-weight-bold text-h4">
+      <span class="font-mansalva color-pink-1 font-weight-bold text-h4" href="/">
         Artı Bir Destek
       </span>
 

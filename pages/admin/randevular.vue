@@ -2,7 +2,7 @@
 import TakeMeetAdmin from '@/components/pages/meet/TakeMeetAdmin.vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 
-const page = ref({ title: 'Videolar' });
+const page = ref({ title: 'Danışmanların Takvimi' });
 const breadcrumbs = ref([
   {
     text: 'Admin',

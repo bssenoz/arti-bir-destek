@@ -5,7 +5,7 @@ import user from '/images/profile/user.png';
 import { useMeetStore } from '~/stores/meet';
 import { useRouter, useRoute } from 'vue-router';
 import { CreateAppointmentByDoctor } from '@/types/MeetType';
-import { NoteIcon, VideoIcon, CalendarTimeIcon, CalendarPlusIcon,MoodEmptyIcon } from 'vue-tabler-icons';
+import { NoteIcon, VideoIcon, CalendarTimeIcon, CalendarPlusIcon, MoodSmileIcon } from 'vue-tabler-icons';
 import Swal from "sweetalert2";
 
 const meetStore = useMeetStore();
@@ -141,7 +141,7 @@ const saveAppointment = async (slug: any) => {
                     <v-tooltip text="Duygu Analizi">
                         <template v-slot:activator="{ props }">
                             <v-btn icon flat  @click="navigateToEmotion(item.userName)" v-bind="props" class="ml-2">
-                                <MoodEmptyIcon class="text-info"/>
+                                <MoodSmileIcon class="text-info"/>
                             </v-btn>
                         </template>
                     </v-tooltip>

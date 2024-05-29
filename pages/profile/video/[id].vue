@@ -56,10 +56,22 @@ const handleEvent = (log: any) => {
     // console.log("Basic player event", log);
 };
 
-const handlePause = async (event: Event, video: any) => {
+let lastHandlePauseTime = Date.now();
 
-    await userStore.getCurrentUser()
-    if (userStore.userRole == UserRole.Patient) {
+const handlePause = async (event: Event, video: any) => {
+    const currentTime = Date.now();
+
+    const elapsedTime = currentTime - lastHandlePauseTime;
+
+    if (elapsedTime < 1000) {
+        return;
+    }
+
+    lastHandlePauseTime = currentTime;
+
+    await userStore.getCurrentUser();
+
+    if (userStore.userRole === UserRole.Patient) {
         const playerId = `player_1`;
         const player = players.value[playerId];
 
@@ -71,8 +83,9 @@ const handlePause = async (event: Event, video: any) => {
             videoId: video.id,
             clicksNumber: 1,
             viewingRate: parseInt(percentageWatched.toFixed(0))
-        }
-        await videoStatistic.addVideoStatistics(videoStatistics)
+        };
+
+      await videoStatistic.addVideoStatistics(videoStatistics)
     }
 };
 const navigateToVideo = (videoId: any) => {

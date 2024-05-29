@@ -200,7 +200,8 @@ const cancelAppointment = async (i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Hasta: <span class="font-weight-thin">{{ i.patientName }} {{
                                     i.patientSurname }}</span></div>
-                                <v-btn
+                        
+                                <v-btn v-if="(isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) && isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange))"
                                     :href="i.appointmentURL"
                                     target="_blank"
                                     color="primary"
@@ -214,11 +215,11 @@ const cancelAppointment = async (i: any) => {
                                     :href="i.appointmentURL"
                                     target="_blank"
                                     color="warning"
-                                    class="mt-3 ml-4"
+                                    class="mt-3 "
                                     :class="{ 'd-none': isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) }"
                                     @click="cancelAppointment(i)"
                                 >
-                                    İptal Et
+                                   İptal Et
                                 </v-btn>
                             </UiParentCard>
                         </div>

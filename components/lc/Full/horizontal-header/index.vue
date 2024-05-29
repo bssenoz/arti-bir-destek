@@ -36,7 +36,7 @@ watch(priority, (newPriority) => {
       : 'v-toolbar__content px-6'
       ">
       <NuxtLink to="/" class="text-decoration-none" v-if="!isAdmin">
-        <div class="hidden-md-and-down mr-3 font-mansalva font-weight-bold color-pink-1 text-h4 align-center d-lg-flex">
+        <div class="hidden-md-and-down mr-3 font-mansalva font-weight-bold color-pink-1 text-h4 align-center d-lg-flex" href="/">
           <img src="/images/backgrounds/adimlar.jpg" style="width: 50px" />
           <span class="font-mansalva color-pink-1 font-weight-bold text-h4">
             Artı Bir Destek</span>

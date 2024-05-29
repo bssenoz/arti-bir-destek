@@ -166,7 +166,7 @@ const updateUser = async () => {
                         </div>
                         <v-btn color="error" class="mx-2" variant="outlined" @click="deleteProfileImage">Sıfırla</v-btn>
                     </div>
-                    <div class="text-subtitle-1 text-medium-emphasis text-center my-sm-8 my-6">Lütfen sadece JPG, GIF ya
+                    <div class="text-subtitle-1 text-medium-emphasis text-center my-sm-8 my-6">Lütfen sadece JPG, JPEG ya
                         da
                         PNG yükleyin.</div>
 
