@@ -139,7 +139,7 @@ const select = (data: any) => {
 
                                     <v-col cols="12" v-if="selectedStatistic">
                                         <div class="d-flex align-center">
-                                            <div class="text-h6 font-weight-thin">Hasta: {{ item.patientName }} {{
+                                            <div class="text-h6 font-weight-thin">Danışan: {{ item.patientName }} {{
                                                 item.patientSurname
                                                 }}</div>
                                         </div>
@@ -188,7 +188,7 @@ const select = (data: any) => {
 
                                     <v-col cols="12">
                                         <div class="d-flex align-center">
-                                            <div class="text-h6 font-weight-thin">Hasta: {{ item.patientName }} {{
+                                            <div class="text-h6 font-weight-thin">Danışan: {{ item.patientName }} {{
                                                 item.patientSurname
                                                 }}</div>
                                         </div>

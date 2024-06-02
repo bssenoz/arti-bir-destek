@@ -37,7 +37,7 @@ const navigateToEmotion = (patientSlug: any) => {
 <template>
     <v-row>
         <v-col cols="12" lg="4" md="6">
-            <v-text-field density="compact" v-model="search" label="Hasta Ara" hide-details
+            <v-text-field density="compact" v-model="search" label="Danışan Ara" hide-details
                 variant="outlined"></v-text-field>
         </v-col>
     </v-row>

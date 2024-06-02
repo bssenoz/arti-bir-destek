@@ -10,7 +10,7 @@ const breadcrumbs = ref([
         href: '/admin'
     },
     {
-        text: 'Hasta',
+        text: 'Danışanlar',
         disabled: true,
         href: '#'
     }

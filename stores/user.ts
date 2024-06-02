@@ -104,8 +104,7 @@ export const useUserStore = defineStore({
                 if(user.email == 'admin@gmail.com') this.userRole =  UserRole.Admin;
 
             } catch (error) {
-                console.error("Kullanıcı giriş yaparken bir hata oluştu:", error);
-                throw new Error("Giriş yapılamadı.");
+                throw new Error(error.message);
             }
         },
         async loginWithGoogle(userToken: string) {
@@ -269,28 +268,29 @@ export const useUserStore = defineStore({
             }
         },
         async updateDoctor(newInfo: any) {
-            try {
                 const config = {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     }
                 };
                 await axios.put('http://localhost:5261/api/User/UpdateDoctor', newInfo, config)
-            } catch (error) {
-                console.log(error)
-            }
         },
+        async updateDoctorTitle(titleId: number) {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`,
+                    'Content-Type': 'application/json'
+                }
+            };
+            await axios.patch(`http://localhost:5261/api/User/UpdateDoctorTitle?doctorTitleId=${titleId}`,null ,config)
+    },
         async updatePatient(newInfo: any) {
-            try {
                 const config = {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     }
                 };
                 await axios.put('http://localhost:5261/api/User/UpdatePatient', newInfo, config)
-            } catch (error) {
-                console.log(error)
-            }
         },
         async changePassword(newPass: any) {
                 const config = {

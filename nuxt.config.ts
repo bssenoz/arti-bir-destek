@@ -28,13 +28,21 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'Sakarya Üniversitesi tarafından hazırlanan psikososyal destek platformu, fetüste anomali riski olan gebelere yöneliktir.' },
+        { hid: 'keywords', name: 'keywords', content: 'Anne adayları için destek, Fetüste sağlık, Fetüste anomali riski, Sakarya Üniversitesi, Sağlık Bilimleri Fakültesi' }
+    ],
+    
       link: [
-          {rel: 'icon', type: 'image/x-icon', href: '/images/backgrounds/adimlar.jpg'}
+        { rel: 'icon', type: 'image/x-icon', href: '/images/backgrounds/adimlar.jpg' }
       ],
-      title:
-        "Artı Bir Destek",
+      title: "Artı Bir Destek"
     },
+    
   },
+
   nitro: {
     serveStatic: true,
   },

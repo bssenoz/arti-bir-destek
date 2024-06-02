@@ -4,6 +4,7 @@ import { useUserStore } from '@/stores/user';
 import userProfile from '/images/profile/user.png';
 import { ChangePassword, UpdateDoctor, UpdatePatient } from '@/types/UserType';
 import Swal from 'sweetalert2';
+import { useAdminStore } from "@/stores/admin";
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -15,12 +16,17 @@ const confirmPass = ref();
 const show1 = ref(false);
 const show2 = ref(false);
 const show3 = ref(false);
+const adminStore = useAdminStore();
 
 const props = defineProps({ user: Object, userRole: Object });
 
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
 const formData = new FormData();
+const phoneRules = [
+  (v: string) => !!v || "Telefon numarası gerekli!",
+  (v: string) => /^\d+$/.test(v) || "Sadece rakam içermelidir!",
+];
 
 const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement;
@@ -107,15 +113,18 @@ const deleteProfileImage = () => {
 }
 const updateUser = async () => {
     try {
+        
         if (props.userRole == 'Doctor') {
+    
             const userInfo: UpdateDoctor = {
                 name: props.user.name,
                 surname: props.user.surname,
                 phoneNumber: props.user.phoneNumber,
-                title: props.user.title,
             }
             await userStore.updateDoctor(userInfo)
-
+            if (!isNaN(parseInt(props.user.title))) {
+                await userStore.updateDoctorTitle(props.user.title)
+            }
         }
         if (props.userRole == 'Patient') {
             const userInfo: UpdatePatient = {
@@ -130,6 +139,8 @@ const updateUser = async () => {
             text: "Bilgileriniz başarıyla değiştirildi.",
             icon: "success",
             confirmButtonText: "Tamam",
+        }).then(() => {
+            window.location.reload();
         });
     } catch (error) {
         Swal.fire({
@@ -140,6 +151,20 @@ const updateUser = async () => {
         });
     }
 }
+onMounted(() => {
+  adminStore.fetchTitle();
+});
+
+const allTitle = computed(() => {
+  return adminStore.allTitle;
+});
+
+const allTitleOptions = computed(() => {
+  return allTitle.value.map((title: { id: any; title: any }) => ({
+    id: title.id,
+    title: title.title,
+  }));
+});
 </script>
 
 <template>
@@ -225,12 +250,11 @@ const updateUser = async () => {
                             <v-col cols="12" md="6">
                                 <v-label class="mb-2 font-weight-medium">Telefon Numarası</v-label>
                                 <v-text-field color="primary" variant="outlined" type="text" v-model="user.phoneNumber"
-                                    hide-details />
+                                 maxlength="11" hide-details />
                             </v-col>
-                            <v-col cols="12" md="6">
+                            <v-col cols="12" md="6" v-if="userRole == 'Doctor'">
                                 <v-label class="mb-2 font-weight-medium">Ünvan</v-label>
-                                <v-text-field color="primary" variant="outlined" type="text" v-model="user.title"
-                                    hide-details />
+                                    <v-select v-model="user.title" :items="allTitleOptions" item-value="id" item-text="title" outlined></v-select>
                             </v-col>
 
                         </v-row>

@@ -32,7 +32,7 @@ import img3 from "/images/profile/user-6.jpg";
                             <v-row>
                                 <v-col>
                                     <p class="text-h6">Randevu sayfasından randevularınızı görüntüleyebilir ve bunları iptal
-                                        edebilirsiniz. Randevunuzu iptal etmeniz durumunda hastanıza bilgilendirme
+                                        edebilirsiniz. Randevunuzu iptal etmeniz durumunda danışanınıza bilgilendirme
                                         e-postası gönderilecektir.</p>
                                 </v-col>
                             </v-row>
@@ -82,7 +82,7 @@ import img3 from "/images/profile/user-6.jpg";
                             </v-row>
                             <v-row>
                                 <v-col>
-                                    <p class="text-h6">Hastanıza randevu oluşturabilirsiniz. Girilen tarih ve saatlerin türlerine dikkat
+                                    <p class="text-h6">Danışanınıza randevu oluşturabilirsiniz. Girilen tarih ve saatlerin türlerine dikkat
                                         ediniz. </p>
                                 </v-col>
                             </v-row>
@@ -108,7 +108,7 @@ import img3 from "/images/profile/user-6.jpg";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p class="text-h6">Hastanız ile olan geçmiş randevularınızı görüntüleyebilir ve rapor
+                                    <p class="text-h6">Danışanınız ile olan geçmiş randevularınızı görüntüleyebilir ve rapor
                                         ekleyebilirsiniz. Her bir görüşme için yalnızca 1 rapor ekleyebilirsiniz.</p>
                                 </v-col>
                             </v-row>

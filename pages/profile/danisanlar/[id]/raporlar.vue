@@ -125,7 +125,7 @@ const downloadPDF2 = () => {
 
                                         <v-col cols="12">
                                             <div class="d-flex align-center">
-                                                <div class="text-h6 font-weight-thin">Hasta: {{ item.patientName
+                                                <div class="text-h6 font-weight-thin">Danışan: {{ item.patientName
                                                     }} {{
                                                         item.patientSurname
                                                     }}</div>
@@ -153,7 +153,7 @@ const downloadPDF2 = () => {
 
                                         <v-col cols="12">
                                             <div class="d-flex align-center">
-                                                <div class="text-h6 font-weight-thin">Hasta: {{ item.patientName
+                                                <div class="text-h6 font-weight-thin">Danışan: {{ item.patientName
                                                     }} {{
                                                         item.patientSurname
                                                     }}</div>

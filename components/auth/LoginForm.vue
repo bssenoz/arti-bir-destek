@@ -71,7 +71,7 @@ const login = async () => {
     } else {
       Swal.fire({
         title: "Hatalı Giriş!",
-        text: "Lütfen şifreni doğru girdiğinden emin ol.",
+        text: error,
         icon: "warning",
         confirmButtonText: "Tamam",
       });

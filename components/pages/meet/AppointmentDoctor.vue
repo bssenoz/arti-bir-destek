@@ -198,7 +198,7 @@ const cancelAppointment = async (i: any) => {
                                         }}</span></div>
                                 <div class="text-h6 mt-1">Saat: <span class="font-weight-thin">{{ i.appointmentTimeRange
                                         }}.00</span></div>
-                                <div class="text-h6 mt-1">Hasta: <span class="font-weight-thin">{{ i.patientName }} {{
+                                <div class="text-h6 mt-1">Danışan: <span class="font-weight-thin">{{ i.patientName }} {{
                                     i.patientSurname }}</span></div>
                         
                                 <v-btn v-if="(isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) && isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange))"

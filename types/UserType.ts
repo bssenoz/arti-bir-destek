@@ -45,7 +45,6 @@ export type UpdateDoctor = {
     name: string | null;
     surname: string | null;
     phoneNumber: string | null;
-    title: string | null;
 }
 
 export type UpdatePatient = {

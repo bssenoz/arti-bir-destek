@@ -26,7 +26,7 @@ import { faqPageAdmin } from "@/_mockApis/components/pages/faqData2";
                         <v-container>
                             <v-row>
                                 <v-col>
-                                    <p class="text-h6">Danışanlar sayfasında kayıtlı olan tüm danışanların iletişim bilgilerine erişebilirsiniz. Danışanların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. Duygu analizi butonuna tıklayarak ilgili hastanın son gün, son ay ve tüm mesajlarından yola çıkarak duygu analizi sonuçlarına ulaşabilirsiniz. </p>
+                                    <p class="text-h6">Danışanlar sayfasında kayıtlı olan tüm danışanların iletişim bilgilerine erişebilirsiniz. Danışanların video istatistiklerini ve raporlarını da görüntüleyebilirsiniz. Ayrıca raporları pdf şeklinde indirebilirsiniz. Duygu analizi butonuna tıklayarak ilgili danışanın son gün, son ay ve tüm mesajlarından yola çıkarak duygu analizi sonuçlarına ulaşabilirsiniz. </p>
                                 </v-col>
                             </v-row>
                             <v-row>
