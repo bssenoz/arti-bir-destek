@@ -4,8 +4,13 @@ import { useUserStore } from "@/stores/user";
 import Swal from "sweetalert2";
 const userStore = useUserStore()
 
-const valid = ref(true);
 const email = ref("");
+
+const handleEnterKey = () => {
+  if (email.value) {
+    forgotPassword();
+  }
+}
 
 const forgotPassword = async () => {
   try {
@@ -28,11 +33,9 @@ const forgotPassword = async () => {
 </script>
 <template>
   <div class="text-start">
-    <v-form ref="form" v-model="valid" lazy-validation action="/dashboards/modern" class="mt-sm-13 mt-8">
-      <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Email</v-label>
-      <VTextField v-model="email" required></VTextField>
-      <v-btn size="large" block submit flat style="background-color: rgb(237 50 162); color: #fff"
-        @click="forgotPassword()">Şifremi Unuttum</v-btn>
-    </v-form>
+    <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Email</v-label>
+    <VTextField v-model="email" required @keydown.enter="handleEnterKey"></VTextField>
+    <v-btn size="large" block submit flat style="background-color: rgb(237 50 162); color: #fff"
+      @click="forgotPassword()">Şifremi Unuttum</v-btn>
   </div>
 </template>

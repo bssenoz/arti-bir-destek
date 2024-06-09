@@ -82,7 +82,7 @@ const isCurrentAppointment = (date: string | number | Date, timeRange: number) =
         appointmentDateTime.setFullYear(year, month - 1, day);
     }
     const now = new Date();
-    const appointmentHour = timeRange; 
+    const appointmentHour = timeRange;
     const appointmentEndHour = appointmentHour + 1;
     return appointmentDateTime.toDateString() === now.toDateString() &&
         now.getHours() >= appointmentHour && now.getHours() < appointmentEndHour;
@@ -100,7 +100,7 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
     }
 };
 
-const cancelAppointment = async (i: any) => {
+const cancelAppointment = async (appointment: any, i: any) => {
     try {
         const result = await Swal.fire({
             title: 'Randevu İptali',
@@ -115,19 +115,21 @@ const cancelAppointment = async (i: any) => {
 
         if (result.isConfirmed) {
             const cancelInfo: CancelDoctorAppointment = {
-                day: i.day,
-                timeRange: i.timeRange,
-                doctorId: i.doctorId,
+                day: appointment.appointmentDay,
+                timeRange: i.appointmentTimeRange,
             };
 
             try {
                 await meetStore.cancelDoctorAppointment(cancelInfo);
 
-                Swal.fire(
-                    'Başarılı!',
-                    'Randevunuz iptal edildi.',
-                    'success'
-                );
+                Swal.fire({
+                    title: "Başarılı!",
+                    text: "Randevunuz iptal edildi.",
+                    icon: "success",
+                    confirmButtonText: "Tamam",
+                }).then(() => {
+                    window.location.reload();
+                });
 
             } catch (error) {
                 Swal.fire(
@@ -200,26 +202,18 @@ const cancelAppointment = async (i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Danışan: <span class="font-weight-thin">{{ i.patientName }} {{
                                     i.patientSurname }}</span></div>
-                        
-                                <v-btn v-if="(isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) && isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange))"
-                                    :href="i.appointmentURL"
-                                    target="_blank"
-                                    color="primary"
-                                    class="mt-3"
-                                    :disabled="isCurrentAppointment(i.day, i.timeRange)"
-                                >
+
+                                <v-btn
+                                    v-if="(isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) && isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange))"
+                                    :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
+                                    :disabled="isCurrentAppointment(i.day, i.timeRange)">
                                     Randevuya Katıl
                                 </v-btn>
 
-                                <v-btn
-                                    :href="i.appointmentURL"
-                                    target="_blank"
-                                    color="warning"
-                                    class="mt-3 "
+                                <v-btn :href="i.appointmentURL" target="_blank" color="warning" class="mt-3 "
                                     :class="{ 'd-none': isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) }"
-                                    @click="cancelAppointment(i)"
-                                >
-                                   İptal Et
+                                    @click="cancelAppointment(appointment,i)">
+                                    İptal Et
                                 </v-btn>
                             </UiParentCard>
                         </div>

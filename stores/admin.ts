@@ -158,10 +158,8 @@ export const useAdminStore = defineStore({
                     'Content-Type': 'application/json'
                 },
             })
-            this.fetchUnConfirmedDoctor()
         },
         async deleteUser(userId?: any) {
-            try {
                 await axios.delete('http://localhost:5261/api/Admin/DeleteUser', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -169,10 +167,6 @@ export const useAdminStore = defineStore({
                     },
                     data: JSON.stringify(userId)
                 });
-
-            } catch (error) {
-                console.error('Delete request failed:', error);
-            }
         },
         async fetchDoctorAppointment(id: string, day: string, time: number) {
                 const response = await axios.get(`http://localhost:5261/api/Admin/GetDoctorAppointmentByDateAndTimeRange?doctorId=${id}&day=${day}&timeRange=${time}`, {
@@ -190,18 +184,13 @@ export const useAdminStore = defineStore({
         async createAIModel(file: File) {
             const formData = new FormData();
             formData.append('DataSetFile', file);
-
-            try {
-                await axios.post('http://localhost:5261/api/Admin/CreateMLModel', formData, {
+                await axios.post('http://localhost:5261/api/Admin/CreateAIModel', formData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'multipart/form-data',
                     },
                 });
                 console.log('Dosya başarıyla yüklendi.');
-            } catch (error) {
-                console.error('Dosya yüklenirken bir hata oluştu:', error);
-            }
         }
 
 

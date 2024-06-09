@@ -73,22 +73,20 @@ const resetPassword = async () => {
 
 <template>
     <div class="text-start">
-        <v-form ref="form" v-model="valid" lazy-validation action="/dashboards/modern" class="mt-sm-13 mt-8">
-            <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Yeni Şifre</v-label>
-            <VTextField v-model="newPass" :counter="6" :rules="passwordRules" required variant="outlined"
-                hide-details="auto" :type="show1 ? 'text' : 'password'"
-                :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show1 = !show1"
-                color="primary"></VTextField>
-            <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Şifreyi Onayla</v-label>
-            <VTextField v-model="confirmPass" :counter="6" :rules="passwordRules" required variant="outlined"
-                hide-details="auto" :type="show2 ? 'text' : 'password'"
-                :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show2 = !show2"
-                color="primary"></VTextField>
-            <div v-if="!isFormValid && newPass && confirmPass" class="text-h6 text-error ml-4 my-4">Şifreler eşleşmiyor!
-            </div>
-            <v-btn size="large" to="/" block submit flat style="background-color: rgb(237 50 162); color: #fff"
-                @click="resetPassword()">Şifremi
-                Değiştir</v-btn>
-        </v-form>
+        <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Yeni Şifre</v-label>
+        <VTextField v-model="newPass" :counter="6" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show1 ? 'text' : 'password'"
+            :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show1 = !show1" color="primary">
+        </VTextField>
+        <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Şifreyi Onayla</v-label>
+        <VTextField v-model="confirmPass" :counter="6" :rules="passwordRules" required variant="outlined"
+            hide-details="auto" :type="show2 ? 'text' : 'password'"
+            :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'" @click:append-inner="show2 = !show2" color="primary">
+        </VTextField>
+        <div v-if="!isFormValid && newPass && confirmPass" class="text-h6 text-error ml-4 my-4">Şifreler eşleşmiyor!
+        </div>
+        <v-btn size="large" to="/" block submit flat style="background-color: rgb(237 50 162); color: #fff"
+            @click="resetPassword()">Şifremi
+            Değiştir</v-btn>
     </div>
 </template>

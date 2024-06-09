@@ -1,7 +1,7 @@
 <template>
   <div
     :style="{
-      backgroundImage: 'url(' + '/images/card/16.png' + ')',
+      backgroundImage: 'url(' + '/images/card/footerbg.png' + ')',
       backgroundPosition: 'bottom',
       backgroundRepeat: 'repeat',
     }"
@@ -31,12 +31,12 @@
 }
 @media (min-height: 590px) and (min-width: 1020px)  {
   .bottom-responsive {
-    margin-bottom: 30vh;
+    margin-bottom: 15vh;
   }
 }
-@media (min-height: 1200px)  {
+/* @media (min-height: 1200px)  {
   .bottom-responsive {
-    margin-bottom: 18vh;
+    margin-bottom: 10vh;
   }
-}
+} */
 </style>

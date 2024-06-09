@@ -46,7 +46,10 @@ const deleteItem = async (item: any) => {
                 icon: 'success',
                 title: 'Başarılı',
                 text: 'Danışman başarıyla silindi.',
+            }).then(async () => {
+                window.location.reload()
             });
+
         } catch (error) {
             console.error('Error occurred while deleting user:', error);
             Swal.fire({
@@ -73,11 +76,15 @@ const confirmDoctor = async (doctor: any) => {
     if (result.isConfirmed) {
         try {
             await adminStore.confirmDoctor(doctor.userName);
+
             Swal.fire({
                 icon: 'success',
                 title: 'Başarılı',
                 text: 'Danışman başarıyla onaylandı.',
+            }).then(async () => {
+                window.location.reload()
             });
+
         } catch (error) {
             console.error('Error occurred while confirming doctor:', error);
             Swal.fire({

@@ -219,14 +219,13 @@ export const useMeetStore = defineStore({
                 })
         },
         async cancelDoctorAppointment(appointment: any) {
-          
+            console.log(": ",appointment)
                 await axios.patch('http://localhost:5261/api/DoctorAppointment/CancelDoctorAppointment', appointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     }
                 })
-        
         },
         async createAppointmentByDoctor(appointment: any) {
             await axios.patch('http://localhost:5261/api/DoctorAppointment/CreateAppointmentForPatient', appointment, {

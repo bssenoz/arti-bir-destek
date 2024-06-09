@@ -43,6 +43,12 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
 const handleLoginError = () => {
   console.log("login failed");
 };
+
+const handleEnterKey = () => {
+  if(email.value && password.value) {
+    login();
+  }
+}
 const login = async () => {
   try {
     const user: UserType = {
@@ -109,7 +115,7 @@ const login = async () => {
       v-model="email"
       :rules="emailRules"
       class="mb-8"
-      required
+      required @keydown.enter="handleEnterKey"
       hide-details="auto"
     ></VTextField>
     <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText"
@@ -118,7 +124,7 @@ const login = async () => {
     <VTextField
       v-model="password"
       :rules="passwordRules"
-      required
+      required @keydown.enter="handleEnterKey"
       hide-details="auto"
       :type="show2 ? 'text' : 'password'"
       :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"

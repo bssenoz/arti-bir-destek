@@ -83,6 +83,7 @@ definePageMeta({
         </v-row>
       </v-col>
       <v-col cols="12" md="4">
+      <p class="text-center" v-if="!user.phoneNumber">Lütfen Kullanıcı Ayarları kısmından telefon numaranızı ekleyin!</p>
         <TimelinePatient v-if="userRole == 'Patient'" :user="user"/>
         <TimelineDoctor v-if="userRole == 'Doctor'" :user="user"/>
       </v-col>

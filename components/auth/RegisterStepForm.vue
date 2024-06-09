@@ -100,7 +100,7 @@ const register = async () => {
       await userStore.registerDoctor(newUser);
       Swal.fire({
         title: "Başarılı!",
-        text: "Kaydınız onaya gönderildi! E-mail yoluyla bilgilendirileceksiniz.",
+        text: "Kayıt işleminiz başarıyla gerçekleşti! Mail adresinizi doğrulamak için mail kutunuzu kontrol ediniz. Hesabınız onayladığında mail yoluyla bilgilendirileceksiniz.",
         icon: "success",
         confirmButtonText: "Tamam",
       });
@@ -122,7 +122,7 @@ const register = async () => {
       await userStore.registerPatient(newUser);
       Swal.fire({
         title: "Başarılı!",
-        text: "Kaydınız başarıyla oluşturuldu!",
+        text: "Kayıt işleminiz başarıyla gerçekleşti! Mail adresinizi doğrulamak için mail kutunuzu kontrol ediniz. ",
         icon: "success",
         confirmButtonText: "Tamam",
       });
@@ -296,12 +296,12 @@ const allTitleOptions = computed(() => {
       </div>
     </div>
     <div class="controls">
-      <button class="btn" @click="step--" :disabled="step == 1">Geri</button>
-      <button class="btn btn--pink-1" @click="nextStep" :disabled="!validateInputs ||
+      <button class="btn" style="font-size: 1rem;" @click="step--" :disabled="step == 1">Geri</button>
+      <button class="btn btn--pink-1" style="font-size: 1rem;" @click="nextStep" :disabled="!validateInputs ||
         (step === 3 && phoneNumber.length !== 11) || step === stepItem ||  (step === 3 && !isEmailValid) ||(step === 4  && !isFormValid)" v-if="step !== stepItem">
         İleri
       </button>
-      <button class="btn btn--pink-1 elevation-15" v-if="step == stepItem" @click="register" :disabled="!isKvkk">
+      <button class="btn btn--pink-1 elevation-15" style="font-size: 1rem;" v-if="step == stepItem" @click="register" :disabled="!isKvkk">
         KAYIT OL
       </button>
 

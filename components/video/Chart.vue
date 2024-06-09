@@ -5,7 +5,9 @@
         <template v-slot:activator="{ props }">
           <v-row v-if="image != 'none'">
             <v-col cols="3" style="padding-right: 0">
-              <v-img :src="image" width="40" />
+              <v-avatar>
+                <v-img :src="image" width="40" />
+              </v-avatar>
             </v-col>
             <v-col cols="9">
               <h4 class="text-h4 truncate mt-2">{{ title }}</h4>

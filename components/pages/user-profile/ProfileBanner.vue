@@ -121,6 +121,6 @@ const user = computed(() => {
     }
 }
 .top-card {
-    top: 15vh;
+    top: 8vh;
 }
 </style>

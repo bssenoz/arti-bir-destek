@@ -92,6 +92,6 @@ html {
     background-color: #cecaca;
 }
 
-// div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
-//     background-color: #db2777 !important;
-//   }
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+    background-color: #db2777 !important;
+  }

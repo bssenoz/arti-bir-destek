@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-// project imports
 import axios from '@/utils/axios';
 import { uniqueId } from 'lodash';
 import { sub } from 'date-fns';
@@ -37,10 +36,7 @@ export const useChatStore = defineStore({
     },
     actions: {
         async connectToHub(currentUser: any) {
-            // if(this.connection.state != "Connecting")  
-            console.log("hub")
             const accessToken = localStorage.getItem('accessToken') || '';
-
             const connection = new signalR.HubConnectionBuilder()
                 .withUrl('http://localhost:5261/message', { accessTokenFactory: (): Promise<string> => Promise.resolve(accessToken) })
                 .build();
@@ -57,10 +53,7 @@ export const useChatStore = defineStore({
                 console.warn('Connection lost!');
             });
 
-            console.log("current: ", currentUser)
             connection.on('messageToUserReceived', (senderID: string, receiverID: string, msg: string) => {
-                console.log('Message received:', msg);
-
                 const newMessage = {
                     id: uniqueId(),
                     text: msg,
@@ -73,7 +66,6 @@ export const useChatStore = defineStore({
 
                 this.currentUser = currentUser;
                 this.messages.push(newMessage);
-                console.log("new message: ", newMessage)
             });
 
             this.connection = connection;
@@ -83,11 +75,7 @@ export const useChatStore = defineStore({
             const fromId = this.fromUserId;
 
             if (this.connection && this.connection.state === signalR.HubConnectionState.Connected && item.trim() !== '') {
-                try {
-
                     await this.connection.invoke('SendMessageToUser', currentUserId, fromId, item.trim());
-                    console.log('Message sent successfully.');
-
                     const newMessage = {
                         id: uniqueId(),
                         text: item,
@@ -101,10 +89,6 @@ export const useChatStore = defineStore({
                     this.messages.push(newMessage);
                     console.log("new message: ", newMessage)
                     this.fetchMessageInfo(currentUserId)
-
-                } catch (error) {
-                    console.error('Error sending message:', error);
-                }
             } else {
                 console.error('Connection is not available or not connected.');
             }
@@ -112,7 +96,6 @@ export const useChatStore = defineStore({
 
         async fetchMessages(chatUsers: any) {
             try {
-                console.log("chatusers: ", chatUsers)
                 const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
@@ -127,7 +110,6 @@ export const useChatStore = defineStore({
         },
         async fromUserChange(id: string) {
             this.fromUserId = id
-            console.log("this: ", this.fromUserId)
         },
         async fetchMessageInfo(userId: any) {
             const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`, {
@@ -136,7 +118,6 @@ export const useChatStore = defineStore({
                     'Content-Type': 'application/json'
                 },
             });
-            console.log(response.data);
             this.allMessageInfo = response.data
         },
         async updateStatus(chatUsers: any) {

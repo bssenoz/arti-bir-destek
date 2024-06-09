@@ -130,11 +130,14 @@ const cancelAppointment = (i: any) => {
                     doctorId: i.doctorId,
                 }
                 meetStore.cancelPatientAppointment(cancelInfo)
-                Swal.fire(
-                    'Başarılı!',
-                    'Randevunuz iptal edildi.',
-                    'success'
-                );
+                Swal.fire({
+                    title: "Başarılı!",
+                    text: "Randevunuz iptal edildi.",
+                    icon: "success",
+                    confirmButtonText: "Tamam",
+                }).then(() => {
+                    window.location.reload();
+                });
 
             } catch (error) {
                 Swal.fire(

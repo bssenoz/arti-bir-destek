@@ -101,7 +101,7 @@ export const useUserStore = defineStore({
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
                 localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
 
-                if(user.email == 'admin@gmail.com') this.userRole =  UserRole.Admin;
+                if (user.email == 'admin@gmail.com') this.userRole = UserRole.Admin;
 
             } catch (error) {
                 throw new Error(error.message);
@@ -162,7 +162,7 @@ export const useUserStore = defineStore({
                 }
 
                 );
-                console.log("res::: ",response)
+                console.log("res::: ", response)
 
                 this.accessToken = response.data.accessToken;
                 this.refreshToken = response.data.refreshToken;
@@ -179,15 +179,19 @@ export const useUserStore = defineStore({
         },
         async logout() {
             try {
-        
+                await axios.patch('http://localhost:5261/api/Authentication/LogOut', null, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+                        'Content-Type': 'application/json'
+                    },
+                })
                 this.refreshToken = null;
                 this.accessToken = null;
                 this.accessTime = null;
-        
+
                 localStorage.removeItem('refreshToken');
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('accessTime');
-        
             } catch (error) {
                 console.error('Oturum kapatma hatası:', error);
                 throw new Error('Oturum kapatılamadı.');
@@ -219,15 +223,15 @@ export const useUserStore = defineStore({
                         'Content-Type': 'application/json'
                     }
                 });
-        
+
                 this.currentUser = response.data;
                 const accessToken = localStorage.getItem('accessToken');
-        
+
                 if (accessToken) {
                     const decodedToken = jwt_decode(accessToken) as Record<string, unknown>;
-        
+
                     const userRole = decodedToken.role as string | undefined;
-        
+
                     if (userRole == "Admin") this.userRole = UserRole.Admin;
                     if (userRole == "Doctor") this.userRole = UserRole.Doctor;
                     if (userRole == "Patient") this.userRole = UserRole.Patient;
@@ -268,12 +272,12 @@ export const useUserStore = defineStore({
             }
         },
         async updateDoctor(newInfo: any) {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${this.accessToken}`
-                    }
-                };
-                await axios.put('http://localhost:5261/api/User/UpdateDoctor', newInfo, config)
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`
+                }
+            };
+            await axios.put('http://localhost:5261/api/User/UpdateDoctor', newInfo, config)
         },
         async updateDoctorTitle(titleId: number) {
             const config = {
@@ -282,24 +286,24 @@ export const useUserStore = defineStore({
                     'Content-Type': 'application/json'
                 }
             };
-            await axios.patch(`http://localhost:5261/api/User/UpdateDoctorTitle?doctorTitleId=${titleId}`,null ,config)
-    },
+            await axios.patch(`http://localhost:5261/api/User/UpdateDoctorTitle?doctorTitleId=${titleId}`, null, config)
+        },
         async updatePatient(newInfo: any) {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${this.accessToken}`
-                    }
-                };
-                await axios.put('http://localhost:5261/api/User/UpdatePatient', newInfo, config)
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`
+                }
+            };
+            await axios.put('http://localhost:5261/api/User/UpdatePatient', newInfo, config)
         },
         async changePassword(newPass: any) {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${this.accessToken}`
-                    }
-                };
-                await axios.patch('http://localhost:5261/api/User/ChangePassword', newPass, config)
-      
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.accessToken}`
+                }
+            };
+            await axios.patch('http://localhost:5261/api/User/ChangePassword', newPass, config)
+
         },
         async uploadProfileImage(file: any) {
             try {
@@ -329,10 +333,11 @@ export const useUserStore = defineStore({
             }
         },
         async resetPassword(password: any, token: string) {
-            await axios.post(`http://localhost:5261/api/Authentication/ResetPassword?token=${token}`,password)
+            await axios.post(`http://localhost:5261/api/Authentication/ResetPassword?token=${token}`, password)
         },
         async forgotPassword(email: string) {
             await axios.post(`http://localhost:5261/api/Authentication/ForgotPassword?email=${email}`)
-        }
+        },
+
     }
 });

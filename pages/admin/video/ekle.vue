@@ -70,15 +70,16 @@ const submitFile = () => {
 
         })
         .then(() => {
-          title.value = "";
-          description.value = "";
-          file.value = "";
+
           Swal.fire({
             title: "Başarılı!",
             text: "Video başarıyla eklendi!",
             icon: "success",
             confirmButtonText: "Tamam",
-          });
+          }).then(() => {
+            window.location.reload();
+        });
+
         })
         .catch(() => {
           Swal.fire({

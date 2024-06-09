@@ -68,7 +68,7 @@ const addTitle = async () => {
             icon: "success",
             confirmButtonText: "Tamam",
         });
-
+        newTitle.value = ''
     } catch (error) {
         Swal.fire({
             title: "Hata!",

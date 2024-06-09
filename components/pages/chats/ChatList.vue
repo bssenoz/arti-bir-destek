@@ -6,6 +6,7 @@ import { useMeetStore } from '@/stores/meet';
 import { ChatUsersType, ChatsUserType } from '~/types/ChatType';
 import { CurrentUserType } from '~/types/UserType';
 import user from '/images/profile/user.png';
+import { getUserRoleFromToken } from '@/utils/role';
 
 const chatStore = useChatStore();
 const meetStore = useMeetStore();
@@ -26,8 +27,12 @@ watchEffect(() => {
 
 onMounted(async () => {
   await userStore.getCurrentUser();
+  const role = getUserRoleFromToken();
+
   if (currentUser.value) chatStore.fetchMessageInfo(userStore.currentUser.id);
-  meetStore.fetchPatientDoctors();
+  if (role === 'Patient') {
+    meetStore.fetchPatientDoctors();
+  }
 });
 
 const getChats = computed(() => {
@@ -217,3 +222,9 @@ const transformChatItem = (item: any): ChatsUserType => {
   </v-sheet>
 </template>
 
+<style scoped>
+.badg-dotDetail {
+  margin-left:-.3rem;
+  margin-top:.5rem;
+}
+</style>

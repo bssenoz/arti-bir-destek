@@ -52,6 +52,7 @@ const openDialog = (statistic: null) => {
 };
 const saveReport = async (appointmentID: any, patientID: any) => {
     try {
+        dialogReport.value = false;
         const newReport = {
             appointmentStartTime: startTime.value,
             appointmentEndTime: finishTime.value,
@@ -190,17 +191,6 @@ const saveReport = async (appointmentID: any, patientID: any) => {
                     </v-col>
                 </v-row>
             </v-col>
-            <!-- <v-dialog v-model="dialogVisible" max-width="400">
-                <v-card>
-                    <v-card-title>{{ success ? 'Başarılı' : 'Hata' }}</v-card-title>
-                    <v-card-text>
-                        {{ success ? 'Rapor Eklendi.' : errorMessage }}
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-btn color="primary" @click="dialogVisible = false">Tamam</v-btn>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog> -->
         </v-row>
     </v-container>
 </template>

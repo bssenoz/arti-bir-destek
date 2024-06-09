@@ -85,6 +85,9 @@ const changePassword = async () => {
             icon: "success",
             confirmButtonText: "Tamam",
         });
+
+        newPass.value = '',
+        confirmPass.value = ''
     } catch (error) {
         Swal.fire({
             title: "Hata!",

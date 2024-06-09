@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useAdminStore } from '@/stores/admin';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+import Swal from 'sweetalert2';
 
 const page = ref({ title: 'Yapay Zeka' });
 const breadcrumbs = ref([
@@ -19,11 +20,26 @@ const breadcrumbs = ref([
 const adminStore = useAdminStore();
 const dialog = ref(false);
 
-const handleFileChange = (event: Event) => {
+const handleFileChange = async (event: Event) => {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
-        adminStore.createAIModel(file);
+        try {
+            await adminStore.createAIModel(file);
+
+            Swal.fire({
+            title: "Başarılı!",
+            text: "Veri seti yüklemesi başarılı.",
+            icon: "success",
+            confirmButtonText: "Tamam",
+          })
+        } catch(error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata',
+                text: 'Model eğitilemedi.',
+            });
+        }
     }
 };
 

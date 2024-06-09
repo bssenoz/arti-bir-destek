@@ -204,4 +204,8 @@ const headers = ref([
 ::v-deep(v-table__wrapper) {
     scrollbar-width: thin;
 }
+
+::v-deep(ul) {
+    margin-left: 2rem;
+}
 </style>
