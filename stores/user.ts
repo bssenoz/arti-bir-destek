@@ -338,6 +338,8 @@ export const useUserStore = defineStore({
         async forgotPassword(email: string) {
             await axios.post(`http://localhost:5261/api/Authentication/ForgotPassword?email=${email}`)
         },
-
+        async mailConfirm(email: any, token: any) {
+            await axios.get(`http://localhost:5261/api/Authentication/ConfirmEmail?email=${email}&token=${token}`)
+        }
     }
 });
