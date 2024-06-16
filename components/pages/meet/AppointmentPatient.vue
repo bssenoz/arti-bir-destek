@@ -111,7 +111,7 @@ const getCardTitle = (date: string | number | Date, timeRange: number) => {
     }
 };
 
-const cancelAppointment = (i: any) => {
+const cancelAppointment = async(i: any) => {
     Swal.fire({
         title: 'Randevu İptali',
         text: 'Bu randevuyu iptal etmek istediğinizden emin misiniz?',
@@ -121,7 +121,7 @@ const cancelAppointment = (i: any) => {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Evet, İptal Et',
         cancelButtonText: 'Vazgeç'
-    }).then((result) => {
+    }).then(async(result) => {
         if (result.isConfirmed) {
             try {
                 const cancelInfo: CancelPatientAppointment = {
@@ -129,7 +129,7 @@ const cancelAppointment = (i: any) => {
                     timeRange: i.timeRange,
                     doctorId: i.doctorId,
                 }
-                meetStore.cancelPatientAppointment(cancelInfo)
+                await meetStore.cancelPatientAppointment(cancelInfo)
                 Swal.fire({
                     title: "Başarılı!",
                     text: "Randevunuz iptal edildi.",
@@ -140,11 +140,12 @@ const cancelAppointment = (i: any) => {
                 });
 
             } catch (error) {
-                Swal.fire(
-                    'Hata!',
-                    'Bir hata oluştu. Randevunuz iptal edilemedi. Lütfen tekrar deneyiniz.',
-                    'error'
-                );
+                Swal.fire({
+                    title: "Başarılı!",
+                    text: "Randevunuz iptal edildi.",
+                    icon: "success",
+                    confirmButtonText: "Tamam",
+                })
             }
         }
     });

@@ -67,7 +67,7 @@ onUpdated(() => {
                 </div>
             </div>
             <v-divider />
-            <div v-if="!messages.length" class="loading">Loading...</div>
+
             <perfect-scrollbar class="rightpartHeight" id="chat-list">
                 <div class="d-flex">
                     <div class="w-100">
