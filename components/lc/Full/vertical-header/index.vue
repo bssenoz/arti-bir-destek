@@ -37,12 +37,6 @@ onMounted(() => {
             <LcFullVerticalHeaderNavigations />
         </div>
         <v-spacer />
-      
-        <!-- ------------------------------------------------>
-        <!-- Notification -->
-        <!-- ------------------------------------------------>
-        <LcFullVerticalHeaderNotificationDD />
-
 
         <!-- right sidebar -->
         <v-btn variant="text" color="primary" class="hidden-lg-and-up custom-hover-primary ml-3" icon

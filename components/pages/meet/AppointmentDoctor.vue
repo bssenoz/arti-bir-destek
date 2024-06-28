@@ -205,7 +205,7 @@ const cancelAppointment = async (appointment: any, i: any) => {
 
                                 <v-btn
                                     v-if="(isPastAppointment(appointment.appointmentDay, i.appointmentTimeRange) && isCurrentAppointment(appointment.appointmentDay, i.appointmentTimeRange))"
-                                    :href="i.appointmentURL" target="_blank" color="primary" class="mt-3"
+                                    :href="i.appointmentUrl" target="_blank" color="primary" class="mt-3"
                                     :disabled="isCurrentAppointment(i.day, i.timeRange)">
                                     Randevuya Katıl
                                 </v-btn>

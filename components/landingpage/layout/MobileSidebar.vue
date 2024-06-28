@@ -7,7 +7,6 @@ import {
   MailIcon,
   MessageCircleIcon,
 } from "vue-tabler-icons";
-import { demosMegamenu, appsMegamenu } from "@/_mockApis/landingpage/lpPage";
 const customizer = useCustomizerStore();
 </script>
 

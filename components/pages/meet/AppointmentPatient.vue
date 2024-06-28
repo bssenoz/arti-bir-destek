@@ -104,6 +104,8 @@ const isCurrentAppointment = (date: string | number | Date, timeRange: number) =
 const getCardTitle = (date: string | number | Date, timeRange: number) => {
     if (isAppointmentSoon(date, timeRange)) {
         return 'Yaklaşan Randevu';
+    } else if (isCurrentAppointment(date, timeRange)) {
+        return 'Randevu Zamanı !';
     } else if (isPastAppointment(date, timeRange)) {
         return 'Geçmiş Randevu';
     } else {
@@ -207,8 +209,8 @@ const cancelAppointment = async(i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Danışman: <span class="font-weight-thin">{{i.doctorTitle}} {{ i.doctorName }} {{
                                     i.doctorSurname }}</span></div>
-                                <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3" v-if="(isPastAppointment(i.day, i.timeRange) && isCurrentAppointment(i.day, i.timeRange))"
-                                    :disabled="!isAppointmentTime(i.day, i.timeRange) || isPastAppointment(i.day, i.timeRange)">
+                                <v-btn :href="i.appointmentUrl" target="_blank" color="primary" class="mt-3" v-if="(isPastAppointment(i.day, i.timeRange) && isCurrentAppointment(i.day, i.timeRange))"
+                                    >
                                     Randevuya Katıl
                                 </v-btn>
 

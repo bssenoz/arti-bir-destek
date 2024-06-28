@@ -209,3 +209,6 @@ html {
 div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
     background-color: #db2777 !important;
   }
+  .v-btn {
+    text-transform: none;
+  }

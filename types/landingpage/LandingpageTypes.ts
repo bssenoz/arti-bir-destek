@@ -1,6 +1,5 @@
 type ProductsSliderTypes = {
     type:boolean;
-    img: string;
     name: string;
     link: string;
 };
