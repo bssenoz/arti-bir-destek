@@ -62,7 +62,6 @@ watchEffect(() => {
   const start = range.value.start;
   const end = range.value.end;
   if (start && end) {
-    console.log("Seçilen tarih aralığı:", start, " | ", end);
     updateWeeklyDates(start, end);
   }
 });

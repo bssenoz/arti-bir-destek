@@ -80,7 +80,6 @@ const selectUserType = (type: string) => {
 const register = async () => {
   try {
     if (password.value !== passwordConfirm.value) {
-      console.log(password.value + " : " + passwordConfirm.value)
       throw new Error("Şifreler eşleşmiyor");
     }
 

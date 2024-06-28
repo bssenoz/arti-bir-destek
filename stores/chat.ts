@@ -3,6 +3,9 @@ import axios from '@/utils/axios';
 import { uniqueId } from 'lodash';
 import { sub } from 'date-fns';
 import * as signalR from '@microsoft/signalr';
+import { useRuntimeConfig } from '#app';
+
+const config = useRuntimeConfig();
 
 interface chatType {
     chats: any;
@@ -38,7 +41,7 @@ export const useChatStore = defineStore({
         async connectToHub(currentUser: any) {
             const accessToken = localStorage.getItem('accessToken') || '';
             const connection = new signalR.HubConnectionBuilder()
-                .withUrl('http://localhost:5261/message', { accessTokenFactory: (): Promise<string> => Promise.resolve(accessToken) })
+                .withUrl(`${config.public.apiBaseUrl}/message`, { accessTokenFactory: (): Promise<string> => Promise.resolve(accessToken) })
                 .build();
 
             connection.start()
@@ -69,7 +72,6 @@ export const useChatStore = defineStore({
             });
 
             this.connection = connection;
-            console.log("conn: ", this.connection)
         },
         async sendMessage(item: string, currentUserId: any) {
             const fromId = this.fromUserId;
@@ -87,7 +89,6 @@ export const useChatStore = defineStore({
                     };
 
                     this.messages.push(newMessage);
-                    console.log("new message: ", newMessage)
                     this.fetchMessageInfo(currentUserId)
             } else {
                 console.error('Connection is not available or not connected.');
@@ -96,13 +97,12 @@ export const useChatStore = defineStore({
 
         async fetchMessages(chatUsers: any) {
             try {
-                const response = await axios.post('http://localhost:5261/api/Message/GetMessages', chatUsers, {
+                const response = await axios.post(`${config.public.apiBaseUrl}/api/Message/GetMessages`, chatUsers, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     },
                 });
-                console.log(response.data);
                 this.messages = response.data
             } catch (error) {
                 this.messages = []
@@ -112,7 +112,7 @@ export const useChatStore = defineStore({
             this.fromUserId = id
         },
         async fetchMessageInfo(userId: any) {
-            const response = await axios.get(`http://localhost:5261/api/Message/GetMessagedUsers?userId=${userId}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Message/GetMessagedUsers?userId=${userId}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -121,8 +121,7 @@ export const useChatStore = defineStore({
             this.allMessageInfo = response.data
         },
         async updateStatus(chatUsers: any) {
-            console.log("chatuser: ", chatUsers)
-            const response = await axios.patch('http://localhost:5261/api/Message/MessageChangeStatus', chatUsers, {
+            const response = await axios.patch(`${config.public.apiBaseUrl}/api/Message/MessageChangeStatus`, chatUsers, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -132,7 +131,7 @@ export const useChatStore = defineStore({
             this.fetchMessageInfo(chatUsers.receiverId)
         },
         async getPatientLastDayMessageEmotions(userSlug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientLastDayMessageEmotions?patientUserName=${userSlug}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Message/GetPatientLastDayMessageEmotions?patientUserName=${userSlug}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -141,7 +140,7 @@ export const useChatStore = defineStore({
             this.patientEmotion = response.data;
         },
         async getPatientLastMonthMessageEmotions(userSlug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientLastMonthMessageEmotions?patientUserName=${userSlug}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Message/GetPatientLastMonthMessageEmotions?patientUserName=${userSlug}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -150,7 +149,7 @@ export const useChatStore = defineStore({
             this.patientEmotion = response.data;
         },
         async getPatientAllMessageEmotions(userSlug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Message/GetPatientAllMessageEmotions?patientUserName=${userSlug}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Message/GetPatientAllMessageEmotions?patientUserName=${userSlug}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

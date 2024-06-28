@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
+import { useRuntimeConfig } from '#app';
+
+const config = useRuntimeConfig();
 
 interface meetType {
     meets: any;
@@ -34,29 +37,23 @@ export const useMeetStore = defineStore({
     actions: {
         async fetchMeets() {
             try {
-                console.log("fetchh")
                 const data = await axios.get('/api/data/meet/MeetData');
-                console.log("data: ", data)
                 this.meets = data.data;
             } catch (error) {
                 alert(error);
-                console.log(error);
             }
         },
         async postCalendar(time: any, data: any) {
 
-            await axios.post('http://localhost:5261/api/DoctorSchedule/AddDoctorSchedule', time, {
+            await axios.post(`${config.public.apiBaseUrl}/api/DoctorSchedule/AddDoctorSchedule`, time, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
                 },
             })
-            // this.addAppointmentSchedule(data)
-
-
         },
         async updateCalendar(time: any) {
-            await axios.put('http://localhost:5261/api/DoctorSchedule/UpdateDoctorSchedule', time, {
+            await axios.put(`${config.public.apiBaseUrl}/api/DoctorSchedule/UpdateDoctorSchedule`, time, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -65,7 +62,7 @@ export const useMeetStore = defineStore({
         },
         async getDoctorSchedule() {
             try {
-                const response = await axios.get('http://localhost:5261/api/DoctorSchedule/GetDoctorSchedules', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/DoctorSchedule/GetDoctorSchedules`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -73,21 +70,18 @@ export const useMeetStore = defineStore({
                 });
                 this.schedule = response.data;
             } catch (error) {
-                console.error(error);
                 alert('Hata oluştu. Lütfen tekrar deneyin.');
             }
         },
         async getAllAppointmentSchedule(date: string) {
             try {
-                console.log(date)
-                const response = await axios.get(`http://localhost:5261/api/AppointmentSchedule/GetAllAppointmentSchedules?date=${date}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/AppointmentSchedule/GetAllAppointmentSchedules?date=${date}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     },
                 });
                 this.allSchedule = response.data;
-                console.log("al: ", this.allSchedule)
             } catch (error) {
                 console.error(error);
                 this.allSchedule = '';
@@ -95,7 +89,7 @@ export const useMeetStore = defineStore({
         },
         async makeAppointment(newAppointment: any) {
 
-                const response = await axios.patch('http://localhost:5261/api/PatientAppointment/MakeAppointment', newAppointment, {
+                const response = await axios.patch(`${config.public.apiBaseUrl}/api/PatientAppointment/MakeAppointment`, newAppointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -106,23 +100,20 @@ export const useMeetStore = defineStore({
         },
         async fetchPatientAppointments() {
             try {
-                // console.log(newAppointment)
-                const response = await axios.get('http://localhost:5261/api/PatientAppointment/GetPatientAppointments', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/PatientAppointment/GetPatientAppointments`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     },
                 });
                 this.patientAppointment = response.data.reverse()
-                console.log(this.patientAppointment)
-                // this.patientAppointment(newAppointment.day)
             } catch (error) {
                 console.error(error);
             }
         },
         async fetchDoctorAppointments() {
             try {
-                const response = await axios.get('http://localhost:5261/api/DoctorAppointment/GetAllDoctorAppointments', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/DoctorAppointment/GetAllDoctorAppointments`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -135,7 +126,7 @@ export const useMeetStore = defineStore({
         },
         async fetchAllPatientsForDoctor() {
             try {
-                const response = await axios.get('http://localhost:5261/api/DoctorAppointment/GetAllPatients', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/DoctorAppointment/GetAllPatients`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -148,7 +139,7 @@ export const useMeetStore = defineStore({
         },
         async getUserReport(userSlug: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/AppointmentStatistics/GetAllAppoinmentStatisticsByPatientUserName?patientUserName=${userSlug}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/AppointmentStatistics/GetAllAppoinmentStatisticsByPatientUserName?patientUserName=${userSlug}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -165,7 +156,7 @@ export const useMeetStore = defineStore({
         },
         async fetchPastDoctorAppointment(patientSlug: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/DoctorAppointment/GetAllPastDoctorAppointmentsByPatientSlug?patientSlug=${patientSlug}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/DoctorAppointment/GetAllPastDoctorAppointmentsByPatientSlug?patientSlug=${patientSlug}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -180,7 +171,7 @@ export const useMeetStore = defineStore({
         },
         async addAppointmentReport(report: any) {
             try {
-                const response = await axios.post('http://localhost:5261/api/AppointmentStatistics/AddAppointmentStatistics', report, {
+                const response = await axios.post(`${config.public.apiBaseUrl}/api/AppointmentStatistics/AddAppointmentStatistics`, report, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -193,7 +184,7 @@ export const useMeetStore = defineStore({
         },
 
         async getUserSlug(userSlug: string) {
-            const response = await axios.get(`http://localhost:5261/api/User/GetUserBySlug?userSlug=${userSlug}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/User/GetUserBySlug?userSlug=${userSlug}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -202,7 +193,7 @@ export const useMeetStore = defineStore({
             this.getUser = response.data;
         },
         async fetchPatientDoctors() {
-            const response = await axios.get('http://localhost:5261/api/PatientAppointment/GetPatientDoctors', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/PatientAppointment/GetPatientDoctors`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -211,7 +202,7 @@ export const useMeetStore = defineStore({
             this.patientDoctors = response.data;
         },
         async cancelPatientAppointment(appointment: any) {
-                await axios.patch('http://localhost:5261/api/PatientAppointment/CancelPatientAppointment', appointment, {
+                await axios.patch(`${config.public.apiBaseUrl}/api/PatientAppointment/CancelPatientAppointment`, appointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -219,8 +210,7 @@ export const useMeetStore = defineStore({
                 })
         },
         async cancelDoctorAppointment(appointment: any) {
-            console.log(": ",appointment)
-                await axios.patch('http://localhost:5261/api/DoctorAppointment/CancelDoctorAppointment', appointment, {
+                await axios.patch(`${config.public.apiBaseUrl}/api/DoctorAppointment/CancelDoctorAppointment`, appointment, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -228,7 +218,7 @@ export const useMeetStore = defineStore({
                 })
         },
         async createAppointmentByDoctor(appointment: any) {
-            await axios.patch('http://localhost:5261/api/DoctorAppointment/CreateAppointmentForPatient', appointment, {
+            await axios.patch(`${config.public.apiBaseUrl}/api/DoctorAppointment/CreateAppointmentForPatient`, appointment, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

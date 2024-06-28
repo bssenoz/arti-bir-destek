@@ -51,7 +51,6 @@ const deleteItem = async (item: any) => {
             });
 
         } catch (error) {
-            console.error('Error occurred while deleting user:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Hata',
@@ -86,7 +85,6 @@ const confirmDoctor = async (doctor: any) => {
             });
 
         } catch (error) {
-            console.error('Error occurred while confirming doctor:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Hata',

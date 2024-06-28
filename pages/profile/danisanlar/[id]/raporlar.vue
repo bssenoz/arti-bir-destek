@@ -29,7 +29,6 @@ const getUser: any = computed(() => {
 
 const search = ref('');
 const filteredList = computed(() => {
-    console.log("s: ", search.value);
     if (!search.value) return report.value;
 
     return report.value.map((item: any) => {

@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
 import { DoctorType, PatientType } from '@/types/UserType';
+import { useRuntimeConfig } from '#app';
+
+const config = useRuntimeConfig();
 
 export interface UserType {
     accessToken: string | null;
@@ -32,7 +35,7 @@ export const useAdminStore = defineStore({
     actions: {
 
         async fetchUserPatient() {
-            const response = await axios.get('http://localhost:5261/api/Admin/GetAllPatients', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllPatients`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -41,7 +44,7 @@ export const useAdminStore = defineStore({
             this.patients = response.data
         },
         async fetchAllDoctors() {
-            const response = await axios.get('http://localhost:5261/api/Admin/GetAllDoctors', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllDoctors`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -50,7 +53,7 @@ export const useAdminStore = defineStore({
             this.alldoctors = response.data
         },
         async getVideoIstatisticPatient(slug: string) {
-            const response = await axios.get(`http://localhost:5261/api/Admin/GetAllVideoStatisticsByPatientUserName?patientUserName=${slug}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllVideoStatisticsByPatientUserName?patientUserName=${slug}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -60,7 +63,7 @@ export const useAdminStore = defineStore({
         },
         async getReportPatient(slug: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByPatientUserName?patientUserName=${slug}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllPatientAppointmentStatisticsByPatientUserName?patientUserName=${slug}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -68,15 +71,13 @@ export const useAdminStore = defineStore({
                 })
                 response.data[0].appointmentStatistics.reverse()
                 this.reportPatient = response.data
-                console.log("::: ", this.reportPatient[0])
-
             } catch (error) {
                 this.reportPatient = ' '
             }
         },
         async getReportDoctor(slug: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllPatientAppointmentStatisticsByDoctorUserName?doctorUserName=${slug}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllPatientAppointmentStatisticsByDoctorUserName?doctorUserName=${slug}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -90,7 +91,7 @@ export const useAdminStore = defineStore({
         },
         async getAllAppointmentSchedule(date: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/Admin/GetAllDoctorSchedulesByDate?day=${date}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllDoctorSchedulesByDate?day=${date}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -98,13 +99,12 @@ export const useAdminStore = defineStore({
                 });
                 this.allSchedule = response.data;
             } catch (error) {
-                console.error(error);
                 this.allSchedule = '';
             }
         },
         async addTitle(title: any) {
             try {
-                await axios.post('http://localhost:5261/api/Admin/AddDoctorTitle', title, {
+                await axios.post(`${config.public.apiBaseUrl}/api/Admin/AddDoctorTitle`, title, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -118,7 +118,7 @@ export const useAdminStore = defineStore({
         },
         async fetchTitle() {
             try {
-                const response = await axios.get('http://localhost:5261/api/User/GetAllDoctorTitles', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/User/GetAllDoctorTitles`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -131,7 +131,7 @@ export const useAdminStore = defineStore({
         },
         async deleteTitle(id: number) {
             try {
-                await axios.delete(`http://localhost:5261/api/Admin/DeleteDoctorTitle?doctorTitleId=${id}`, {
+                await axios.delete(`${config.public.apiBaseUrl}/api/Admin/DeleteDoctorTitle?doctorTitleId=${id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -143,7 +143,7 @@ export const useAdminStore = defineStore({
             }
         },
         async fetchUnConfirmedDoctor() {
-            const response = await axios.get('http://localhost:5261/api/Admin/GetAllUnConfirmedDoctor', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllUnConfirmedDoctor`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -152,7 +152,7 @@ export const useAdminStore = defineStore({
             this.allUnConfirmed = response.data;
         },
         async confirmDoctor(slug: string) {
-            await axios.patch(`http://localhost:5261/api/Admin/ConfirmDoctor?doctorUserName=${slug}`, null, {
+            await axios.patch(`${config.public.apiBaseUrl}/api/Admin/ConfirmDoctor?doctorUserName=${slug}`, null, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -160,7 +160,7 @@ export const useAdminStore = defineStore({
             })
         },
         async deleteUser(userId?: any) {
-                await axios.delete('http://localhost:5261/api/Admin/DeleteUser', {
+                await axios.delete(`${config.public.apiBaseUrl}/api/Admin/DeleteUser`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -169,28 +169,23 @@ export const useAdminStore = defineStore({
                 });
         },
         async fetchDoctorAppointment(id: string, day: string, time: number) {
-                const response = await axios.get(`http://localhost:5261/api/Admin/GetDoctorAppointmentByDateAndTimeRange?doctorId=${id}&day=${day}&timeRange=${time}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetDoctorAppointmentByDateAndTimeRange?doctorId=${id}&day=${day}&timeRange=${time}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
                     },
                 })
                 this.appointmentDoctor = response.data;
-
-            // } catch (error) {
-            //     this.appointmentDoctor = ''
-            // }
         },
         async createAIModel(file: File) {
             const formData = new FormData();
             formData.append('DataSetFile', file);
-                await axios.post('http://localhost:5261/api/Admin/CreateAIModel', formData, {
+                await axios.post(`${config.public.apiBaseUrl}/api/Admin/CreateAIModel`, formData, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                console.log('Dosya başarıyla yüklendi.');
         }
 
 

@@ -2,7 +2,9 @@ import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
 import { DoctorType, PatientType, CurrentUserType } from '@/types/UserType';
 import jwt_decode from 'jwt-decode';
-import Crypto from 'crypto-js';
+import { useRuntimeConfig } from '#app';
+
+const config = useRuntimeConfig();
 
 export enum UserRole {
     Doctor = 'Doctor',
@@ -71,8 +73,7 @@ export const useUserStore = defineStore({
     actions: {
         async registerPatient(newUser: any) {
             try {
-                const response = await axios.post('http://localhost:5261/api/Authentication/RegisterForPatient', newUser);
-                console.log("Kullanıcı başarıyla kaydedildi:", response.data);
+                await axios.post(`${config.public.apiBaseUrl}/api/Authentication/RegisterForPatient`, newUser);
             } catch (error) {
                 console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
                 throw new Error("Kullanıcı kaydedilemedi.");
@@ -80,9 +81,7 @@ export const useUserStore = defineStore({
         },
         async registerDoctor(newUser: any) {
             try {
-                console.log(newUser)
-                const response = await axios.post('http://localhost:5261/api/Authentication/RegisterForDoctor', newUser);
-                console.log("Kullanıcı başarıyla kaydedildi:", response.data);
+                await axios.post(`${config.public.apiBaseUrl}/api/Authentication/RegisterForDoctor`, newUser);
             } catch (error) {
                 console.error("Kullanıcı kaydedilirken bir hata oluştu:", error);
                 throw new Error("Kullanıcı kaydedilemedi.");
@@ -90,9 +89,7 @@ export const useUserStore = defineStore({
         },
         async login(user: any) {
             try {
-                const response = await axios.post('http://localhost:5261/api/Authentication/Login', user);
-                console.log("Kullanıcı giriş yaptı:", response.data.jwtTokenDTO);
-
+                const response = await axios.post(`${config.public.apiBaseUrl}/api/Authentication/Login`, user);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
                 this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
@@ -101,17 +98,15 @@ export const useUserStore = defineStore({
                 localStorage.setItem('refreshToken', response.data.jwtTokenDTO.refreshToken);
                 localStorage.setItem('accessTime', response.data.jwtTokenDTO.accessTokenTime);
 
-                if (user.email == 'admin@gmail.com') this.userRole = UserRole.Admin;
+                if (user.email == `${config.public.admin}`) this.userRole = UserRole.Admin;
 
             } catch (error) {
                 throw new Error(error.message);
             }
         },
         async loginWithGoogle(userToken: string) {
-            console.log("token:: ", userToken);
-
             const response = await axios.post(
-                'http://localhost:5261/api/Authentication/LoginViaGoogle',
+                `${config.public.apiBaseUrl}/api/Authentication/LoginViaGoogle`,
                 JSON.stringify(userToken),
                 {
                     headers: {
@@ -129,10 +124,9 @@ export const useUserStore = defineStore({
 
         },
         async loginWithFacebook(userToken: string) {
-            console.log("token:: ", userToken);
             try {
                 const response = await axios.post(
-                    'http://localhost:5261/api/Authentication/LoginViaFacebook',
+                    `${config.public.apiBaseUrl}/api/Authentication/LoginViaFacebook`,
                     JSON.stringify(userToken),
                     {
                         headers: {
@@ -140,7 +134,6 @@ export const useUserStore = defineStore({
                         }
                     }
                 );
-                console.log("res: ", response.data);
                 this.accessToken = response.data.jwtTokenDTO.accessToken;
                 this.refreshToken = response.data.jwtTokenDTO.refreshToken;
                 this.accessTime = response.data.jwtTokenDTO.accessTokenTime;
@@ -153,8 +146,7 @@ export const useUserStore = defineStore({
         },
         async refreshAccessToken() {
             try {
-                console.log("refresh token")
-                const response = await axios.post('http://localhost:5261/api/Authentication/LoginWithRefreshToken', JSON.stringify(localStorage.getItem('refreshToken')), {
+                const response = await axios.post(`${config.public.apiBaseUrl}/api/Authentication/LoginWithRefreshToken`, JSON.stringify(localStorage.getItem('refreshToken')), {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -162,7 +154,6 @@ export const useUserStore = defineStore({
                 }
 
                 );
-                console.log("res::: ", response)
 
                 this.accessToken = response.data.accessToken;
                 this.refreshToken = response.data.refreshToken;
@@ -172,14 +163,13 @@ export const useUserStore = defineStore({
                 localStorage.setItem('accessTime', response.data.accessTokenTime);
 
             } catch (error) {
-                console.error('Token yenileme hatası:', error);
                 this.logout();
                 throw new Error('Oturum süresi doldu. Lütfen tekrar oturum açın.');
             }
         },
         async logout() {
             try {
-                await axios.patch('http://localhost:5261/api/Authentication/LogOut', null, {
+                await axios.patch(`${config.public.apiBaseUrl}/api/Authentication/LogOut`, null, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -198,7 +188,7 @@ export const useUserStore = defineStore({
             }
         },
         async fetchUserDoctor() {
-            const response = await axios.get('http://localhost:5261/api/User/GetAllDoctors', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/User/GetAllDoctors`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -207,7 +197,7 @@ export const useUserStore = defineStore({
             this.doctors = response.data
         },
         async fetchUserPatient() {
-            const response = await axios.get('http://localhost:5261/api/Admin/GetAllPatients', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Admin/GetAllPatients`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -217,7 +207,7 @@ export const useUserStore = defineStore({
         },
         async getCurrentUser() {
             try {
-                const response = await axios.get('http://localhost:5261/api/User/GetCurrentUser', {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/User/GetCurrentUser`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -246,7 +236,7 @@ export const useUserStore = defineStore({
 
         async getUserId(id: string) {
             try {
-                const response = await axios.get(`http://localhost:5261/api/User/GetUserById?userID=${id}`, {
+                const response = await axios.get(`${config.public.apiBaseUrl}/api/User/GetUserById?userID=${id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -260,60 +250,60 @@ export const useUserStore = defineStore({
         },
         async deleteCurrentUser() {
             try {
-                const config = {
+                const config1 = {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`
                     }
                 };
-                await axios.delete('http://localhost:5261/api/User/DeleteCurrentUser', config);
+                await axios.delete(`${config.public.apiBaseUrl}/api/User/DeleteCurrentUser`, config1);
 
             } catch (error) {
                 console.error('Delete request failed:', error);
             }
         },
         async updateDoctor(newInfo: any) {
-            const config = {
+            const config1 = {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`
                 }
             };
-            await axios.put('http://localhost:5261/api/User/UpdateDoctor', newInfo, config)
+            await axios.put(`${config.public.apiBaseUrl}/api/User/UpdateDoctor`, newInfo, config1)
         },
         async updateDoctorTitle(titleId: number) {
-            const config = {
+            const config1 = {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`,
                     'Content-Type': 'application/json'
                 }
             };
-            await axios.patch(`http://localhost:5261/api/User/UpdateDoctorTitle?doctorTitleId=${titleId}`, null, config)
+            await axios.patch(`${config.public.apiBaseUrl}/api/User/UpdateDoctorTitle?doctorTitleId=${titleId}`, null, config1)
         },
         async updatePatient(newInfo: any) {
-            const config = {
+            const config1 = {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`
                 }
             };
-            await axios.put('http://localhost:5261/api/User/UpdatePatient', newInfo, config)
+            await axios.put(`${config.public.apiBaseUrl}/api/User/UpdatePatient`, newInfo, config1)
         },
         async changePassword(newPass: any) {
-            const config = {
+            const config1 = {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`
                 }
             };
-            await axios.patch('http://localhost:5261/api/User/ChangePassword', newPass, config)
+            await axios.patch(`${config.public.apiBaseUrl}/api/User/ChangePassword`, newPass, config1)
 
         },
         async uploadProfileImage(file: any) {
             try {
-                const config = {
+                const config1 = {
                     headers: {
                         Authorization: `Bearer ${this.accessToken}`,
                         'Content-Type': 'multipart/form-data',
                     }
                 };
-                await axios.patch('http://localhost:5261/api/User/UploadProfileImage', file, config)
+                await axios.patch(`${config.public.apiBaseUrl}/api/User/UploadProfileImage`, file, config1)
                 this.getCurrentUser()
             } catch (error) {
                 console.log(error)
@@ -321,7 +311,7 @@ export const useUserStore = defineStore({
         },
         async deleteProfileImage() {
             try {
-                await axios.patch('http://localhost:5261/api/User/DeleteProfileImage', null, {
+                await axios.patch(`${config.public.apiBaseUrl}/api/User/DeleteProfileImage`, null, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                         'Content-Type': 'application/json'
@@ -333,13 +323,13 @@ export const useUserStore = defineStore({
             }
         },
         async resetPassword(password: any, token: string) {
-            await axios.post(`http://localhost:5261/api/Authentication/ResetPassword?token=${token}`, password)
+            await axios.post(`${config.public.apiBaseUrl}/api/Authentication/ResetPassword?token=${token}`, password)
         },
         async forgotPassword(email: string) {
-            await axios.post(`http://localhost:5261/api/Authentication/ForgotPassword?email=${email}`)
+            await axios.post(`${config.public.apiBaseUrl}/api/Authentication/ForgotPassword?email=${email}`)
         },
         async mailConfirm(email: any, token: any) {
-            await axios.get(`http://localhost:5261/api/Authentication/ConfirmEmail?email=${email}&token=${token}`)
+            await axios.get(`${config.public.apiBaseUrl}/api/Authentication/ConfirmEmail?email=${email}&token=${token}`)
         }
     }
 });

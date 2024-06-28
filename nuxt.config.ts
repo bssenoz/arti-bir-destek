@@ -20,9 +20,12 @@ export default defineNuxtConfig({
   modules: ["@pinia/nuxt","nuxt-vue3-google-signin"],
 
   runtimeConfig: {
-    googleClientId: process.env.GOOGLE_CLIENT_ID,
+    public: {
+      googleClientId: process.env.GOOGLE_CLIENT_ID,
+      apiBaseUrl: process.env.API_BASE_URL,
+      admin: process.env.ADMIN
+    }
   },
-  
   googleSignIn: {
     clientId: process.env.GOOGLE_CLIENT_ID,
   },

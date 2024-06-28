@@ -16,34 +16,34 @@ const customizer = useCustomizerStore();
         <LcFullLogo href="/"/>
     </div>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/mesajiniz-var">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/mesajiniz-var">
         <h5 class="text-subtitle-1 text-primary">
           | Mesajınız var<MessageCircleIcon class="ml-2" />
         </h5>
       </v-list-item>
     </v-list>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/#amaclarimiz">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/#amaclarimiz">
         <h5 class="text-subtitle-1">Amaçlarımız</h5>
       </v-list-item>
     </v-list>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/#neler-sagliyoruz">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/#neler-sagliyoruz">
         <h5 class="text-subtitle-1">Neler Sağlıyoruz?</h5>
       </v-list-item>
     </v-list>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/#neden-biz">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/#neden-biz">
         <h5 class="text-subtitle-1">Neden Biz?</h5>
       </v-list-item>
     </v-list>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/#sss">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/#sss">
         <h5 class="text-subtitle-1">Sık Sorulan Sorular</h5>
       </v-list-item>
     </v-list>
     <v-list class="py-0 px-2">
-      <v-list-item rounded="md" href="http://localhost:3000/#aramiza-katil">
+      <v-list-item rounded="md" href="https://artibirdestek.sakarya.edu.tr/#aramiza-katil">
         <h5 class="text-subtitle-1">Aramıza Katıl</h5>
       </v-list-item>
     </v-list>

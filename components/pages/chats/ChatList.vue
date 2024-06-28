@@ -69,7 +69,6 @@ const displayedDoctors = computed(() => {
 const updateStatus = async (id: string, count: number) => {
   chatStore.fromUserChange(id);
   userStore.getUserId(id);
-  console.log("id2:", id)
   chatStore.senderID = id;
 
   if (currentUser.value) {

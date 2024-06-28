@@ -27,7 +27,6 @@ const userRole = getUserRoleFromToken();
     return navigateTo('/403');
   }
   if (to.path == '/profile/video/[id]') {
-    console.log(to.path)
     const dynamicRoute = to.path.match(/^\/profile\/video\/(.+)$/);
     if (dynamicRoute && dynamicRoute[1]) {
       const videoId = dynamicRoute[1];
@@ -56,9 +55,6 @@ const userRole = getUserRoleFromToken();
 
   currentTime.setHours(currentTime.getHours() + 1);
 
-  console.log("Yeni accessTokenExpiration:", expirationDate.toISOString());
-  console.log("curr: ", currentTime.toISOString())
-  console.log("acc: ", expirationDate.toISOString())
 
   if (currentTime >= expirationDate) {
     console.log("AccessToken süresi doldu. Yeniden oturum açılıyor...");
@@ -73,7 +69,6 @@ const userRole = getUserRoleFromToken();
     }
   } else {
     console.log("AccessToken hala geçerli.");
-    console.log(userRole)
     if (!userRole) {
       return navigateTo('/403');
     }

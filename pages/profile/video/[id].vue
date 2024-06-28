@@ -101,7 +101,6 @@ const handleTimeUpdate = (event: Event) => {
 
 const handlePlay = (event: Event) => {
     const playerId = `player_1`;
-    console.log("Video started playing:", playerId);
 
     // Diğer videoları duraklat
     for (const key in players.value) {

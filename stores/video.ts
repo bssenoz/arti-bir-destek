@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import axios from '@/utils/axios';
+import { useRuntimeConfig } from '#app';
+
+const config = useRuntimeConfig();
 
 interface VideoType {
     videos: Array<VideoType>
@@ -15,7 +18,7 @@ export const useVideoStore = defineStore({
 
     actions: {
         async fetchVideos() {
-            const response = await axios.get('http://localhost:5261/api/Video/GetAllVideos', {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Video/GetAllVideos`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -24,7 +27,7 @@ export const useVideoStore = defineStore({
             this.videos = response.data.reverse();
         },
         async getVideo(id: number) {
-            const response = await axios.get(`http://localhost:5261/api/Video/GetVideoByVideoSlug?videoSlug=${id}`, {
+            const response = await axios.get(`${config.public.apiBaseUrl}/api/Video/GetVideoByVideoSlug?videoSlug=${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -33,7 +36,7 @@ export const useVideoStore = defineStore({
             this.video = response.data;
         },
         async deleteVideo(id: number) {
-            const response = await axios.delete(`http://localhost:5261/api/Admin/DeleteVideo?videoID=${id}`, {
+            const response = await axios.delete(`${config.public.apiBaseUrl}/api/Admin/DeleteVideo?videoID=${id}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'
@@ -43,7 +46,7 @@ export const useVideoStore = defineStore({
             this.fetchVideos()
         },
         async editVideo(editItem: any) {
-            const response = await axios.put('http://localhost:5261/api/Admin/UpdateVideo', editItem, {
+            const response = await axios.put(`${config.public.apiBaseUrl}/api/Admin/UpdateVideo`, editItem, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
                     'Content-Type': 'application/json'

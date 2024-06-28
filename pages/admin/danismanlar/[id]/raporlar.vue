@@ -37,7 +37,6 @@ const search = ref('');
 
 const select = (data: any) => {
     selectedStatistic.value = data;
-    console.log(selectedStatistic.value)
 };
 const downloadPDF = () => {
     const content = document.getElementById('report-content').innerHTML;

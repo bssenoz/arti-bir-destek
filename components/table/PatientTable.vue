@@ -52,7 +52,6 @@ const saveAppointment = async (slug: any) => {
             day: day.value,
             timeRange: time.value,
         }
-        console.log(appointment)
         appointmentDialog.value = false;
         await meetStore.createAppointmentByDoctor(appointment)
         Swal.fire({

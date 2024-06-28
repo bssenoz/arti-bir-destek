@@ -209,9 +209,9 @@ const cancelAppointment = async(i: any) => {
                                         }}.00</span></div>
                                 <div class="text-h6 mt-1">Danışman: <span class="font-weight-thin">{{i.doctorTitle}} {{ i.doctorName }} {{
                                     i.doctorSurname }}</span></div>
-                                <v-btn :href="i.appointmentUrl" target="_blank" color="primary" class="mt-3" v-if="(isPastAppointment(i.day, i.timeRange) && isCurrentAppointment(i.day, i.timeRange))"
+                                <v-btn :href="i.appointmentURL" target="_blank" color="primary" class="mt-3" v-if="(isPastAppointment(i.day, i.timeRange) && isCurrentAppointment(i.day, i.timeRange))"
                                     >
-                                    Randevuya Katıl
+                                    Randevuya Katıl 
                                 </v-btn>
 
                                 <v-btn target="_blank" color="warning" class="mt-3"

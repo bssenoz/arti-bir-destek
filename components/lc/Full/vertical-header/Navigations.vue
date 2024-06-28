@@ -40,7 +40,6 @@ const isDoctor = ref(false);
 const userRole = getUserRoleFromToken(); 
 
 if (userRole) {
-  console.log('Kullanıcı rolü:', userRole);
   if (userRole === "Admin") isAdmin.value = true;
   if (userRole === "Doctor") isDoctor.value = true;
   if (userRole === "Patient") isPatient.value = true;

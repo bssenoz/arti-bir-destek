@@ -54,7 +54,6 @@ const previewVideo = (selectedFile: File) => {
 
 const submitFile = () => {
   if (file.value !== "") {
-    console.log(title.value.length)
     if (title.value.length < 100) {
       const formData = new FormData();
       formData.append("file", file.value);

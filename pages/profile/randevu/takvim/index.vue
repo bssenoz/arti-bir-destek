@@ -65,7 +65,6 @@ const saveSchedule = () => {
   });
 
   const today = new Date();
-  console.log("bugünün tarihi: ", today);
   const birAySonrasi = addDays(startOfDay(today), 30);
 
   const dayDates = getDayDates(today, birAySonrasi);
@@ -122,10 +121,7 @@ const saveSchedule = () => {
     }
   });
 
-  console.log("Randevular:");
-  randevular.forEach((randevu) => {
-    console.log(`${randevu.date.toISOString().slice(0, 10)} ${randevu.time}`);
-  });
+ 
 };
 
 const handleCheckboxChange = (dayId: number, hourIndex: number) => {

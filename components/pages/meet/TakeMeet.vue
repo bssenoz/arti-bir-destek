@@ -60,7 +60,6 @@ watchEffect(() => {
   const start = range.value.start;
   const end = range.value.end;
   if (start && end) {
-    console.log("Seçilen tarih aralığı:", start, " | ", end);
     updateWeeklyDates(start, end);
     const formattedDate = format(start, 'dd.MM.yyyy');
     meetStore.getAllAppointmentSchedule(formattedDate);
@@ -99,14 +98,12 @@ const selectDay = (index) => {
 };
 
 const confirmAppointment = async (selectedAppointment: any) => {
-  console.log(selectedAppointment)
   try {
     const newAppointment: MakeAppointmentType = {
       doctorId: selectedAppointment.doctorId,
       day: selectedAppointment.day,
       timeRange: selectedAppointment.timeRange,
     };
-    console.log(newAppointment)
     await meetStore.makeAppointment(newAppointment)
     Swal.fire({
       title: "Başarılı!",
@@ -130,8 +127,7 @@ const toggleAccordion = (index) => {
 };
 
 const handleAppointmentClick = (timeObj: { status: any; timeRange: number; }, appointment: { doctorID: any; doctorTitle: any; doctorName: any; doctorSurname: any; }) => {
-  console.log(timeObj)
-  console.log(appointment)
+
   if (!timeObj.status) {
     selectedAppointment.value = {
       doctorId: appointment.doctorID,
